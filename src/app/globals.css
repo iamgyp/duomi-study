@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-pixel);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .mc-btn {
+    @apply border-2 border-b-4 border-r-4 border-black px-6 py-3 font-mono font-bold uppercase transition-all active:border-b-2 active:border-r-2 active:translate-y-1 active:translate-x-1 hover:brightness-110;
+    font-family: var(--font-pixel), monospace;
+    image-rendering: pixelated;
+  }
+
+  .mc-card {
+    @apply border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)];
+  }
+}
