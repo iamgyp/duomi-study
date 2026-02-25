@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { ArrowLeft, Printer, RefreshCw, Settings2 } from 'lucide-react';
 import Link from 'next/link';
-import { generateEnglishImage } from '@/lib/english-canvas-generator';
+import { pdf } from '@react-pdf/renderer';
+import { EnglishPdfDocument } from '@/lib/english-pdf-generator';
 
 export default function EnglishPage() {
   const [text, setText] = useState('Apple Banana Cat Dog Elephant');
@@ -28,17 +29,22 @@ export default function EnglishPage() {
   const handleDownload = async () => {
     setIsGenerating(true);
     try {
-      const dataUrl = await generateEnglishImage(processedText(), config);
+      // Generate PDF
+      const blob = await pdf(
+        <EnglishPdfDocument text={processedText()} config={config} />
+      ).toBlob();
       
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `duomi-english-${Date.now()}.jpg`;
+      link.href = url;
+      link.download = `duomi-english-${Date.now()}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch (e) {
       console.error(e);
-      alert('Image generation failed. Check console.');
+      alert('PDF generation failed. Check console.');
     } finally {
       setIsGenerating(false);
     }
@@ -132,7 +138,7 @@ export default function EnglishPage() {
                   className="mc-btn w-full mt-4 bg-[#3B82F6] text-white text-xl hover:bg-[#2563EB] flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
                 >
                   <Printer className="h-5 w-5" />
-                  {isGenerating ? 'CRAFTING...' : 'SAVE IMAGE'}
+                  {isGenerating ? 'CRAFTING...' : 'SAVE PDF'}
                 </button>
               </div>
            </div>
