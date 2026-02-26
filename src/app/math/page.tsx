@@ -10,6 +10,7 @@ import { pdf } from '@react-pdf/renderer';
 import { MathPdfDocument } from '@/lib/pdf-generator';
 
 export default function MathPage() {
+  const [activeTab, setActiveTab] = useState<'basic' | 'algebra'>('basic');
   const [config, setConfig] = useState<MathConfig>({
     operation: 'add',
     max: 20,
@@ -72,6 +73,31 @@ export default function MathPage() {
         <div className="w-48"></div> {/* Spacer */}
       </div>
 
+      {/* Tab Navigation */}
+      <div className="mb-6 flex justify-center gap-4 max-w-2xl mx-auto">
+        <button
+          onClick={() => setActiveTab('basic')}
+          className={`px-8 py-3 text-xl font-bold border-4 transition-all active:translate-y-1 ${
+            activeTab === 'basic'
+              ? 'bg-[#4CAF50] text-white border-black shadow-lg'
+              : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
+          }`}
+        >
+          📝 Basic Practice
+        </button>
+        <Link
+          href="/math/algebra"
+          className={`px-8 py-3 text-xl font-bold border-4 transition-all active:translate-y-1 ${
+            activeTab === 'algebra'
+              ? 'bg-[#FF9800] text-white border-black shadow-lg'
+              : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
+          }`}
+        >
+          🛒 Algebra Shop
+        </Link>
+      </div>
+
+      {activeTab === 'basic' && (
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 max-w-7xl mx-auto">
         
         {/* Sidebar: Crafting Table Style */}
@@ -290,6 +316,16 @@ export default function MathPage() {
            </div>
         </div>
       </div>
+      )}
+
+      {activeTab === 'algebra' && (
+        <div className="text-center py-20">
+          <p className="text-white text-2xl mb-4">🛒 Algebra Shop is ready!</p>
+          <Link href="/math/algebra" className="mc-btn bg-[#FF9800] text-white text-xl px-8 py-4 inline-block">
+            Go to Algebra Shop →
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
