@@ -58,8 +58,8 @@ export function ItemPriceList({ items, language = 'zh' }: ItemPriceListProps) {
   const currency = getCurrencySymbol(language);
 
   return (
-    <div className="flex flex-wrap gap-2 items-center bg-gray-50 p-2 rounded border-2 border-gray-300">
-      <span className="text-xs font-bold text-gray-600 mr-1 whitespace-nowrap">{label}</span>
+    <div className="flex flex-wrap gap-3 items-center bg-gray-50 p-3 rounded border-2 border-gray-300">
+      <span className="text-sm font-bold text-gray-600 mr-1 whitespace-nowrap">{label}</span>
       {items.map((item) => {
         const displayName = getItemDisplayName(item, language);
         // 使用简短名称（英文时去掉材质前缀）
@@ -70,18 +70,18 @@ export function ItemPriceList({ items, language = 'zh' }: ItemPriceListProps) {
         return (
           <div
             key={item.id}
-            className="flex items-center gap-0.5 bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-sm"
+            className="flex items-center gap-1 bg-white px-2 py-1 rounded border border-gray-200 shadow-sm"
           >
             <img
               src={`/items/${item.icon}`}
               alt={displayName}
-              className="w-4 h-4 object-contain"
-              width={16}
-              height={16}
+              className="w-6 h-6 object-contain"
+              width={24}
+              height={24}
             />
-            <span className="text-[10px] font-bold text-gray-700 whitespace-nowrap">{shortName}</span>
-            <span className="text-[10px] text-gray-500">=</span>
-            <span className="text-[10px] font-bold text-green-600">{item.price}{currency}</span>
+            <span className="text-xs font-bold text-gray-700 whitespace-nowrap">{shortName}</span>
+            <span className="text-xs text-gray-500">=</span>
+            <span className="text-xs font-bold text-green-600">{item.price}{currency}</span>
           </div>
         );
       })}
