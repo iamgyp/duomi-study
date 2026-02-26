@@ -1,5 +1,18 @@
-import { Document, Page, Text, View, StyleSheet, Svg, Line, Path } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Svg, Line, Path, Image, Font } from '@react-pdf/renderer';
 import { MathQuestion } from './math-generator';
+import { AlgebraQuestion, McItem, getItemDisplayName, getCurrencySymbol } from './algebra-generator';
+
+// Register Chinese font (Noto Sans SC)
+Font.register({
+  family: 'Noto Sans SC',
+  src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/files/noto-sans-sc-chinese-simplified-400-normal.woff',
+});
+
+// Register bold Chinese font as separate family
+Font.register({
+  family: 'Noto Sans SC Bold',
+  src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/files/noto-sans-sc-chinese-simplified-700-normal.woff',
+});
 
 const styles = StyleSheet.create({
   page: {
@@ -306,3 +319,318 @@ export const MathPdfDocument = ({ questions, title = 'Math Worksheet', withAnswe
     )}
   </Document>
 );
+
+// Algebra PDF Styles
+const algebraStyles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontFamily: 'Noto Sans SC',
+    fontSize: 11,
+    color: '#333',
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+    borderBottomWidth: 2,
+    borderBottomColor: '#000',
+    paddingBottom: 10,
+    height: 70,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontFamily: 'Noto Sans SC Bold',
+    marginLeft: 10,
+    color: '#000',
+  },
+  subtitle: {
+    fontSize: 9,
+    color: '#666',
+    marginLeft: 10,
+    marginTop: 3,
+  },
+  metaContainer: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderLeftColor: '#ccc',
+    paddingLeft: 15,
+  },
+  metaText: {
+    fontSize: 9,
+    marginBottom: 4,
+    color: '#444',
+  },
+  // Item Price List
+  priceListContainer: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap', // 强制不换行
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: 4,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginBottom: 8,
+  },
+  priceListLabel: {
+    fontSize: 7,
+    fontFamily: 'Noto Sans SC Bold',
+    color: '#666',
+    marginRight: 4,
+  },
+  priceItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 3,
+    paddingVertical: 2,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: '#eee',
+    marginRight: 3,
+  },
+  priceItemEmoji: {
+    width: 10,
+    height: 10,
+    marginRight: 2,
+  },
+  priceItemName: {
+    fontSize: 6,
+    fontFamily: 'Noto Sans SC Bold',
+    color: '#333',
+    marginRight: 2,
+  },
+  priceItemEquals: {
+    fontSize: 6,
+    color: '#666',
+    marginRight: 2,
+  },
+  priceItemPrice: {
+    fontSize: 7,
+    fontFamily: 'Noto Sans SC Bold',
+    color: '#2e7d32',
+  },
+  // Question Set Container
+  questionSet: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 6,
+    padding: 10,
+    backgroundColor: '#fafafa',
+    marginBottom: 12,
+  },
+  // Question Row
+  questionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  questionIndex: {
+    width: 20,
+    fontSize: 10,
+    color: '#888',
+    fontFamily: 'Noto Sans SC Bold',
+  },
+  questionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 4,
+  },
+  itemGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemEmoji: {
+    width: 16,
+    height: 16,
+    marginRight: 3,
+  },
+  itemMultiplier: {
+    fontSize: 9,
+    color: '#666',
+    marginRight: 6,
+  },
+  operator: {
+    fontSize: 12,
+    color: '#999',
+    marginHorizontal: 3,
+  },
+  equals: {
+    fontSize: 12,
+    color: '#999',
+    marginHorizontal: 3,
+  },
+  answerBox: {
+    width: 50,
+    height: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    backgroundColor: '#f9f9f9',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 25,
+    left: 30,
+    right: 30,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 8,
+    color: '#999',
+  },
+  pageNumber: {
+    fontSize: 8,
+    color: '#666',
+    fontWeight: 'bold',
+  },
+});
+
+// Emoji Text Component (fallback for emoji rendering)
+const EmojiText = ({ emoji, size = 14 }: { emoji: string; size?: number }) => (
+  <Text style={{ fontSize: size, fontFamily: 'Helvetica' }}>{emoji}</Text>
+);
+
+// Item icon path helper - uses absolute path for PDF generation
+const getItemIconPath = (iconFilename: string) => {
+  // For PDF generation, we need absolute paths or data URLs
+  // This assumes icons are in public/items/ folder
+  const iconPath = `/items/${iconFilename}`;
+  return iconPath;
+};
+
+export const AlgebraPdfDocument = ({
+  questions,
+  itemSets,
+  title = 'Algebra Challenge',
+  difficulty = 2,
+  language = 'zh',
+}: {
+  questions: AlgebraQuestion[];
+  itemSets: McItem[][];
+  title?: string;
+  difficulty?: number;
+  language?: 'zh' | 'en';
+}) => {
+  const difficultyLabel =
+    difficulty === 1 ? '⭐ Basic' : difficulty === 2 ? '⭐⭐ Intermediate' : '⭐⭐⭐ Advanced';
+  const priceListLabel = language === 'zh' ? '💰 价格表：' : '💰 Price List:';
+  const currency = getCurrencySymbol(language);
+  
+  return (
+    <Document>
+      <Page size="A4" style={algebraStyles.page}>
+        {/* Header */}
+        <View style={algebraStyles.header}>
+          <View style={algebraStyles.headerLeft}>
+            <SteveAvatar />
+            <View>
+              <Text style={algebraStyles.title}>DUOMI ALGEBRA</Text>
+              <Text style={algebraStyles.subtitle}>
+                {difficultyLabel} · {questions.length} Questions
+              </Text>
+            </View>
+          </View>
+          <View style={algebraStyles.metaContainer}>
+            <Text style={algebraStyles.metaText}>Name: ______________________</Text>
+            <Text style={algebraStyles.metaText}>Score: _________ / {questions.length}</Text>
+          </View>
+        </View>
+
+        {/* Questions by Set */}
+        {itemSets.map((itemSet, setIndex) => {
+          const setQuestions = questions.slice(setIndex * 5, (setIndex + 1) * 5);
+          if (setQuestions.length === 0) return null;
+
+          return (
+            <View key={setIndex} style={algebraStyles.questionSet} wrap={false}>
+              {/* Price List for this set */}
+              <View style={algebraStyles.priceListContainer}>
+                <Text style={algebraStyles.priceListLabel}>{priceListLabel}</Text>
+                {itemSet.map((item) => {
+                  const displayName = getItemDisplayName(item, language);
+                  // 使用简短名称（英文时去掉材质前缀）
+                  const shortName = language === 'en' 
+                    ? displayName.replace('Iron ', '').replace('Wood ', '').replace('Stone ', '').replace('Gold ', '').replace('Diamond ', '').replace('Cooked ', '')
+                    : displayName;
+                  
+                  return (
+                    <View key={item.id} style={algebraStyles.priceItem}>
+                      <Image
+                        style={algebraStyles.priceItemEmoji}
+                        src={getItemIconPath(item.icon)}
+                      />
+                      <Text style={algebraStyles.priceItemName}>{shortName}</Text>
+                      <Text style={algebraStyles.priceItemEquals}>=</Text>
+                      <Text style={algebraStyles.priceItemPrice}>{item.price}{currency}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+
+              {/* Questions Grid (2 columns) */}
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                {setQuestions.map((q, i) => {
+                  const globalIndex = setIndex * 5 + i;
+                  return (
+                    <View
+                      key={q.id}
+                      style={{
+                        width: '48%',
+                        ...algebraStyles.questionRow,
+                      }}
+                      wrap={false}
+                    >
+                      <Text style={algebraStyles.questionIndex}>{globalIndex + 1}.</Text>
+                      <View style={algebraStyles.questionContent}>
+                        {q.items.map((itemData, idx) => (
+                          <View key={itemData.item.id} style={algebraStyles.itemGroup}>
+                            <Image
+                              style={algebraStyles.itemEmoji}
+                              src={getItemIconPath(itemData.item.icon)}
+                            />
+                            <Text style={algebraStyles.itemMultiplier}>× {itemData.quantity}</Text>
+                            {idx < q.items.length - 1 && (
+                              <Text style={algebraStyles.operator}>+</Text>
+                            )}
+                          </View>
+                        ))}
+                        <Text style={algebraStyles.equals}>=</Text>
+                        <View style={algebraStyles.answerBox} />
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
+
+        {/* Footer */}
+        <View style={algebraStyles.footer}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <GrassBlock />
+            <Text style={[algebraStyles.footerText, { marginLeft: 5 }]}>
+              Duomi Study - Shop Smart!
+            </Text>
+          </View>
+          <Text style={algebraStyles.pageNumber}>Page 1</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
