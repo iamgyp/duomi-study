@@ -75,7 +75,17 @@
     "traceMode": "描红模式（灰色）",
     "saveImage": "保存图片",
     "writingPractice": "书写练习",
-    "supportPinyin": "支持自动拼音标注"
+    "supportPinyin": "支持自动拼音标注",
+    "poemMode": "古诗填空",
+    "characterMode": "写字练习",
+    "difficultyLevel": "难度等级",
+    "poemCount": "诗歌数量",
+    "showAnswers": "显示答案",
+    "generatePoems": "生成练习",
+    "savePdf": "保存 PDF",
+    "basicPoem": "⭐ 初级 - 五言",
+    "intermediatePoem": "⭐⭐ 中级 - 七言",
+    "advancedPoem": "⭐⭐⭐ 高级 - 律诗"
   },
   "English": {
     "title": "英语港口",

@@ -75,7 +75,17 @@
     "traceMode": "Trace Mode (Gray)",
     "saveImage": "Save Image",
     "writingPractice": "Writing Practice",
-    "supportPinyin": "Supports Pinyin auto-generation."
+    "supportPinyin": "Supports Pinyin auto-generation.",
+    "poemMode": "Poetry Fill-in",
+    "characterMode": "Character Writing",
+    "difficultyLevel": "Difficulty Level",
+    "poemCount": "Poem Count",
+    "showAnswers": "Show Answers",
+    "generatePoems": "Generate Practice",
+    "savePdf": "Save PDF",
+    "basicPoem": "⭐ Basic - 5 chars",
+    "intermediatePoem": "⭐⭐ Intermediate - 7 chars",
+    "advancedPoem": "⭐⭐⭐ Advanced - Classical"
   },
   "English": {
     "title": "English Port",
