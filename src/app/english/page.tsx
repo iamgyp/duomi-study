@@ -5,8 +5,11 @@ import { ArrowLeft, Printer, RefreshCw, Settings2 } from 'lucide-react';
 import Link from 'next/link';
 import { pdf } from '@react-pdf/renderer';
 import { EnglishPdfDocument } from '@/lib/english-pdf-generator';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function EnglishPage() {
+  const { t, mounted } = useTranslation();
   const [text, setText] = useState('Apple Banana Cat Dog Elephant');
   const [config, setConfig] = useState({
     mode: 'word', 
@@ -52,6 +55,14 @@ export default function EnglishPage() {
 
   const words = processedText().split(/\s+/).filter(w => w.length > 0);
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#795548] flex items-center justify-center">
+        <div className="text-white text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-8 font-[var(--font-pixel)]">
       
@@ -59,15 +70,15 @@ export default function EnglishPage() {
       <div className="mb-8 flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-xl">
           <ArrowLeft className="h-6 w-6" />
-          BACK TO HOME
+          {t('Common.backToHome')}
         </Link>
         
         <div className="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
            <div className="text-4xl">🔤</div>
-           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">ENGLISH PORT</h1>
+           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">{t('English.title')}</h1>
         </div>
         
-        <div className="w-48"></div> 
+        <LanguageSwitcher />
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 max-w-7xl mx-auto">
@@ -78,13 +89,13 @@ export default function EnglishPage() {
               
               <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-[#333] border-b-2 border-[#555] pb-2">
                 <Settings2 className="h-6 w-6" />
-                <span>SETTINGS</span>
+                <span>{t('Common.settings')}</span>
               </div>
 
               <div className="space-y-6 font-sans">
                 {/* Input Area */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Enter Words/Sentences</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('English.enterWords')}</label>
                   <textarea 
                     className="w-full border-2 border-black bg-white p-2 text-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 font-sans h-32 resize-none"
                     value={text}
@@ -95,7 +106,7 @@ export default function EnglishPage() {
 
                 {/* Case Options */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Letter Case</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('English.letterCase')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setConfig({ ...config, caseType: 'original' })}
@@ -103,7 +114,7 @@ export default function EnglishPage() {
                         config.caseType === 'original' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      Original
+                      {t('English.original')}
                     </button>
                     <button
                       onClick={() => setConfig({ ...config, caseType: 'upper' })}
@@ -111,7 +122,7 @@ export default function EnglishPage() {
                         config.caseType === 'upper' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      UPPERCASE
+                      {t('English.uppercase')}
                     </button>
                     <button
                       onClick={() => setConfig({ ...config, caseType: 'lower' })}
@@ -119,7 +130,7 @@ export default function EnglishPage() {
                         config.caseType === 'lower' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      lowercase
+                      {t('English.lowercase')}
                     </button>
                      <button
                       onClick={() => setConfig({ ...config, caseType: 'capitalize' })}
@@ -127,7 +138,7 @@ export default function EnglishPage() {
                         config.caseType === 'capitalize' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      Capitalize
+                      {t('English.capitalize')}
                     </button>
                   </div>
                 </div>
@@ -138,7 +149,7 @@ export default function EnglishPage() {
                   className="mc-btn w-full mt-4 bg-[#3B82F6] text-white text-xl hover:bg-[#2563EB] flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
                 >
                   <Printer className="h-5 w-5" />
-                  {isGenerating ? 'CRAFTING...' : 'SAVE PDF'}
+                  {isGenerating ? t('Common.crafting') : t('English.savePdf')}
                 </button>
               </div>
            </div>
@@ -147,7 +158,7 @@ export default function EnglishPage() {
         {/* Preview Area */}
         <div className="lg:col-span-3 flex flex-col h-full">
            <div className="mb-4 bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-              <h2 className="text-2xl text-white font-bold tracking-wide">PREVIEW BOOK</h2>
+              <h2 className="text-2xl text-white font-bold tracking-wide">{t('Common.preview')}</h2>
            </div>
 
            <div className="flex-1 bg-[#dcdcdc] p-8 border-4 border-[#555] shadow-inner overflow-auto max-h-[800px] flex justify-center">
@@ -167,11 +178,11 @@ export default function EnglishPage() {
                        </div>
                        <div>
                           <h1 className="text-2xl font-bold font-[var(--font-pixel)] leading-none">DUOMI ENGLISH</h1>
-                          <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest">WRITING PRACTICE</p>
+                          <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest">{t('English.writingPractice')}</p>
                        </div>
                     </div>
                     <div className="text-right">
-                       <div className="text-xs text-gray-400 mb-1">SCORE: ____</div>
+                       <div className="text-xs text-gray-400 mb-1">{t('Common.score')}: ____</div>
                        <div className="h-4 w-32 border border-gray-300 bg-gray-50"></div>
                     </div>
                  </div>

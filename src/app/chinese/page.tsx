@@ -7,13 +7,16 @@ import cnchar from 'cnchar';
 import 'cnchar-order';
 import 'cnchar-trad';
 import { generateChineseImage } from '@/lib/chinese-canvas-generator';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ChinesePage() {
+  const { t, mounted } = useTranslation();
   const [text, setText] = useState('多米学习站');
   const [config, setConfig] = useState({
     gridType: 'tian', // tian (田), mi (米)
     showPinyin: true,
-    mode: 'trace', // trace (描红-灰色), outline (空心-暂不支持需字体), normal (黑字)
+    mode: 'trace', // trace (描红 - 灰色), outline (空心 - 暂不支持需字体), normal (黑字)
     color: '#999999', // Default trace color
   });
   
@@ -53,6 +56,14 @@ export default function ChinesePage() {
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#795548] flex items-center justify-center">
+        <div className="text-white text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-8 font-[var(--font-pixel)]">
       
@@ -60,15 +71,15 @@ export default function ChinesePage() {
       <div className="mb-8 flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-xl">
           <ArrowLeft className="h-6 w-6" />
-          BACK TO HOME
+          {t('Common.backToHome')}
         </Link>
         
         <div className="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
            <div className="text-4xl">📝</div>
-           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">CHINESE STUDY</h1>
+           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">{t('Chinese.title')}</h1>
         </div>
         
-        <div className="w-48"></div> 
+        <LanguageSwitcher />
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 max-w-7xl mx-auto">
@@ -79,25 +90,25 @@ export default function ChinesePage() {
               
               <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-[#333] border-b-2 border-[#555] pb-2">
                 <Settings2 className="h-6 w-6" />
-                <span>SETTINGS</span>
+                <span>{t('Common.settings')}</span>
               </div>
 
               <div className="space-y-6 font-sans">
                 {/* Input Area */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Enter Text</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Chinese.enterText')}</label>
                   <textarea 
                     className="w-full border-2 border-black bg-white p-2 text-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 font-serif h-32 resize-none"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="在这里输入汉字..."
                   />
-                  <p className="text-xs text-[#444] mt-1">Supports Pinyin auto-generation.</p>
+                  <p className="text-xs text-[#444] mt-1">{t('Chinese.supportPinyin')}</p>
                 </div>
 
                 {/* Grid Type */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Grid Style</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Chinese.gridStyle')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setConfig({ ...config, gridType: 'tian' })}
@@ -105,7 +116,7 @@ export default function ChinesePage() {
                         config.gridType === 'tian' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      田字格 (Tian)
+                      {t('Chinese.tianGrid')}
                     </button>
                     <button
                       onClick={() => setConfig({ ...config, gridType: 'mi' })}
@@ -113,7 +124,7 @@ export default function ChinesePage() {
                         config.gridType === 'mi' ? 'bg-yellow-400 text-black' : 'bg-white text-gray-600'
                       }`}
                     >
-                      米字格 (Mi)
+                      {t('Chinese.miGrid')}
                     </button>
                   </div>
                 </div>
@@ -127,7 +138,7 @@ export default function ChinesePage() {
                         onChange={(e) => setConfig({ ...config, showPinyin: e.target.checked })}
                         className="text-black focus:ring-0 accent-black w-4 h-4"
                       />
-                      <span className="text-sm font-bold text-[#333]">Show Pinyin</span>
+                      <span className="text-sm font-bold text-[#333]">{t('Chinese.showPinyin')}</span>
                    </label>
                    
                    <label className="flex items-center space-x-2 cursor-pointer hover:bg-white/20 p-1 rounded">
@@ -137,7 +148,7 @@ export default function ChinesePage() {
                         onChange={(e) => setConfig({ ...config, mode: e.target.checked ? 'trace' : 'normal', color: e.target.checked ? '#999999' : '#000000' })}
                         className="text-black focus:ring-0 accent-black w-4 h-4"
                       />
-                      <span className="text-sm font-bold text-[#333]">Trace Mode (Gray)</span>
+                      <span className="text-sm font-bold text-[#333]">{t('Chinese.traceMode')}</span>
                    </label>
                 </div>
 
@@ -147,7 +158,7 @@ export default function ChinesePage() {
                   className="mc-btn w-full mt-4 bg-[#F59E0B] text-white text-xl hover:bg-[#D97706] flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
                 >
                   <Printer className="h-5 w-5" />
-                  {isGenerating ? 'CRAFTING...' : 'SAVE IMAGE'}
+                  {isGenerating ? t('Common.crafting') : t('Chinese.saveImage')}
                 </button>
               </div>
            </div>
@@ -156,7 +167,7 @@ export default function ChinesePage() {
         {/* Preview Area */}
         <div className="lg:col-span-3 flex flex-col h-full">
            <div className="mb-4 bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-              <h2 className="text-2xl text-white font-bold tracking-wide">PREVIEW BOOK</h2>
+              <h2 className="text-2xl text-white font-bold tracking-wide">{t('Common.preview')}</h2>
            </div>
 
            <div className="flex-1 bg-[#dcdcdc] p-8 border-4 border-[#555] shadow-inner overflow-auto max-h-[800px] flex justify-center">
@@ -176,11 +187,11 @@ export default function ChinesePage() {
                        </div>
                        <div>
                           <h1 className="text-2xl font-bold font-[var(--font-pixel)] leading-none">DUOMI CHINESE</h1>
-                          <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest">WRITING PRACTICE</p>
+                          <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest">{t('Chinese.writingPractice')}</p>
                        </div>
                     </div>
                     <div className="text-right">
-                       <div className="text-xs text-gray-400 mb-1">SCORE: ____</div>
+                       <div className="text-xs text-gray-400 mb-1">{t('Common.score')}: ____</div>
                        <div className="h-4 w-32 border border-gray-300 bg-gray-50"></div>
                     </div>
                  </div>

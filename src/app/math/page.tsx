@@ -1,15 +1,16 @@
 'use client';
 
-'use client';
-
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Printer, RefreshCw, Settings2 } from 'lucide-react';
 import Link from 'next/link';
 import { generateMathQuestions, MathConfig, MathQuestion } from '@/lib/math-generator';
 import { pdf } from '@react-pdf/renderer';
 import { MathPdfDocument } from '@/lib/pdf-generator';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function MathPage() {
+  const { t, mounted } = useTranslation();
   const [activeTab, setActiveTab] = useState<'basic' | 'algebra'>('basic');
   const [config, setConfig] = useState<MathConfig>({
     operation: 'add',
@@ -55,6 +56,14 @@ export default function MathPage() {
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#795548] flex items-center justify-center">
+        <div className="text-white text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-8 font-[var(--font-pixel)]">
       
@@ -62,15 +71,15 @@ export default function MathPage() {
       <div className="mb-8 flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-xl">
           <ArrowLeft className="h-6 w-6" />
-          BACK TO HOME
+          {t('Common.backToHome')}
         </Link>
         
         <div className="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
            <div className="text-4xl">🧮</div>
-           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">MATH WORKSHOP</h1>
+           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">{t('Math.title')}</h1>
         </div>
         
-        <div className="w-48"></div> {/* Spacer */}
+        <LanguageSwitcher />
       </div>
 
       {/* Tab Navigation */}
@@ -83,7 +92,7 @@ export default function MathPage() {
               : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
           }`}
         >
-          📝 Basic Practice
+          📝 {t('Math.basicTab')}
         </button>
         <Link
           href="/math/algebra"
@@ -93,7 +102,7 @@ export default function MathPage() {
               : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
           }`}
         >
-          🛒 Algebra Shop
+          🛒 {t('Math.algebraTab')}
         </Link>
       </div>
 
@@ -106,28 +115,28 @@ export default function MathPage() {
               
               <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-[#333] border-b-2 border-[#555] pb-2">
                 <Settings2 className="h-6 w-6" />
-                <span>SETTINGS</span>
+                <span>{t('Common.settings')}</span>
               </div>
 
               <div className="space-y-6 font-sans">
                 {/* Subject / Mode */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Game Mode</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Math.gameMode')}</label>
                   <select 
                     className="w-full border-2 border-black bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono"
                     value={config.operation}
                     onChange={(e) => setConfig({ ...config, operation: e.target.value as any })}
                   >
-                    <option value="add">Addition (+)</option>
-                    <option value="sub">Subtraction (-)</option>
-                    <option value="mul">Multiplication (×)</option>
-                    <option value="mix">Mixed (+/-)</option>
+                    <option value="add">{t('Math.operationAdd')}</option>
+                    <option value="sub">{t('Math.operationSub')}</option>
+                    <option value="mul">{t('Math.operationMul')}</option>
+                    <option value="mix">{t('Math.operationMix')}</option>
                   </select>
                 </div>
 
                 {/* Difficulty / Range */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Max Level</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Math.maxLevel')}</label>
                   <div className="grid grid-cols-4 gap-2">
                     {[10, 20, 50, 100].map((num) => (
                       <button
@@ -147,7 +156,7 @@ export default function MathPage() {
                 
                 {/* Question Count */}
                  <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Inventory Size</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Math.inventorySize')}</label>
                   <div className="flex gap-2">
                      {[20, 50, 100].map((c) => (
                       <button
@@ -167,7 +176,7 @@ export default function MathPage() {
 
                 {/* Special Modes */}
                 <div className="border-t-2 border-[#777] pt-4 border-dashed">
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Special Skills</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Math.specialSkills')}</label>
                   <div className="space-y-2">
                      <label className="flex items-center space-x-2 cursor-pointer hover:bg-white/20 p-1 rounded">
                       <input
@@ -176,7 +185,7 @@ export default function MathPage() {
                         onChange={() => setConfig({ ...config, mode: 'normal' })}
                         className="text-black focus:ring-0 accent-black w-4 h-4"
                       />
-                      <span className="text-sm font-bold">Standard</span>
+                      <span className="text-sm font-bold">{t('Math.standardMode')}</span>
                     </label>
                     <label className="flex items-center space-x-2 cursor-pointer hover:bg-white/20 p-1 rounded">
                       <input
@@ -185,7 +194,7 @@ export default function MathPage() {
                         onChange={() => setConfig({ ...config, mode: 'make-ten', operation: 'add', max: 20 })}
                         className="text-black focus:ring-0 accent-black w-4 h-4"
                       />
-                      <span className="text-sm font-bold">Make a Ten (凑十)</span>
+                      <span className="text-sm font-bold">{t('Math.makeTen')}</span>
                     </label>
                     <label className="flex items-center space-x-2 cursor-pointer hover:bg-white/20 p-1 rounded">
                       <input
@@ -194,7 +203,7 @@ export default function MathPage() {
                         onChange={() => setConfig({ ...config, mode: 'take-ten', operation: 'sub', max: 20 })}
                         className="text-black focus:ring-0 accent-black w-4 h-4"
                       />
-                      <span className="text-sm font-bold">Take from Ten (破十)</span>
+                      <span className="text-sm font-bold">{t('Math.takeTen')}</span>
                     </label>
                   </div>
                 </div>
@@ -204,7 +213,7 @@ export default function MathPage() {
                   className="mc-btn w-full mt-4 bg-[#4CAF50] text-white text-xl hover:bg-[#45a049] flex items-center justify-center gap-2"
                 >
                   <RefreshCw className="h-5 w-5" />
-                  CRAFT SHEET
+                  {t('Math.craftSheet')}
                 </button>
               </div>
            </div>
@@ -214,13 +223,13 @@ export default function MathPage() {
         <div className="lg:col-span-3 flex flex-col h-full">
            {/* Preview Toolbar */}
            <div className="mb-4 flex justify-between items-center bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-              <h2 className="text-2xl text-white font-bold tracking-wide">PREVIEW MAP</h2>
+              <h2 className="text-2xl text-white font-bold tracking-wide">{t('Math.previewMap')}</h2>
               <div className="flex gap-4">
                  <button 
                   disabled
                   className="mc-btn bg-[#FF9800] text-white text-sm py-2 px-4 opacity-50 cursor-not-allowed"
                  >
-                   SHOW ANSWERS
+                   {t('Math.showAnswers')}
                  </button>
                  <button 
                   onClick={handleDownload}
@@ -228,7 +237,7 @@ export default function MathPage() {
                   className="mc-btn bg-[#2196F3] text-white text-sm py-2 px-4 flex items-center gap-2 disabled:opacity-50 disabled:grayscale"
                  >
                    <Printer className="h-4 w-4" />
-                   {isGenerating ? 'CRAFTING...' : 'PRINT MAP'}
+                   {isGenerating ? t('Math.crafting') : t('Math.printMap')}
                  </button>
               </div>
            </div>
@@ -255,7 +264,7 @@ export default function MathPage() {
                        </div>
                     </div>
                     <div className="text-right">
-                       <div className="text-xs text-gray-400 mb-1">SCORE: ____ / {questions.length}</div>
+                       <div className="text-xs text-gray-400 mb-1">{t('Common.score')}: ____ / {questions.length}</div>
                        <div className="h-4 w-32 border border-gray-300 bg-gray-50"></div>
                     </div>
                  </div>
@@ -263,7 +272,7 @@ export default function MathPage() {
                  {questions.length === 0 ? (
                    <div className="flex h-64 items-center justify-center text-gray-400 flex-col border-2 border-dashed border-gray-300 rounded-lg">
                      <Settings2 className="h-16 w-16 mb-4 opacity-20" />
-                     <p className="font-[var(--font-pixel)] text-xl text-gray-400">WAITING FOR INPUT...</p>
+                     <p className="font-[var(--font-pixel)] text-xl text-gray-400">{t('Math.waitingForInput')}</p>
                    </div>
                  ) : (
                    <div className="grid grid-cols-2 gap-x-16 gap-y-8 text-xl font-mono">
@@ -309,8 +318,8 @@ export default function MathPage() {
 
                  {/* Decorative Footer on Preview */}
                  <div className="absolute bottom-8 left-12 right-12 border-t-2 border-gray-300 pt-2 flex justify-between text-xs text-gray-400 font-mono">
-                    <span>GENERATED BY DUOMI STUDY</span>
-                    <span>PAGE 1</span>
+                    <span>{t('Common.generatedBy')}</span>
+                    <span>{t('Common.page')} 1</span>
                  </div>
               </div>
            </div>
@@ -320,9 +329,9 @@ export default function MathPage() {
 
       {activeTab === 'algebra' && (
         <div className="text-center py-20">
-          <p className="text-white text-2xl mb-4">🛒 Algebra Shop is ready!</p>
+          <p className="text-white text-2xl mb-4">🛒 {t('Math.algebraTab')} is ready!</p>
           <Link href="/math/algebra" className="mc-btn bg-[#FF9800] text-white text-xl px-8 py-4 inline-block">
-            Go to Algebra Shop →
+            {t('Home.mathBtn')} →
           </Link>
         </div>
       )}
