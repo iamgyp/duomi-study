@@ -7,8 +7,11 @@ import { generateAlgebraQuestions, AlgebraConfig, AlgebraQuestion, McItem, getDi
 import { McItemIcon, ItemPriceList } from '@/components/McItemIcon';
 import { pdf } from '@react-pdf/renderer';
 import { AlgebraPdfDocument } from '@/lib/pdf-generator';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function AlgebraPage() {
+  const { t, mounted } = useTranslation();
   const [config, setConfig] = useState<AlgebraConfig>({
     difficulty: 2,
     count: 20,
@@ -56,6 +59,14 @@ export default function AlgebraPage() {
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#795548] flex items-center justify-center">
+        <div className="text-white text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-8 font-[var(--font-pixel)]">
       
@@ -63,15 +74,15 @@ export default function AlgebraPage() {
       <div className="mb-8 flex items-center justify-between max-w-7xl mx-auto">
         <Link href="/math" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-xl">
           <ArrowLeft className="h-6 w-6" />
-          BACK TO MATH
+          {t('Common.backToMath')}
         </Link>
         
         <div className="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
            <div className="text-4xl">🛒</div>
-           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">ALGEBRA SHOP</h1>
+           <h1 className="text-4xl text-white drop-shadow-md tracking-wider">{t('Algebra.title')}</h1>
         </div>
         
-        <div className="w-48"></div>
+        <LanguageSwitcher />
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 max-w-7xl mx-auto">
@@ -82,13 +93,13 @@ export default function AlgebraPage() {
               
               <div className="mb-6 flex items-center gap-2 text-2xl font-bold text-[#333] border-b-2 border-[#555] pb-2">
                 <Settings2 className="h-6 w-6" />
-                <span>SETTINGS</span>
+                <span>{t('Common.settings')}</span>
               </div>
 
               <div className="space-y-6 font-sans">
                 {/* Difficulty */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Difficulty Level</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Algebra.difficultyLevel')}</label>
                   <div className="space-y-2">
                     {[1, 2, 3].map((level) => (
                       <button
@@ -100,7 +111,7 @@ export default function AlgebraPage() {
                             : 'bg-white text-gray-600 hover:bg-gray-100'
                         }`}
                       >
-                        {getDifficultyLabel(level)}
+                        {level === 1 ? t('Algebra.basic') : level === 2 ? t('Algebra.intermediate') : t('Algebra.advanced')}
                       </button>
                     ))}
                   </div>
@@ -108,7 +119,7 @@ export default function AlgebraPage() {
 
                 {/* Question Count */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Question Count</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Algebra.questionCount')}</label>
                   <div className="grid grid-cols-3 gap-2">
                     {[10, 20, 50].map((c) => (
                       <button
@@ -128,7 +139,7 @@ export default function AlgebraPage() {
 
                 {/* Language */}
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">Price List Language</label>
+                  <label className="mb-2 block text-sm font-bold text-[#333] uppercase">{t('Algebra.language')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setConfig({ ...config, language: 'zh' })}
@@ -138,7 +149,7 @@ export default function AlgebraPage() {
                           : 'bg-white text-gray-600 hover:bg-gray-100'
                       }`}
                     >
-                      🇨🇳 中文
+                      🇨🇳 {t('Algebra.chinese')}
                     </button>
                     <button
                       onClick={() => setConfig({ ...config, language: 'en' })}
@@ -148,7 +159,7 @@ export default function AlgebraPage() {
                           : 'bg-white text-gray-600 hover:bg-gray-100'
                       }`}
                     >
-                      🇺🇸 English
+                      🇺🇸 {t('Algebra.english')}
                     </button>
                   </div>
                 </div>
@@ -158,7 +169,7 @@ export default function AlgebraPage() {
                   className="mc-btn w-full mt-4 bg-[#4CAF50] text-white text-xl hover:bg-[#45a049] flex items-center justify-center gap-2"
                 >
                   <RefreshCw className="h-5 w-5" />
-                  GENERATE QUESTIONS
+                  {t('Algebra.generateQuestions')}
                 </button>
               </div>
            </div>
@@ -168,14 +179,14 @@ export default function AlgebraPage() {
         <div className="lg:col-span-3 flex flex-col h-full">
            {/* Preview Toolbar */}
            <div className="mb-4 flex justify-between items-center bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-              <h2 className="text-2xl text-white font-bold tracking-wide">PREVIEW</h2>
+              <h2 className="text-2xl text-white font-bold tracking-wide">{t('Common.preview')}</h2>
               <button 
                 onClick={handleDownload}
                 disabled={questions.length === 0 || isGenerating}
                 className="mc-btn bg-[#2196F3] text-white text-sm py-2 px-4 flex items-center gap-2 disabled:opacity-50 disabled:grayscale"
               >
                 <Printer className="h-4 w-4" />
-                {isGenerating ? 'CRAFTING...' : 'PRINT PDF'}
+                {isGenerating ? t('Common.crafting') : t('Algebra.printPdf')}
               </button>
            </div>
 
@@ -197,12 +208,12 @@ export default function AlgebraPage() {
                        <div>
                           <h1 className="text-2xl font-bold font-[var(--font-pixel)] leading-none">DUOMI ALGEBRA</h1>
                           <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest">
-                            {getDifficultyLabel(config.difficulty)} · {config.count} Questions
+                            {config.difficulty === 1 ? t('Algebra.basic') : config.difficulty === 2 ? t('Algebra.intermediate') : t('Algebra.advanced')} · {config.count} {t('Algebra.questionCount')}
                           </p>
                        </div>
                     </div>
                     <div className="text-right">
-                       <div className="text-xs text-gray-400 mb-1">SCORE: ____ / {config.count}</div>
+                       <div className="text-xs text-gray-400 mb-1">{t('Common.score')}: ____ / {config.count}</div>
                        <div className="h-4 w-32 border border-gray-300 bg-gray-50"></div>
                     </div>
                  </div>
@@ -210,8 +221,8 @@ export default function AlgebraPage() {
                  {questions.length === 0 ? (
                    <div className="flex h-64 items-center justify-center text-gray-400 flex-col border-2 border-dashed border-gray-300 rounded-lg">
                      <ShoppingCart className="h-16 w-16 mb-4 opacity-20" />
-                     <p className="font-[var(--font-pixel)] text-xl text-gray-400">WAITING TO GENERATE...</p>
-                     <p className="text-sm text-gray-400 mt-2">Click "GENERATE QUESTIONS" to start</p>
+                     <p className="font-[var(--font-pixel)] text-xl text-gray-400">{t('Algebra.waitingToGenerate')}</p>
+                     <p className="text-sm text-gray-400 mt-2">{t('Algebra.clickToStart')}</p>
                    </div>
                  ) : (
                    <div className="space-y-8">
@@ -262,8 +273,8 @@ export default function AlgebraPage() {
 
                  {/* Footer */}
                  <div className="absolute bottom-8 left-12 right-12 border-t-2 border-gray-300 pt-2 flex justify-between text-xs text-gray-400 font-mono">
-                    <span>GENERATED BY DUOMI STUDY</span>
-                    <span>PAGE 1</span>
+                    <span>{t('Common.generatedBy')}</span>
+                    <span>{t('Common.page')} 1</span>
                  </div>
               </div>
            </div>

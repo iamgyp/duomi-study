@@ -92,7 +92,7 @@ function selectFromSet(items: McItem[], count: number): McItem[] {
 // 生成单项题目（难度 1）- 使用当前组的物品池
 function generateSingleItemQuestion(items: McItem[]): AlgebraQuestion {
   const item = items[Math.floor(Math.random() * items.length)];
-  const quantity = Math.floor(Math.random() * 9) + 1; // 1-9
+  const quantity = Math.floor(Math.random() * 5) + 1; // 1-5
   const total = item.price * quantity;
   
   return {
@@ -106,8 +106,8 @@ function generateSingleItemQuestion(items: McItem[]): AlgebraQuestion {
 // 生成两项题目（难度 2）- 使用当前组的物品池，确保物品不重复
 function generateTwoItemQuestion(items: McItem[]): AlgebraQuestion {
   const selected = selectFromSet(items, 2); // 已经确保不重复
-  const qty1 = Math.floor(Math.random() * 9) + 1; // 1-9
-  const qty2 = Math.floor(Math.random() * 9) + 1; // 1-9
+  const qty1 = Math.floor(Math.random() * 5) + 1; // 1-5
+  const qty2 = Math.floor(Math.random() * 5) + 1; // 1-5
   const total = selected[0].price * qty1 + selected[1].price * qty2;
   
   return {
@@ -124,9 +124,9 @@ function generateTwoItemQuestion(items: McItem[]): AlgebraQuestion {
 // 生成三项题目（难度 3）- 使用当前组的物品池，确保物品不重复
 function generateThreeItemQuestion(items: McItem[]): AlgebraQuestion {
   const selected = selectFromSet(items, 3); // 已经确保不重复
-  const qty1 = Math.floor(Math.random() * 9) + 1; // 1-9
-  const qty2 = Math.floor(Math.random() * 9) + 1; // 1-9
-  const qty3 = Math.floor(Math.random() * 9) + 1; // 1-9
+  const qty1 = Math.floor(Math.random() * 5) + 1; // 1-5
+  const qty2 = Math.floor(Math.random() * 5) + 1; // 1-5
+  const qty3 = Math.floor(Math.random() * 5) + 1; // 1-5
   const total = selected[0].price * qty1 + selected[1].price * qty2 + selected[2].price * qty3;
   
   return {
