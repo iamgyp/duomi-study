@@ -22,6 +22,11 @@ export default function AlgebraPage() {
   const [questions, setQuestions] = useState<AlgebraQuestion[]>([]);
   const [itemSets, setItemSets] = useState<McItem[][]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [previewPage, setPreviewPage] = useState(1);
+  const questionsPerPage = 20;
+  const totalPages = Math.max(1, Math.ceil(questions.length / questionsPerPage));
+  const currentQuestions = questions.slice((previewPage - 1) * questionsPerPage, previewPage * questionsPerPage);
+  const currentItemSets = itemSets.slice((previewPage - 1) * 4, previewPage * 4); // 4 sets per page (5 questions each = 20)
 
   const handleGenerate = () => {
     const { questions: newQuestions, itemSets: newItemSets } = generateAlgebraQuestions(config);
@@ -180,15 +185,39 @@ export default function AlgebraPage() {
           {/* Preview Toolbar */}
           <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-3 bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
             <h2 className="text-xl sm:text-2xl text-white font-bold tracking-wide">{t('Common.preview')}</h2>
-            <button 
-              onClick={handleDownload}
-              disabled={questions.length === 0 || isGenerating}
-              className="mc-btn bg-[#2196F3] text-white text-xs sm:text-sm py-2 px-4 flex items-center gap-2 disabled:opacity-50 disabled:grayscale w-full sm:w-auto justify-center"
-            >
-              <Printer className="h-4 w-4" />
-              <span className="hidden sm:inline">{isGenerating ? t('Common.crafting') : t('Algebra.printPdf')}</span>
-              <span className="sm:hidden">{isGenerating ? t('Common.crafting') : '📄'}</span>
-            </button>
+            <div className="flex gap-3 w-full sm:w-auto items-center">
+              {/* Page Navigation */}
+              {questions.length > questionsPerPage && (
+                <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                  <button
+                    onClick={() => setPreviewPage(p => Math.max(1, p - 1))}
+                    disabled={previewPage === 1}
+                    className="mc-btn bg-[#FF9800] text-white text-xs sm:text-sm py-2 px-3 disabled:opacity-50 disabled:grayscale"
+                  >
+                    ← Prev
+                  </button>
+                  <span className="text-white text-sm font-bold min-w-[80px] text-center">
+                    Page {previewPage} / {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPreviewPage(p => Math.min(totalPages, p + 1))}
+                    disabled={previewPage === totalPages}
+                    className="mc-btn bg-[#FF9800] text-white text-xs sm:text-sm py-2 px-3 disabled:opacity-50 disabled:grayscale"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+              <button 
+                onClick={handleDownload}
+                disabled={questions.length === 0 || isGenerating}
+                className="mc-btn bg-[#2196F3] text-white text-xs sm:text-sm py-2 px-4 flex items-center gap-2 disabled:opacity-50 disabled:grayscale w-full sm:w-auto justify-center"
+              >
+                <Printer className="h-4 w-4" />
+                <span className="hidden sm:inline">{isGenerating ? t('Common.crafting') : t('Algebra.printPdf')}</span>
+                <span className="sm:hidden">{isGenerating ? t('Common.crafting') : '📄'}</span>
+              </button>
+            </div>
           </div>
 
           {/* Paper Canvas */}
@@ -227,8 +256,8 @@ export default function AlgebraPage() {
                 </div>
               ) : (
                 <div className="space-y-6 sm:space-y-8">
-                  {itemSets.map((itemSet, setIndex) => {
-                    const setQuestions = questions.slice(setIndex * 5, (setIndex + 1) * 5);
+                  {currentItemSets.map((itemSet, setIndex) => {
+                    const setQuestions = currentQuestions.slice(setIndex * 5, (setIndex + 1) * 5);
                     if (setQuestions.length === 0) return null;
                     
                     return (
@@ -275,7 +304,7 @@ export default function AlgebraPage() {
               {/* Footer */}
               <div className="absolute bottom-4 sm:bottom-8 left-8 sm:left-12 right-8 sm:right-12 border-t-2 border-gray-300 pt-2 flex justify-between text-xs text-gray-400 font-mono">
                 <span className="hidden sm:inline">{t('Common.generatedBy')}</span>
-                <span>{t('Common.page')} 1</span>
+                <span>{t('Common.page')} {previewPage}</span>
               </div>
             </div>
           </div>

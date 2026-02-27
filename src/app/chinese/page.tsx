@@ -167,7 +167,7 @@ export default function ChinesePage() {
             <h2 className="text-xl sm:text-2xl text-white font-bold tracking-wide">{t('Common.preview')}</h2>
           </div>
 
-          <div className="flex-1 bg-[#dcdcdc] p-4 sm:p-8 border-4 border-[#555] shadow-inner overflow-auto max-h-[60vh] sm:max-h-[800px] flex justify-center">
+          <div className="flex-1 bg-[#dcdcdc] p-4 sm:p-8 border-4 border-[#555] shadow-inner overflow-auto flex justify-center">
             <div className="bg-white p-6 sm:p-12 shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative transform origin-top scale-75 sm:scale-90 lg:scale-100 transition-transform">
               {/* Header */}
               <div className="flex justify-between items-center border-b-2 border-black pb-4 mb-8">

@@ -23,6 +23,10 @@ export default function MathPage() {
   const [questions, setQuestions] = useState<MathQuestion[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [previewPage, setPreviewPage] = useState(1);
+  const questionsPerPage = 20;
+  const totalPages = Math.max(1, Math.ceil(questions.length / questionsPerPage));
+  const currentQuestions = questions.slice((previewPage - 1) * questionsPerPage, previewPage * questionsPerPage);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -232,13 +236,29 @@ export default function MathPage() {
           {/* Preview Toolbar */}
           <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-3 bg-black/40 p-4 rounded-sm border-2 border-white/20 backdrop-blur-sm">
             <h2 className="text-xl sm:text-2xl text-white font-bold tracking-wide">{t('Math.previewMap')}</h2>
-            <div className="flex gap-3 w-full sm:w-auto">
-              <button 
-                disabled
-                className="mc-btn bg-[#FF9800] text-white text-xs sm:text-sm py-2 px-4 opacity-50 cursor-not-allowed flex-1 sm:flex-none"
-              >
-                {t('Math.showAnswers')}
-              </button>
+            <div className="flex gap-3 w-full sm:w-auto items-center">
+              {/* Page Navigation */}
+              {questions.length > questionsPerPage && (
+                <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                  <button
+                    onClick={() => setPreviewPage(p => Math.max(1, p - 1))}
+                    disabled={previewPage === 1}
+                    className="mc-btn bg-[#FF9800] text-white text-xs sm:text-sm py-2 px-3 disabled:opacity-50 disabled:grayscale"
+                  >
+                    ← Prev
+                  </button>
+                  <span className="text-white text-sm font-bold min-w-[80px] text-center">
+                    Page {previewPage} / {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPreviewPage(p => Math.min(totalPages, p + 1))}
+                    disabled={previewPage === totalPages}
+                    className="mc-btn bg-[#FF9800] text-white text-xs sm:text-sm py-2 px-3 disabled:opacity-50 disabled:grayscale"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
               <button 
                 onClick={handleDownload}
                 disabled={questions.length === 0 || isGenerating}
@@ -252,8 +272,8 @@ export default function MathPage() {
           </div>
 
           {/* Paper Canvas */}
-          <div className="flex-1 bg-[#dcdcdc] p-4 sm:p-8 border-4 border-[#555] shadow-inner overflow-auto max-h-[60vh] sm:max-h-[800px] flex justify-center">
-            <div className="bg-white p-6 sm:p-12 shadow-2xl w-full max-w-[210mm] min-h-[297mm] relative transform origin-top scale-75 sm:scale-90 lg:scale-100 transition-transform">
+          <div className="flex-1 bg-[#dcdcdc] p-4 sm:p-8 border-4 border-[#555] shadow-inner overflow-auto flex justify-center">
+            <div className="bg-white p-6 sm:p-12 shadow-2xl w-full max-w-[210mm] relative transform origin-top scale-75 sm:scale-90 lg:scale-100 transition-transform">
               {/* Decorative Header on Preview */}
               <div className="flex justify-between items-center border-b-2 border-black pb-4 mb-8">
                 <div className="flex items-center gap-3 sm:gap-4">
@@ -285,7 +305,7 @@ export default function MathPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-6 sm:gap-y-8 text-lg sm:text-xl font-mono">
-                  {questions.map((q, i) => (
+                  {currentQuestions.map((q, i) => (
                     <div key={q.id} className="flex items-start justify-between border-b border-gray-200 pb-2 min-h-[3rem]">
                       <span className="text-gray-400 text-xs sm:text-sm w-6 font-[var(--font-pixel)] mt-2">{i + 1}.</span>
                       
@@ -325,7 +345,7 @@ export default function MathPage() {
               {/* Decorative Footer on Preview */}
               <div className="absolute bottom-4 sm:bottom-8 left-8 sm:left-12 right-8 sm:right-12 border-t-2 border-gray-300 pt-2 flex justify-between text-xs text-gray-400 font-mono">
                 <span className="hidden sm:inline">{t('Common.generatedBy')}</span>
-                <span>{t('Common.page')} 1</span>
+                <span>{t('Common.page')} {previewPage}</span>
               </div>
             </div>
           </div>
