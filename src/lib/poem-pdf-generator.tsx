@@ -58,34 +58,40 @@ const styles = StyleSheet.create({
     color: '#444',
   },
   // Poem Container
+  poemsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   poemContainer: {
+    width: '48%',
     marginBottom: 20,
-    padding: 15,
+    padding: 12,
     backgroundColor: '#fafafa',
     borderRadius: 6,
     borderWidth: 1,
     borderColor: '#ddd',
   },
   poemTitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Noto Sans SC Bold',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
     color: '#333',
   },
   poemAuthor: {
-    fontSize: 10,
+    fontSize: 9,
     textAlign: 'center',
     color: '#666',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   poemLine: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 6,
-    fontSize: 13,
-    lineHeight: 1.8,
+    marginBottom: 4,
+    fontSize: 11,
+    lineHeight: 1.6,
   },
   textChar: {
     fontSize: 13,
@@ -191,38 +197,40 @@ export const PoemPdfDocument = ({
           </View>
         </View>
 
-        {/* Poems */}
-        {exercises.map((exercise, index) => (
-          <View key={exercise.id} style={styles.poemContainer} wrap={false}>
-            <Text style={styles.poemTitle}>{exercise.poem.title}</Text>
-            <Text style={styles.poemAuthor}>
-              【{exercise.poem.dynasty}】{exercise.poem.author}
-            </Text>
-            
-            {exercise.poem.lines.map((line, lineIndex) => (
-              <View key={lineIndex} style={styles.poemLine} wrap={false}>
-                {line.text.split('').map((char, charIndex) => {
-                  const isBlank = line.blanks.includes(charIndex);
-                  if (isBlank && exercise.showAnswers) {
-                    return (
-                      <Text key={charIndex} style={styles.answerChar}>
-                        {char}
-                      </Text>
-                    );
-                  } else if (isBlank) {
-                    return <View key={charIndex} style={styles.blankBox} />;
-                  } else {
-                    return (
-                      <Text key={charIndex} style={styles.textChar}>
-                        {char}
-                      </Text>
-                    );
-                  }
-                })}
-              </View>
-            ))}
-          </View>
-        ))}
+        {/* Poems Grid (2 columns) */}
+        <View style={styles.poemsGrid}>
+          {exercises.map((exercise, index) => (
+            <View key={exercise.id} style={styles.poemContainer} wrap={false}>
+              <Text style={styles.poemTitle}>{exercise.poem.title}</Text>
+              <Text style={styles.poemAuthor}>
+                【{exercise.poem.dynasty}】{exercise.poem.author}
+              </Text>
+              
+              {exercise.poem.lines.map((line, lineIndex) => (
+                <View key={lineIndex} style={styles.poemLine} wrap={false}>
+                  {line.text.split('').map((char, charIndex) => {
+                    const isBlank = line.blanks.includes(charIndex);
+                    if (isBlank && exercise.showAnswers) {
+                      return (
+                        <Text key={charIndex} style={styles.answerChar}>
+                          {char}
+                        </Text>
+                      );
+                    } else if (isBlank) {
+                      return <View key={charIndex} style={styles.blankBox} />;
+                    } else {
+                      return (
+                        <Text key={charIndex} style={styles.textChar}>
+                          {char}
+                        </Text>
+                      );
+                    }
+                  })}
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
