@@ -370,7 +370,7 @@ export default function ChinesePage() {
                   ))}
                 </div>
               ) : (
-                // Poem Preview
+                // Poem Preview - Grid Layout (2 columns)
                 <div className="space-y-6">
                   {poemExercises.length === 0 ? (
                     <div className="flex h-48 sm:h-64 items-center justify-center text-gray-400 flex-col border-2 border-dashed border-gray-300 rounded-lg">
@@ -378,34 +378,36 @@ export default function ChinesePage() {
                       <p className="font-[var(--font-pixel)] text-lg sm:text-xl text-gray-400">{t('Math.waitingForInput')}</p>
                     </div>
                   ) : (
-                    poemExercises.map((exercise, idx) => (
-                      <div key={exercise.id} className="border-2 border-purple-300 rounded-lg p-4 bg-purple-50">
-                        <h3 className="text-lg font-bold text-center text-purple-900 mb-1">{exercise.poem.title}</h3>
-                        <p className="text-xs text-center text-gray-600 mb-3">
-                          【{exercise.poem.dynasty}】{exercise.poem.author}
-                        </p>
-                        <div className="space-y-2">
-                          {exercise.poem.lines.map((line: any, lineIdx: number) => (
-                            <div key={lineIdx} className="text-center text-lg font-serif leading-relaxed">
-                              {line.text.split('').map((char: string, charIdx: number) => {
-                                const isBlank = line.blanks.includes(charIdx);
-                                return isBlank ? (
-                                  <span key={charIdx} className="inline-block w-6 border-b-2 border-purple-800 mx-0.5">
-                                    {poemConfig.showAnswers ? (
-                                      <span className="text-red-600 font-bold">{char}</span>
-                                    ) : (
-                                      <span>&nbsp;</span>
-                                    )}
-                                  </span>
-                                ) : (
-                                  <span key={charIdx} className="text-gray-800">{char}</span>
-                                );
-                              })}
-                            </div>
-                          ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                      {poemExercises.map((exercise, idx) => (
+                        <div key={exercise.id} className="border-2 border-purple-300 rounded-lg p-3 sm:p-4 bg-purple-50">
+                          <h3 className="text-base sm:text-lg font-bold text-center text-purple-900 mb-1">{exercise.poem.title}</h3>
+                          <p className="text-xs text-center text-gray-600 mb-3">
+                            【{exercise.poem.dynasty}】{exercise.poem.author}
+                          </p>
+                          <div className="space-y-1 sm:space-y-2">
+                            {exercise.poem.lines.map((line: any, lineIdx: number) => (
+                              <div key={lineIdx} className="text-center text-sm sm:text-lg font-serif leading-relaxed">
+                                {line.text.split('').map((char: string, charIdx: number) => {
+                                  const isBlank = line.blanks.includes(charIdx);
+                                  return isBlank ? (
+                                    <span key={charIdx} className="inline-block w-4 sm:w-6 border-b-2 border-purple-800 mx-0.5">
+                                      {poemConfig.showAnswers ? (
+                                        <span className="text-red-600 font-bold text-xs sm:text-base">{char}</span>
+                                      ) : (
+                                        <span>&nbsp;</span>
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <span key={charIdx} className="text-gray-800 text-xs sm:text-base">{char}</span>
+                                  );
+                                })}
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   )}
                 </div>
               )}
