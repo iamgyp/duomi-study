@@ -36,6 +36,16 @@ export default function ChinesePage() {
     showPinyin: false,
   });
   const [poemExercises, setPoemExercises] = useState<any[]>([]);
+
+  // 切换难度时清空结果
+  const updatePoemConfig = (updates: Partial<PoemConfig>) => {
+    const newConfig = { ...poemConfig, ...updates };
+    setPoemConfig(newConfig);
+    // 如果难度或数量改变，清空已生成的练习
+    if (updates.difficulty !== undefined || updates.count !== undefined) {
+      setPoemExercises([]);
+    }
+  };
   
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -242,7 +252,7 @@ export default function ChinesePage() {
                     {[1, 2, 3].map((level) => (
                       <button
                         key={level}
-                        onClick={() => setPoemConfig({ ...poemConfig, difficulty: level as 1 | 2 | 3 })}
+                        onClick={() => updatePoemConfig({ difficulty: level as 1 | 2 | 3 })}
                         className={`w-full border-2 border-black py-3 px-3 text-sm font-bold transition-all active:translate-y-1 text-left whitespace-normal ${
                           poemConfig.difficulty === level
                             ? 'bg-yellow-400 text-black'
@@ -261,7 +271,7 @@ export default function ChinesePage() {
                     {[3, 5, 8, 10].map((c) => (
                       <button
                         key={c}
-                        onClick={() => setPoemConfig({ ...poemConfig, count: c })}
+                        onClick={() => updatePoemConfig({ count: c })}
                         className={`border-2 border-black py-2 text-xs sm:text-sm font-bold transition-all active:translate-y-1 ${
                           poemConfig.count === c
                             ? 'bg-yellow-400 text-black'

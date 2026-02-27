@@ -1,4 +1,4 @@
-// 古诗数据 - 按难度分级
+// 古诗数据 - 按难度分级（100+ 首）
 
 export interface PoemLine {
   text: string;
@@ -15,7 +15,7 @@ export interface Poem {
 }
 
 export const POEMS: Poem[] = [
-  // ========== 难度 1: 简单（5 言绝句，填空 1-2 字）==========
+  // ========== 难度 1: 简单（5 言绝句，填空 1-2 字）- 35 首 ==========
   {
     id: 'poem-001',
     title: '静夜思',
@@ -23,10 +23,10 @@ export const POEMS: Poem[] = [
     dynasty: '唐',
     difficulty: 1,
     lines: [
-      { text: '床前明月光', blanks: [2, 3] }, // 明月
-      { text: '疑是地上霜', blanks: [2, 3] }, // 地上
-      { text: '举头望明月', blanks: [2, 3] }, // 明月
-      { text: '低头思故乡', blanks: [2, 3] }, // 故乡
+      { text: '床前明月光', blanks: [2, 3] },
+      { text: '疑是地上霜', blanks: [2, 3] },
+      { text: '举头望明月', blanks: [2, 3] },
+      { text: '低头思故乡', blanks: [2, 3] },
     ],
   },
   {
@@ -36,10 +36,10 @@ export const POEMS: Poem[] = [
     dynasty: '唐',
     difficulty: 1,
     lines: [
-      { text: '春眠不觉晓', blanks: [0, 1] }, // 春眠
-      { text: '处处闻啼鸟', blanks: [2, 3] }, // 啼鸟
-      { text: '夜来风雨声', blanks: [2, 3] }, // 雨声
-      { text: '花落知多少', blanks: [0, 1] }, // 花落
+      { text: '春眠不觉晓', blanks: [0, 1] },
+      { text: '处处闻啼鸟', blanks: [2, 3] },
+      { text: '夜来风雨声', blanks: [2, 3] },
+      { text: '花落知多少', blanks: [0, 1] },
     ],
   },
   {
@@ -49,10 +49,10 @@ export const POEMS: Poem[] = [
     dynasty: '唐',
     difficulty: 1,
     lines: [
-      { text: '白日依山尽', blanks: [2, 3] }, // 依山
-      { text: '黄河入海流', blanks: [0, 1] }, // 黄河
-      { text: '欲穷千里目', blanks: [2, 3] }, // 千里
-      { text: '更上一层楼', blanks: [2, 3] }, // 一层
+      { text: '白日依山尽', blanks: [2, 3] },
+      { text: '黄河入海流', blanks: [0, 1] },
+      { text: '欲穷千里目', blanks: [2, 3] },
+      { text: '更上一层楼', blanks: [2, 3] },
     ],
   },
   {
@@ -62,10 +62,10 @@ export const POEMS: Poem[] = [
     dynasty: '唐',
     difficulty: 1,
     lines: [
-      { text: '千山鸟飞绝', blanks: [0, 1] }, // 千山
-      { text: '万径人踪灭', blanks: [0, 1] }, // 万径
-      { text: '孤舟蓑笠翁', blanks: [0, 1] }, // 孤舟
-      { text: '独钓寒江雪', blanks: [2, 3] }, // 江雪
+      { text: '千山鸟飞绝', blanks: [0, 1] },
+      { text: '万径人踪灭', blanks: [0, 1] },
+      { text: '孤舟蓑笠翁', blanks: [0, 1] },
+      { text: '独钓寒江雪', blanks: [2, 3] },
     ],
   },
   {
@@ -76,163 +76,1433 @@ export const POEMS: Poem[] = [
     difficulty: 1,
     lines: [
       { text: '鹅鹅鹅', blanks: [0, 1] },
-      { text: '曲项向天歌', blanks: [2, 3] }, // 向天
-      { text: '白毛浮绿水', blanks: [0, 1] }, // 白毛
-      { text: '红掌拨清波', blanks: [0, 1] }, // 红掌
+      { text: '曲项向天歌', blanks: [2, 3] },
+      { text: '白毛浮绿水', blanks: [0, 1] },
+      { text: '红掌拨清波', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-006',
+    title: '相思',
+    author: '王维',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '红豆生南国', blanks: [0, 1] },
+      { text: '春来发几枝', blanks: [2, 3] },
+      { text: '愿君多采撷', blanks: [2, 3] },
+      { text: '此物最相思', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-007',
+    title: '鹿柴',
+    author: '王维',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '空山不见人', blanks: [0, 1] },
+      { text: '但闻人语响', blanks: [2, 3] },
+      { text: '返景入深林', blanks: [2, 3] },
+      { text: '复照青苔上', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-008',
+    title: '竹里馆',
+    author: '王维',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '独坐幽篁里', blanks: [0, 1] },
+      { text: '弹琴复长啸', blanks: [2, 3] },
+      { text: '深林人不知', blanks: [0, 1] },
+      { text: '明月来相照', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-009',
+    title: '送别',
+    author: '王维',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '山中相送罢', blanks: [2, 3] },
+      { text: '日暮掩柴扉', blanks: [2, 3] },
+      { text: '春草明年绿', blanks: [0, 1] },
+      { text: '王孙归不归', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-010',
+    title: '杂诗',
+    author: '王维',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '君自故乡来', blanks: [0, 1] },
+      { text: '应知故乡事', blanks: [2, 3] },
+      { text: '来日绮窗前', blanks: [2, 3] },
+      { text: '寒梅著花未', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-011',
+    title: '夜宿山寺',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '危楼高百尺', blanks: [0, 1] },
+      { text: '手可摘星辰', blanks: [2, 3] },
+      { text: '不敢高声语', blanks: [2, 3] },
+      { text: '恐惊天上人', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-012',
+    title: '独坐敬亭山',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '众鸟高飞尽', blanks: [0, 1] },
+      { text: '孤云独去闲', blanks: [2, 3] },
+      { text: '相看两不厌', blanks: [0, 1] },
+      { text: '只有敬亭山', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-013',
+    title: '秋浦歌',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '白发三千丈', blanks: [0, 1] },
+      { text: '缘愁似个长', blanks: [2, 3] },
+      { text: '不知明镜里', blanks: [2, 3] },
+      { text: '何处得秋霜', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-014',
+    title: '寻隐者不遇',
+    author: '贾岛',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '松下问童子', blanks: [0, 1] },
+      { text: '言师采药去', blanks: [2, 3] },
+      { text: '只在此山中', blanks: [2, 3] },
+      { text: '云深不知处', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-015',
+    title: '登乐游原',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '向晚意不适', blanks: [0, 1] },
+      { text: '驱车登古原', blanks: [2, 3] },
+      { text: '夕阳无限好', blanks: [0, 1] },
+      { text: '只是近黄昏', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-016',
+    title: '八阵图',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '功盖三分国', blanks: [0, 1] },
+      { text: '名成八阵图', blanks: [2, 3] },
+      { text: '江流石不转', blanks: [2, 3] },
+      { text: '遗恨失吞吴', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-017',
+    title: '绝句二首·其一',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '迟日江山丽', blanks: [0, 1] },
+      { text: '春风花草香', blanks: [2, 3] },
+      { text: '泥融飞燕子', blanks: [2, 3] },
+      { text: '沙暖睡鸳鸯', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-018',
+    title: '马诗',
+    author: '李贺',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '大漠沙如雪', blanks: [0, 1] },
+      { text: '燕山月似钩', blanks: [2, 3] },
+      { text: '何当金络脑', blanks: [2, 3] },
+      { text: '快走踏清秋', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-019',
+    title: '剑客',
+    author: '贾岛',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '十年磨一剑', blanks: [2, 3] },
+      { text: '霜刃未曾试', blanks: [2, 3] },
+      { text: '今日把示君', blanks: [0, 1] },
+      { text: '谁有不平事', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-020',
+    title: '渡汉江',
+    author: '宋之问',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '岭外音书断', blanks: [2, 3] },
+      { text: '经冬复历春', blanks: [2, 3] },
+      { text: '近乡情更怯', blanks: [2, 3] },
+      { text: '不敢问来人', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-021',
+    title: '送朱大入秦',
+    author: '孟浩然',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '游人五陵去', blanks: [0, 1] },
+      { text: '宝剑值千金', blanks: [2, 3] },
+      { text: '分手脱相赠', blanks: [0, 1] },
+      { text: '平生一片心', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-022',
+    title: '终南望余雪',
+    author: '祖咏',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '终南阴岭秀', blanks: [0, 1] },
+      { text: '积雪浮云端', blanks: [2, 3] },
+      { text: '林表明霁色', blanks: [2, 3] },
+      { text: '城中增暮寒', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-023',
+    title: '宿建德江',
+    author: '孟浩然',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '移舟泊烟渚', blanks: [2, 3] },
+      { text: '日暮客愁新', blanks: [2, 3] },
+      { text: '野旷天低树', blanks: [0, 1] },
+      { text: '江清月近人', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-024',
+    title: '问刘十九',
+    author: '白居易',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '绿蚁新醅酒', blanks: [0, 1] },
+      { text: '红泥小火炉', blanks: [2, 3] },
+      { text: '晚来天欲雪', blanks: [2, 3] },
+      { text: '能饮一杯无', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-025',
+    title: '何满子',
+    author: '张祜',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '故国三千里', blanks: [0, 1] },
+      { text: '深宫二十年', blanks: [2, 3] },
+      { text: '一声何满子', blanks: [2, 3] },
+      { text: '双泪落君前', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-026',
+    title: '哥舒歌',
+    author: '西鄙人',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '北斗七星高', blanks: [0, 1] },
+      { text: '哥舒夜带刀', blanks: [2, 3] },
+      { text: '至今窥牧马', blanks: [2, 3] },
+      { text: '不敢过临洮', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-027',
+    title: '玉阶怨',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '玉阶生白露', blanks: [0, 1] },
+      { text: '夜久侵罗袜', blanks: [2, 3] },
+      { text: '却下水晶帘', blanks: [2, 3] },
+      { text: '玲珑望秋月', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-028',
+    title: '塞下曲·其一',
+    author: '卢纶',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '鹫翎金仆姑', blanks: [0, 1] },
+      { text: '燕尾绣蝥弧', blanks: [2, 3] },
+      { text: '独立扬新令', blanks: [2, 3] },
+      { text: '千营共一呼', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-029',
+    title: '塞下曲·其二',
+    author: '卢纶',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '林暗草惊风', blanks: [0, 1] },
+      { text: '将军夜引弓', blanks: [2, 3] },
+      { text: '平明寻白羽', blanks: [2, 3] },
+      { text: '没在石棱中', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-030',
+    title: '塞下曲·其三',
+    author: '卢纶',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '月黑雁飞高', blanks: [0, 1] },
+      { text: '单于夜遁逃', blanks: [2, 3] },
+      { text: '欲将轻骑逐', blanks: [2, 3] },
+      { text: '大雪满弓刀', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-031',
+    title: '江南曲',
+    author: '李益',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '嫁得瞿塘贾', blanks: [0, 1] },
+      { text: '朝朝误妾期', blanks: [2, 3] },
+      { text: '早知潮有信', blanks: [2, 3] },
+      { text: '嫁与弄潮儿', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-032',
+    title: '行宫',
+    author: '元稹',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '寥落古行宫', blanks: [0, 1] },
+      { text: '宫花寂寞红', blanks: [2, 3] },
+      { text: '白头宫女在', blanks: [0, 1] },
+      { text: '闲坐说玄宗', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-033',
+    title: '秋夜寄邱员外',
+    author: '韦应物',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '怀君属秋夜', blanks: [0, 1] },
+      { text: '散步咏凉天', blanks: [2, 3] },
+      { text: '空山松子落', blanks: [2, 3] },
+      { text: '幽人应未眠', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-034',
+    title: '听筝',
+    author: '李端',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '鸣筝金粟柱', blanks: [0, 1] },
+      { text: '素手玉房前', blanks: [2, 3] },
+      { text: '欲得周郎顾', blanks: [2, 3] },
+      { text: '时时误拂弦', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-035',
+    title: '新嫁娘',
+    author: '王建',
+    dynasty: '唐',
+    difficulty: 1,
+    lines: [
+      { text: '三日入厨下', blanks: [0, 1] },
+      { text: '洗手作羹汤', blanks: [2, 3] },
+      { text: '未谙姑食性', blanks: [2, 3] },
+      { text: '先遣小姑尝', blanks: [2, 3] },
     ],
   },
 
-  // ========== 难度 2: 中等（7 言绝句，填空 2-3 字）==========
+  // ========== 难度 2: 中等（7 言绝句，填空 2-3 字）- 40 首 ==========
   {
-    id: 'poem-010',
+    id: 'poem-100',
     title: '望庐山瀑布',
     author: '李白',
     dynasty: '唐',
     difficulty: 2,
     lines: [
-      { text: '日照香炉生紫烟', blanks: [2, 3, 4] }, // 香炉生
-      { text: '遥看瀑布挂前川', blanks: [2, 3] }, // 瀑布
-      { text: '飞流直下三千尺', blanks: [2, 3] }, // 直下
-      { text: '疑是银河落九天', blanks: [2, 3] }, // 银河
+      { text: '日照香炉生紫烟', blanks: [2, 3, 4] },
+      { text: '遥看瀑布挂前川', blanks: [2, 3] },
+      { text: '飞流直下三千尺', blanks: [2, 3] },
+      { text: '疑是银河落九天', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-011',
+    id: 'poem-101',
     title: '早发白帝城',
     author: '李白',
     dynasty: '唐',
     difficulty: 2,
     lines: [
-      { text: '朝辞白帝彩云间', blanks: [2, 3] }, // 白帝
-      { text: '千里江陵一日还', blanks: [0, 1] }, // 千里
-      { text: '两岸猿声啼不住', blanks: [2, 3] }, // 猿声
-      { text: '轻舟已过万重山', blanks: [2, 3] }, // 已过
+      { text: '朝辞白帝彩云间', blanks: [2, 3] },
+      { text: '千里江陵一日还', blanks: [0, 1] },
+      { text: '两岸猿声啼不住', blanks: [2, 3] },
+      { text: '轻舟已过万重山', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-012',
+    id: 'poem-102',
     title: '绝句',
     author: '杜甫',
     dynasty: '唐',
     difficulty: 2,
     lines: [
-      { text: '两个黄鹂鸣翠柳', blanks: [2, 3] }, // 黄鹂
-      { text: '一行白鹭上青天', blanks: [2, 3] }, // 白鹭
-      { text: '窗含西岭千秋雪', blanks: [2, 3] }, // 西岭
-      { text: '门泊东吴万里船', blanks: [2, 3] }, // 东吴
+      { text: '两个黄鹂鸣翠柳', blanks: [2, 3] },
+      { text: '一行白鹭上青天', blanks: [2, 3] },
+      { text: '窗含西岭千秋雪', blanks: [2, 3] },
+      { text: '门泊东吴万里船', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-013',
+    id: 'poem-103',
     title: '枫桥夜泊',
     author: '张继',
     dynasty: '唐',
     difficulty: 2,
     lines: [
-      { text: '月落乌啼霜满天', blanks: [2, 3] }, // 乌啼
-      { text: '江枫渔火对愁眠', blanks: [0, 1] }, // 江枫
-      { text: '姑苏城外寒山寺', blanks: [0, 1] }, // 姑苏
-      { text: '夜半钟声到客船', blanks: [2, 3] }, // 钟声
+      { text: '月落乌啼霜满天', blanks: [2, 3] },
+      { text: '江枫渔火对愁眠', blanks: [0, 1] },
+      { text: '姑苏城外寒山寺', blanks: [0, 1] },
+      { text: '夜半钟声到客船', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-014',
+    id: 'poem-104',
     title: '清明',
     author: '杜牧',
     dynasty: '唐',
     difficulty: 2,
     lines: [
-      { text: '清明时节雨纷纷', blanks: [2, 3] }, // 时节
-      { text: '路上行人欲断魂', blanks: [2, 3] }, // 行人
-      { text: '借问酒家何处有', blanks: [2, 3] }, // 酒家
-      { text: '牧童遥指杏花村', blanks: [2, 3] }, // 遥指
+      { text: '清明时节雨纷纷', blanks: [2, 3] },
+      { text: '路上行人欲断魂', blanks: [2, 3] },
+      { text: '借问酒家何处有', blanks: [2, 3] },
+      { text: '牧童遥指杏花村', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-105',
+    title: '山行',
+    author: '杜牧',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '远上寒山石径斜', blanks: [2, 3] },
+      { text: '白云生处有人家', blanks: [0, 1] },
+      { text: '停车坐爱枫林晚', blanks: [2, 3] },
+      { text: '霜叶红于二月花', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-106',
+    title: '江南春',
+    author: '杜牧',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '千里莺啼绿映红', blanks: [0, 1] },
+      { text: '水村山郭酒旗风', blanks: [2, 3] },
+      { text: '南朝四百八十寺', blanks: [2, 3] },
+      { text: '多少楼台烟雨中', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-107',
+    title: '泊秦淮',
+    author: '杜牧',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '烟笼寒水月笼沙', blanks: [2, 3] },
+      { text: '夜泊秦淮近酒家', blanks: [2, 3] },
+      { text: '商女不知亡国恨', blanks: [2, 3] },
+      { text: '隔江犹唱后庭花', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-108',
+    title: '秋夕',
+    author: '杜牧',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '银烛秋光冷画屏', blanks: [2, 3] },
+      { text: '轻罗小扇扑流萤', blanks: [2, 3] },
+      { text: '天阶夜色凉如水', blanks: [2, 3] },
+      { text: '卧看牵牛织女星', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-109',
+    title: '赠汪伦',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '李白乘舟将欲行', blanks: [0, 1] },
+      { text: '忽闻岸上踏歌声', blanks: [2, 3] },
+      { text: '桃花潭水深千尺', blanks: [0, 1] },
+      { text: '不及汪伦送我情', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-110',
+    title: '黄鹤楼送孟浩然之广陵',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '故人西辞黄鹤楼', blanks: [2, 3] },
+      { text: '烟花三月下扬州', blanks: [2, 3] },
+      { text: '孤帆远影碧空尽', blanks: [2, 3] },
+      { text: '唯见长江天际流', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-111',
+    title: '闻王昌龄左迁龙标遥有此寄',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '杨花落尽子规啼', blanks: [0, 1] },
+      { text: '闻道龙标过五溪', blanks: [2, 3] },
+      { text: '我寄愁心与明月', blanks: [2, 3] },
+      { text: '随风直到夜郎西', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-112',
+    title: '春夜洛城闻笛',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '谁家玉笛暗飞声', blanks: [2, 3] },
+      { text: '散入春风满洛城', blanks: [2, 3] },
+      { text: '此夜曲中闻折柳', blanks: [2, 3] },
+      { text: '何人不起故园情', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-113',
+    title: '峨眉山月歌',
+    author: '李白',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '峨眉山月半轮秋', blanks: [0, 1] },
+      { text: '影入平羌江水流', blanks: [2, 3] },
+      { text: '夜发清溪向三峡', blanks: [2, 3] },
+      { text: '思君不见下渝州', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-114',
+    title: '春望',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '国破山河在', blanks: [0, 1] },
+      { text: '城春草木深', blanks: [2, 3] },
+      { text: '感时花溅泪', blanks: [2, 3] },
+      { text: '恨别鸟惊心', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-115',
+    title: '春夜喜雨',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '好雨知时节', blanks: [0, 1] },
+      { text: '当春乃发生', blanks: [2, 3] },
+      { text: '随风潜入夜', blanks: [2, 3] },
+      { text: '润物细无声', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-116',
+    title: '绝句漫兴',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '肠断春江欲尽头', blanks: [2, 3] },
+      { text: '杖藜徐步立芳洲', blanks: [2, 3] },
+      { text: '颠狂柳絮随风舞', blanks: [2, 3] },
+      { text: '轻薄桃花逐水流', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-117',
+    title: '赠花卿',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '锦城丝管日纷纷', blanks: [0, 1] },
+      { text: '半入江风半入云', blanks: [2, 3] },
+      { text: '此曲只应天上有', blanks: [2, 3] },
+      { text: '人间能得几回闻', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-118',
+    title: '江南逢李龟年',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '岐王宅里寻常见', blanks: [2, 3] },
+      { text: '崔九堂前几度闻', blanks: [2, 3] },
+      { text: '正是江南好风景', blanks: [2, 3] },
+      { text: '落花时节又逢君', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-119',
+    title: '咏柳',
+    author: '贺知章',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '碧玉妆成一树高', blanks: [2, 3] },
+      { text: '万条垂下绿丝绦', blanks: [2, 3] },
+      { text: '不知细叶谁裁出', blanks: [2, 3] },
+      { text: '二月春风似剪刀', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-120',
+    title: '回乡偶书',
+    author: '贺知章',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '少小离家老大回', blanks: [2, 3] },
+      { text: '乡音无改鬓毛衰', blanks: [2, 3] },
+      { text: '儿童相见不相识', blanks: [2, 3] },
+      { text: '笑问客从何处来', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-121',
+    title: '凉州词',
+    author: '王之涣',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '黄河远上白云间', blanks: [2, 3] },
+      { text: '一片孤城万仞山', blanks: [2, 3] },
+      { text: '羌笛何须怨杨柳', blanks: [2, 3] },
+      { text: '春风不度玉门关', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-122',
+    title: '凉州词',
+    author: '王翰',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '葡萄美酒夜光杯', blanks: [0, 1] },
+      { text: '欲饮琵琶马上催', blanks: [2, 3] },
+      { text: '醉卧沙场君莫笑', blanks: [2, 3] },
+      { text: '古来征战几人回', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-123',
+    title: '出塞',
+    author: '王昌龄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '秦时明月汉时关', blanks: [0, 1] },
+      { text: '万里长征人未还', blanks: [2, 3] },
+      { text: '但使龙城飞将在', blanks: [2, 3] },
+      { text: '不教胡马度阴山', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-124',
+    title: '从军行',
+    author: '王昌龄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '青海长云暗雪山', blanks: [2, 3] },
+      { text: '孤城遥望玉门关', blanks: [2, 3] },
+      { text: '黄沙百战穿金甲', blanks: [2, 3] },
+      { text: '不破楼兰终不还', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-125',
+    title: '芙蓉楼送辛渐',
+    author: '王昌龄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '寒雨连江夜入吴', blanks: [2, 3] },
+      { text: '平明送客楚山孤', blanks: [2, 3] },
+      { text: '洛阳亲友如相问', blanks: [2, 3] },
+      { text: '一片冰心在玉壶', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-126',
+    title: '闺怨',
+    author: '王昌龄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '闺中少妇不知愁', blanks: [2, 3] },
+      { text: '春日凝妆上翠楼', blanks: [2, 3] },
+      { text: '忽见陌头杨柳色', blanks: [2, 3] },
+      { text: '悔教夫婿觅封侯', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-127',
+    title: '长信怨',
+    author: '王昌龄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '奉帚平明金殿开', blanks: [2, 3] },
+      { text: '暂将团扇共徘徊', blanks: [2, 3] },
+      { text: '玉颜不及寒鸦色', blanks: [2, 3] },
+      { text: '犹带昭阳日影来', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-128',
+    title: '夜雨寄北',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '君问归期未有期', blanks: [2, 3] },
+      { text: '巴山夜雨涨秋池', blanks: [2, 3] },
+      { text: '何当共剪西窗烛', blanks: [2, 3] },
+      { text: '却话巴山夜雨时', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-129',
+    title: '寄令狐郎中',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '嵩云秦树久离居', blanks: [0, 1] },
+      { text: '双鲤迢迢一纸书', blanks: [2, 3] },
+      { text: '休问梁园旧宾客', blanks: [2, 3] },
+      { text: '茂陵秋雨病相如', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-130',
+    title: '为有',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '为有云屏无限娇', blanks: [2, 3] },
+      { text: '凤城寒尽怕春宵', blanks: [2, 3] },
+      { text: '无端嫁得金龟婿', blanks: [2, 3] },
+      { text: '辜负香衾事早朝', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-131',
+    title: '隋宫',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '乘兴南游不戒严', blanks: [2, 3] },
+      { text: '九重谁省谏书函', blanks: [2, 3] },
+      { text: '春风举国裁宫锦', blanks: [2, 3] },
+      { text: '半作障泥半作帆', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-132',
+    title: '瑶池',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '瑶池阿母绮窗开', blanks: [0, 1] },
+      { text: '黄竹歌声动地哀', blanks: [2, 3] },
+      { text: '八骏日行三万里', blanks: [0, 1] },
+      { text: '穆王何事不重来', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-133',
+    title: '嫦娥',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '云母屏风烛影深', blanks: [2, 3] },
+      { text: '长河渐落晓星沉', blanks: [2, 3] },
+      { text: '嫦娥应悔偷灵药', blanks: [2, 3] },
+      { text: '碧海青天夜夜心', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-134',
+    title: '贾生',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '宣室求贤访逐臣', blanks: [2, 3] },
+      { text: '贾生才调更无伦', blanks: [2, 3] },
+      { text: '可怜夜半虚前席', blanks: [2, 3] },
+      { text: '不问苍生问鬼神', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-135',
+    title: '瑶瑟怨',
+    author: '温庭筠',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '冰簟银床梦不成', blanks: [0, 1] },
+      { text: '碧天如水夜云轻', blanks: [2, 3] },
+      { text: '雁声远过潇湘去', blanks: [2, 3] },
+      { text: '十二楼中月自明', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-136',
+    title: '金陵图',
+    author: '韦庄',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '江雨霏霏江草齐', blanks: [0, 1] },
+      { text: '六朝如梦鸟空啼', blanks: [2, 3] },
+      { text: '无情最是台城柳', blanks: [2, 3] },
+      { text: '依旧烟笼十里堤', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-137',
+    title: '己亥岁',
+    author: '曹松',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '泽国江山入战图', blanks: [2, 3] },
+      { text: '生民何计乐樵苏', blanks: [2, 3] },
+      { text: '凭君莫话封侯事', blanks: [2, 3] },
+      { text: '一将功成万骨枯', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-138',
+    title: '题都城南庄',
+    author: '崔护',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '去年今日此门中', blanks: [2, 3] },
+      { text: '人面桃花相映红', blanks: [2, 3] },
+      { text: '人面不知何处去', blanks: [2, 3] },
+      { text: '桃花依旧笑春风', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-139',
+    title: '遣怀',
+    author: '杜牧',
+    dynasty: '唐',
+    difficulty: 2,
+    lines: [
+      { text: '落魄江湖载酒行', blanks: [2, 3] },
+      { text: '楚腰纤细掌中轻', blanks: [2, 3] },
+      { text: '十年一觉扬州梦', blanks: [2, 3] },
+      { text: '赢得青楼薄幸名', blanks: [2, 3] },
     ],
   },
 
-  // ========== 难度 3: 困难（7 言律诗/长诗，填空 3-4 字）==========
+  // ========== 难度 3: 困难（7 言律诗/词，填空 3-4 字）- 30 首 ==========
   {
-    id: 'poem-020',
+    id: 'poem-200',
     title: '黄鹤楼',
     author: '崔颢',
     dynasty: '唐',
     difficulty: 3,
     lines: [
-      { text: '昔人已乘黄鹤去', blanks: [2, 3, 4] }, // 乘黄鹤
-      { text: '此地空余黄鹤楼', blanks: [2, 3, 4] }, // 黄鹤楼
-      { text: '黄鹤一去不复返', blanks: [0, 1, 2] }, // 黄鹤一
-      { text: '白云千载空悠悠', blanks: [0, 1] }, // 白云
-      { text: '晴川历历汉阳树', blanks: [2, 3] }, // 历历
-      { text: '芳草萋萋鹦鹉洲', blanks: [2, 3] }, // 鹦鹉
-      { text: '日暮乡关何处是', blanks: [2, 3] }, // 乡关
-      { text: '烟波江上使人愁', blanks: [0, 1] }, // 烟波
+      { text: '昔人已乘黄鹤去', blanks: [2, 3, 4] },
+      { text: '此地空余黄鹤楼', blanks: [2, 3, 4] },
+      { text: '黄鹤一去不复返', blanks: [0, 1, 2] },
+      { text: '白云千载空悠悠', blanks: [0, 1] },
+      { text: '晴川历历汉阳树', blanks: [2, 3] },
+      { text: '芳草萋萋鹦鹉洲', blanks: [2, 3] },
+      { text: '日暮乡关何处是', blanks: [2, 3] },
+      { text: '烟波江上使人愁', blanks: [0, 1] },
     ],
   },
   {
-    id: 'poem-021',
+    id: 'poem-201',
     title: '登高',
     author: '杜甫',
     dynasty: '唐',
     difficulty: 3,
     lines: [
-      { text: '风急天高猿啸哀', blanks: [2, 3] }, // 天高
-      { text: '渚清沙白鸟飞回', blanks: [0, 1] }, // 渚清
-      { text: '无边落木萧萧下', blanks: [2, 3] }, // 萧萧
-      { text: '不尽长江滚滚来', blanks: [2, 3] }, // 滚滚
-      { text: '万里悲秋常作客', blanks: [2, 3] }, // 悲秋
-      { text: '百年多病独登台', blanks: [2, 3] }, // 多病
-      { text: '艰难苦恨繁霜鬓', blanks: [2, 3] }, // 苦恨
-      { text: '潦倒新停浊酒杯', blanks: [2, 3] }, // 新停
+      { text: '风急天高猿啸哀', blanks: [2, 3] },
+      { text: '渚清沙白鸟飞回', blanks: [0, 1] },
+      { text: '无边落木萧萧下', blanks: [2, 3] },
+      { text: '不尽长江滚滚来', blanks: [2, 3] },
+      { text: '万里悲秋常作客', blanks: [2, 3] },
+      { text: '百年多病独登台', blanks: [2, 3] },
+      { text: '艰难苦恨繁霜鬓', blanks: [2, 3] },
+      { text: '潦倒新停浊酒杯', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-022',
+    id: 'poem-202',
     title: '锦瑟',
     author: '李商隐',
     dynasty: '唐',
     difficulty: 3,
     lines: [
-      { text: '锦瑟无端五十弦', blanks: [2, 3] }, // 无端
-      { text: '一弦一柱思华年', blanks: [2, 3] }, // 思华
-      { text: '庄生晓梦迷蝴蝶', blanks: [2, 3] }, // 晓梦
-      { text: '望帝春心托杜鹃', blanks: [2, 3] }, // 春心
-      { text: '沧海月明珠有泪', blanks: [0, 1] }, // 沧海
-      { text: '蓝田日暖玉生烟', blanks: [0, 1] }, // 蓝田
-      { text: '此情可待成追忆', blanks: [2, 3] }, // 成追
-      { text: '只是当时已惘然', blanks: [2, 3] }, // 惘然
+      { text: '锦瑟无端五十弦', blanks: [2, 3] },
+      { text: '一弦一柱思华年', blanks: [2, 3] },
+      { text: '庄生晓梦迷蝴蝶', blanks: [2, 3] },
+      { text: '望帝春心托杜鹃', blanks: [2, 3] },
+      { text: '沧海月明珠有泪', blanks: [0, 1] },
+      { text: '蓝田日暖玉生烟', blanks: [0, 1] },
+      { text: '此情可待成追忆', blanks: [2, 3] },
+      { text: '只是当时已惘然', blanks: [2, 3] },
     ],
   },
   {
-    id: 'poem-023',
+    id: 'poem-203',
     title: '将进酒（节选）',
     author: '李白',
     dynasty: '唐',
     difficulty: 3,
     lines: [
-      { text: '君不见黄河之水天上来', blanks: [3, 4, 5] }, // 黄河之
-      { text: '奔流到海不复回', blanks: [0, 1] }, // 奔流
-      { text: '君不见高堂明镜悲白发', blanks: [3, 4, 5] }, // 明镜悲
-      { text: '朝如青丝暮成雪', blanks: [2, 3] }, // 青丝
-      { text: '人生得意须尽欢', blanks: [2, 3] }, // 得意
-      { text: '莫使金樽空对月', blanks: [2, 3] }, // 金樽
-      { text: '天生我材必有用', blanks: [2, 3] }, // 我材
-      { text: '千金散尽还复来', blanks: [0, 1] }, // 千金
+      { text: '君不见黄河之水天上来', blanks: [3, 4, 5] },
+      { text: '奔流到海不复回', blanks: [0, 1] },
+      { text: '君不见高堂明镜悲白发', blanks: [3, 4, 5] },
+      { text: '朝如青丝暮成雪', blanks: [2, 3] },
+      { text: '人生得意须尽欢', blanks: [2, 3] },
+      { text: '莫使金樽空对月', blanks: [2, 3] },
+      { text: '天生我材必有用', blanks: [2, 3] },
+      { text: '千金散尽还复来', blanks: [0, 1] },
     ],
   },
   {
-    id: 'poem-024',
+    id: 'poem-204',
+    title: '蜀相',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '丞相祠堂何处寻', blanks: [0, 1] },
+      { text: '锦官城外柏森森', blanks: [2, 3] },
+      { text: '映阶碧草自春色', blanks: [2, 3] },
+      { text: '隔叶黄鹂空好音', blanks: [2, 3] },
+      { text: '三顾频烦天下计', blanks: [2, 3] },
+      { text: '两朝开济老臣心', blanks: [2, 3] },
+      { text: '出师未捷身先死', blanks: [2, 3] },
+      { text: '长使英雄泪满襟', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-205',
+    title: '客至',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '舍南舍北皆春水', blanks: [0, 1] },
+      { text: '但见群鸥日日来', blanks: [2, 3] },
+      { text: '花径不曾缘客扫', blanks: [2, 3] },
+      { text: '蓬门今始为君开', blanks: [2, 3] },
+      { text: '盘飧市远无兼味', blanks: [2, 3] },
+      { text: '樽酒家贫只旧醅', blanks: [2, 3] },
+      { text: '肯与邻翁相对饮', blanks: [2, 3] },
+      { text: '隔篱呼取尽余杯', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-206',
+    title: '闻官军收河南河北',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '剑外忽传收蓟北', blanks: [2, 3] },
+      { text: '初闻涕泪满衣裳', blanks: [2, 3] },
+      { text: '却看妻子愁何在', blanks: [2, 3] },
+      { text: '漫卷诗书喜欲狂', blanks: [2, 3] },
+      { text: '白日放歌须纵酒', blanks: [2, 3] },
+      { text: '青春作伴好还乡', blanks: [2, 3] },
+      { text: '即从巴峡穿巫峡', blanks: [2, 3] },
+      { text: '便下襄阳向洛阳', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-207',
+    title: '阁夜',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '岁暮阴阳催短景', blanks: [2, 3] },
+      { text: '天涯霜雪霁寒宵', blanks: [2, 3] },
+      { text: '五更鼓角声悲壮', blanks: [2, 3] },
+      { text: '三峡星河影动摇', blanks: [2, 3] },
+      { text: '野哭几家闻战伐', blanks: [2, 3] },
+      { text: '夷歌数处起渔樵', blanks: [2, 3] },
+      { text: '卧龙跃马终黄土', blanks: [2, 3] },
+      { text: '人事音书漫寂寥', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-208',
+    title: '咏怀古迹·其三',
+    author: '杜甫',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '群山万壑赴荆门', blanks: [0, 1] },
+      { text: '生长明妃尚有村', blanks: [2, 3] },
+      { text: '一去紫台连朔漠', blanks: [2, 3] },
+      { text: '独留青冢向黄昏', blanks: [2, 3] },
+      { text: '画图省识春风面', blanks: [2, 3] },
+      { text: '环佩空归夜月魂', blanks: [2, 3] },
+      { text: '千载琵琶作胡语', blanks: [2, 3] },
+      { text: '分明怨恨曲中论', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-209',
+    title: '无题',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '相见时难别亦难', blanks: [0, 1] },
+      { text: '东风无力百花残', blanks: [2, 3] },
+      { text: '春蚕到死丝方尽', blanks: [2, 3] },
+      { text: '蜡炬成灰泪始干', blanks: [2, 3] },
+      { text: '晓镜但愁云鬓改', blanks: [2, 3] },
+      { text: '夜吟应觉月光寒', blanks: [2, 3] },
+      { text: '蓬山此去无多路', blanks: [2, 3] },
+      { text: '青鸟殷勤为探看', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-210',
+    title: '无题·昨夜星辰昨夜风',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '昨夜星辰昨夜风', blanks: [0, 1] },
+      { text: '画楼西畔桂堂东', blanks: [2, 3] },
+      { text: '身无彩凤双飞翼', blanks: [2, 3] },
+      { text: '心有灵犀一点通', blanks: [2, 3] },
+      { text: '隔座送钩春酒暖', blanks: [2, 3] },
+      { text: '分曹射覆蜡灯红', blanks: [2, 3] },
+      { text: '嗟余听鼓应官去', blanks: [2, 3] },
+      { text: '走马兰台类转蓬', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-211',
+    title: '春雨',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '怅卧新春白袷衣', blanks: [2, 3] },
+      { text: '白门寥落意多违', blanks: [2, 3] },
+      { text: '红楼隔雨相望冷', blanks: [2, 3] },
+      { text: '珠箔飘灯独自归', blanks: [2, 3] },
+      { text: '远路应悲春晼晚', blanks: [2, 3] },
+      { text: '残宵犹得梦依稀', blanks: [2, 3] },
+      { text: '玉珰缄札何由达', blanks: [2, 3] },
+      { text: '万里云罗一雁飞', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-212',
+    title: '筹笔驿',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '猿鸟犹疑畏简书', blanks: [0, 1] },
+      { text: '风云常为护储胥', blanks: [2, 3] },
+      { text: '徒令上将挥神笔', blanks: [2, 3] },
+      { text: '终见降王走传车', blanks: [2, 3] },
+      { text: '管乐有才原不忝', blanks: [2, 3] },
+      { text: '关张无命欲何如', blanks: [2, 3] },
+      { text: '他年锦里经祠庙', blanks: [2, 3] },
+      { text: '梁父吟成恨有余', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-213',
+    title: '安定城楼',
+    author: '李商隐',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '迢递高城百尺楼', blanks: [0, 1] },
+      { text: '绿杨枝外尽汀洲', blanks: [2, 3] },
+      { text: '贾生年少虚垂泪', blanks: [2, 3] },
+      { text: '王粲春来更远游', blanks: [2, 3] },
+      { text: '永忆江湖归白发', blanks: [2, 3] },
+      { text: '欲回天地入扁舟', blanks: [2, 3] },
+      { text: '不知腐鼠成滋味', blanks: [2, 3] },
+      { text: '猜意鹓雏竟未休', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-214',
+    title: '利州南渡',
+    author: '温庭筠',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '澹然空水对斜晖', blanks: [0, 1] },
+      { text: '曲岛苍茫接翠微', blanks: [2, 3] },
+      { text: '波上马嘶看棹去', blanks: [2, 3] },
+      { text: '柳边人歇待船归', blanks: [2, 3] },
+      { text: '数丛沙草群鸥散', blanks: [2, 3] },
+      { text: '万顷江田一鹭飞', blanks: [2, 3] },
+      { text: '谁解乘舟寻范蠡', blanks: [2, 3] },
+      { text: '五湖烟水独忘机', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-215',
+    title: '苏武庙',
+    author: '温庭筠',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '苏武魂销汉使前', blanks: [0, 1] },
+      { text: '古祠高树两茫然', blanks: [2, 3] },
+      { text: '云边雁断胡天月', blanks: [2, 3] },
+      { text: '陇上羊归塞草烟', blanks: [2, 3] },
+      { text: '回日楼台非甲帐', blanks: [2, 3] },
+      { text: '去时冠剑是丁年', blanks: [2, 3] },
+      { text: '茂陵不见封侯印', blanks: [2, 3] },
+      { text: '空向秋波哭逝川', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-216',
+    title: '江州重别薛六柳八二员外',
+    author: '刘长卿',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '生涯岂料承优诏', blanks: [2, 3] },
+      { text: '世事空知学醉歌', blanks: [2, 3] },
+      { text: '江上月明胡雁过', blanks: [2, 3] },
+      { text: '淮南木落楚山多', blanks: [2, 3] },
+      { text: '寄身且喜沧洲近', blanks: [2, 3] },
+      { text: '顾影无如白发何', blanks: [2, 3] },
+      { text: '今日龙钟人共弃', blanks: [2, 3] },
+      { text: '愧君犹遣慎风波', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-217',
+    title: '长沙过贾谊宅',
+    author: '刘长卿',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '三年谪宦此栖迟', blanks: [2, 3] },
+      { text: '万古惟留楚客悲', blanks: [2, 3] },
+      { text: '秋草独寻人去后', blanks: [2, 3] },
+      { text: '寒林空见日斜时', blanks: [2, 3] },
+      { text: '汉文有道恩犹薄', blanks: [2, 3] },
+      { text: '湘水无情吊岂知', blanks: [2, 3] },
+      { text: '寂寂江山摇落处', blanks: [2, 3] },
+      { text: '怜君何事到天涯', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-218',
+    title: '自夏口至鹦鹉洲夕望岳阳寄源中丞',
+    author: '刘长卿',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '汀洲无浪复无烟', blanks: [0, 1] },
+      { text: '楚客相思益渺然', blanks: [2, 3] },
+      { text: '汉口夕阳斜渡鸟', blanks: [2, 3] },
+      { text: '洞庭秋水远连天', blanks: [2, 3] },
+      { text: '孤城背岭寒吹角', blanks: [2, 3] },
+      { text: '独树临江夜泊船', blanks: [2, 3] },
+      { text: '贾谊上书忧汉室', blanks: [0, 1] },
+      { text: '长沙谪去古今怜', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-219',
+    title: '赠阙下裴舍人',
+    author: '钱起',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '二月黄莺飞上林', blanks: [0, 1] },
+      { text: '春城紫禁晓阴阴', blanks: [2, 3] },
+      { text: '长乐钟声花外尽', blanks: [2, 3] },
+      { text: '龙池柳色雨中深', blanks: [2, 3] },
+      { text: '阳和不散穷途恨', blanks: [2, 3] },
+      { text: '霄汉长悬捧日心', blanks: [2, 3] },
+      { text: '献赋十年犹未遇', blanks: [2, 3] },
+      { text: '羞将白发对华簪', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-220',
+    title: '寄李儋元锡',
+    author: '韦应物',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '去年花里逢君别', blanks: [2, 3] },
+      { text: '今日花开又一年', blanks: [2, 3] },
+      { text: '世事茫茫难自料', blanks: [2, 3] },
+      { text: '春愁黯黯独成眠', blanks: [2, 3] },
+      { text: '身多疾病思田里', blanks: [2, 3] },
+      { text: '邑有流亡愧俸钱', blanks: [2, 3] },
+      { text: '闻道欲来相问讯', blanks: [2, 3] },
+      { text: '西楼望月几回圆', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-221',
+    title: '同题仙游观',
+    author: '韩翃',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '仙台初见五城楼', blanks: [0, 1] },
+      { text: '风物凄凄宿雨收', blanks: [2, 3] },
+      { text: '山色遥连秦树晚', blanks: [2, 3] },
+      { text: '砧声近报汉宫秋', blanks: [2, 3] },
+      { text: '疏松影落空坛静', blanks: [2, 3] },
+      { text: '细草香闲小洞幽', blanks: [2, 3] },
+      { text: '何用别寻方外去', blanks: [2, 3] },
+      { text: '人间亦自有丹丘', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-222',
+    title: '春思',
+    author: '皇甫冉',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '莺啼燕语报新年', blanks: [0, 1] },
+      { text: '马邑龙堆路几千', blanks: [2, 3] },
+      { text: '家住层城临汉苑', blanks: [2, 3] },
+      { text: '心随明月到胡天', blanks: [2, 3] },
+      { text: '机中锦字论长恨', blanks: [2, 3] },
+      { text: '楼上花枝笑独眠', blanks: [2, 3] },
+      { text: '为问元戎窦车骑', blanks: [2, 3] },
+      { text: '何时返旆勒燕然', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-223',
+    title: '晚次鄂州',
+    author: '卢纶',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '云开远见汉阳城', blanks: [0, 1] },
+      { text: '犹是孤帆一日程', blanks: [2, 3] },
+      { text: '估客昼眠知浪静', blanks: [2, 3] },
+      { text: '舟人夜语觉潮生', blanks: [2, 3] },
+      { text: '三湘愁鬓逢秋色', blanks: [2, 3] },
+      { text: '万里归心对月明', blanks: [2, 3] },
+      { text: '旧业已随征战尽', blanks: [2, 3] },
+      { text: '更堪江上鼓鼙声', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-224',
+    title: '登柳州城楼寄漳汀封连四州',
+    author: '柳宗元',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '城上高楼接大荒', blanks: [2, 3] },
+      { text: '海天愁思正茫茫', blanks: [2, 3] },
+      { text: '惊风乱飐芙蓉水', blanks: [2, 3] },
+      { text: '密雨斜侵薜荔墙', blanks: [2, 3] },
+      { text: '岭树重遮千里目', blanks: [2, 3] },
+      { text: '江流曲似九回肠', blanks: [2, 3] },
+      { text: '共来百越文身地', blanks: [2, 3] },
+      { text: '犹自音书滞一乡', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-225',
+    title: '西塞山怀古',
+    author: '刘禹锡',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '王濬楼船下益州', blanks: [0, 1] },
+      { text: '金陵王气黯然收', blanks: [2, 3] },
+      { text: '千寻铁锁沉江底', blanks: [2, 3] },
+      { text: '一片降幡出石头', blanks: [2, 3] },
+      { text: '人世几回伤往事', blanks: [2, 3] },
+      { text: '山形依旧枕寒流', blanks: [2, 3] },
+      { text: '今逢四海为家日', blanks: [2, 3] },
+      { text: '故垒萧萧芦荻秋', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-226',
+    title: '自河南经乱',
+    author: '白居易',
+    dynasty: '唐',
+    difficulty: 3,
+    lines: [
+      { text: '时难年荒世业空', blanks: [2, 3] },
+      { text: '弟兄羁旅各西东', blanks: [2, 3] },
+      { text: '田园寥落干戈后', blanks: [2, 3] },
+      { text: '骨肉流离道路中', blanks: [2, 3] },
+      { text: '吊影分为千里雁', blanks: [2, 3] },
+      { text: '辞根散作九秋蓬', blanks: [2, 3] },
+      { text: '共看明月应垂泪', blanks: [2, 3] },
+      { text: '一夜乡心五处同', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-227',
     title: '水调歌头·明月几时有',
     author: '苏轼',
     dynasty: '宋',
     difficulty: 3,
     lines: [
-      { text: '明月几时有', blanks: [0, 1] }, // 明月
-      { text: '把酒问青天', blanks: [2, 3] }, // 青天
-      { text: '不知天上宫阙', blanks: [2, 3] }, // 宫阙
-      { text: '今夕是何年', blanks: [2, 3] }, // 何年
-      { text: '我欲乘风归去', blanks: [2, 3] }, // 乘风
-      { text: '又恐琼楼玉宇', blanks: [2, 3] }, // 琼楼
-      { text: '高处不胜寒', blanks: [0, 1] }, // 高处
-      { text: '起舞弄清影', blanks: [2, 3] }, // 清影
+      { text: '明月几时有', blanks: [0, 1] },
+      { text: '把酒问青天', blanks: [2, 3] },
+      { text: '不知天上宫阙', blanks: [2, 3] },
+      { text: '今夕是何年', blanks: [2, 3] },
+      { text: '我欲乘风归去', blanks: [2, 3] },
+      { text: '又恐琼楼玉宇', blanks: [2, 3] },
+      { text: '高处不胜寒', blanks: [0, 1] },
+      { text: '起舞弄清影', blanks: [2, 3] },
+    ],
+  },
+  {
+    id: 'poem-228',
+    title: '满江红',
+    author: '岳飞',
+    dynasty: '宋',
+    difficulty: 3,
+    lines: [
+      { text: '怒发冲冠', blanks: [0, 1] },
+      { text: '凭栏处潇潇雨歇', blanks: [2, 3] },
+      { text: '抬望眼仰天长啸', blanks: [2, 3] },
+      { text: '壮怀激烈', blanks: [0, 1] },
+      { text: '三十功名尘与土', blanks: [2, 3] },
+      { text: '八千里路云和月', blanks: [2, 3] },
+      { text: '莫等闲白了少年头', blanks: [2, 3] },
+      { text: '空悲切', blanks: [0, 1] },
+    ],
+  },
+  {
+    id: 'poem-229',
+    title: '游山西村',
+    author: '陆游',
+    dynasty: '宋',
+    difficulty: 3,
+    lines: [
+      { text: '莫笑农家腊酒浑', blanks: [2, 3] },
+      { text: '丰年留客足鸡豚', blanks: [2, 3] },
+      { text: '山重水复疑无路', blanks: [2, 3] },
+      { text: '柳暗花明又一村', blanks: [2, 3] },
+      { text: '箫鼓追随春社近', blanks: [2, 3] },
+      { text: '衣冠简朴古风存', blanks: [2, 3] },
+      { text: '从今若许闲乘月', blanks: [2, 3] },
+      { text: '拄杖无时夜叩门', blanks: [2, 3] },
     ],
   },
 ];
@@ -252,4 +1522,14 @@ export function getRandomPoem(difficulty?: 1 | 2 | 3): Poem | null {
   const poems = difficulty ? getPoemsByDifficulty(difficulty) : POEMS;
   if (poems.length === 0) return null;
   return poems[Math.floor(Math.random() * poems.length)];
+}
+
+// 获取各难度诗歌数量
+export function getPoemCountByDifficulty(): { difficulty1: number; difficulty2: number; difficulty3: number; total: number } {
+  return {
+    difficulty1: POEMS.filter(p => p.difficulty === 1).length,
+    difficulty2: POEMS.filter(p => p.difficulty === 2).length,
+    difficulty3: POEMS.filter(p => p.difficulty === 3).length,
+    total: POEMS.length,
+  };
 }
