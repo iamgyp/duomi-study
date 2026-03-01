@@ -42,13 +42,19 @@ export const generateChineseImage = async (
   ctx.lineTo(2380, 300);
   ctx.stroke();
 
-  // 4. Content Grid
+  // 4. Content Grid - A4 Size Calculation (Fixed 8 columns to match preview)
   const startX = 140; // Left margin
   const startY = 400; // Top margin
   const boxSize = 240; // Size of the Tian/Mi grid
   const gapX = 35; // Space between boxes horizontal
   const gapY = 120; // Space between rows (includes pinyin space)
-  const cols = 8; // Number of chars per row
+  
+  // Fixed 8 columns to match the preview grid-cols-8
+  const cols = 8;
+  
+  // Calculate right margin based on fixed 8 columns
+  const contentWidth = cols * boxSize + (cols - 1) * gapX;
+  const rightMargin = canvas.width - startX - contentWidth;
 
   // Font settings
   // Try to use KaiTi if available, fallback to Serif
