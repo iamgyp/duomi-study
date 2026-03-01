@@ -355,19 +355,19 @@ export default function ChinesePage() {
               </div>
 
               {activeMode === 'character' ? (
-                // Character Preview
-                <div className="flex flex-wrap gap-3 sm:gap-4 content-start">
+                // Character Preview - Fixed grid layout matching A4 generation (8 columns)
+                <div className="grid grid-cols-8 gap-x-2 sm:gap-x-3 gap-y-4 sm:gap-y-6 content-start">
                   {chars.map((c, i) => (
                     <div key={i} className="flex flex-col items-center">
-                      <div className="h-5 sm:h-6 text-xs sm:text-sm text-gray-600 font-mono">{charConfig.showPinyin ? c.pinyin : ''}</div>
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 border-2 border-red-500 relative flex items-center justify-center">
+                      <div className="h-5 sm:h-6 text-xs sm:text-sm text-gray-600 font-mono text-center w-full">{charConfig.showPinyin ? c.pinyin : ''}</div>
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500 relative flex items-center justify-center">
                         <div className="absolute top-0 left-1/2 w-px h-full bg-red-300 transform -translate-x-1/2 border-dashed border-l border-red-300"></div>
                         <div className="absolute top-1/2 left-0 w-full h-px bg-red-300 transform -translate-y-1/2 border-dashed border-t border-red-300"></div>
                         {charConfig.gridType === 'mi' && (
                           <div className="absolute top-0 left-0 w-full h-full border-red-200 border-dashed" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0, 0 100%)', opacity: 0.3 }}></div>
                         )}
                         <span 
-                          className="text-2xl sm:text-4xl font-serif z-10 relative"
+                          className="text-xl sm:text-3xl font-serif z-10 relative"
                           style={{ 
                             color: charConfig.mode === 'trace' ? '#999' : '#000',
                             fontFamily: '"KaiTi", "楷体", serif'
