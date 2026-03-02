@@ -50,21 +50,44 @@ export default function ChinesePage() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    const newChars = text.split('').map(char => {
-      // 处理换行符和空格
+    const COLS = 8; // 每行固定 8 个田字格
+    const inputChars = text.split('');
+    const newChars: any[] = [];
+    let currentRowLength = 0;
+
+    for (const char of inputChars) {
       if (char === '\n') {
-        return { char: '', pinyin: '', isNewLine: true };
+        // 换行：补足当前行到 8 个格子
+        while (currentRowLength < COLS) {
+          newChars.push({ char: '', pinyin: '', isBlank: true });
+          currentRowLength++;
+        }
+        // 添加换行标记
+        newChars.push({ char: '', pinyin: '', isNewLine: true });
+        currentRowLength = 0;
+      } else if (char === ' ') {
+        // 空格：添加空田字格
+        newChars.push({ char: '', pinyin: '', isSpace: true });
+        currentRowLength++;
+      } else {
+        // 正常汉字
+        const pinyin = (cnchar as any).spell(char, 'tone');
+        newChars.push({
+          char,
+          pinyin: Array.isArray(pinyin) ? pinyin[0] : pinyin
+        });
+        currentRowLength++;
       }
-      if (char === ' ') {
-        return { char: '', pinyin: '', isSpace: true };
+    }
+
+    // 最后一行如果不足 8 个，也补足空白田字格
+    if (currentRowLength > 0 && currentRowLength < COLS) {
+      while (currentRowLength < COLS) {
+        newChars.push({ char: '', pinyin: '', isBlank: true });
+        currentRowLength++;
       }
-      // 正常汉字处理
-      const pinyin = (cnchar as any).spell(char, 'tone');
-      return {
-        char,
-        pinyin: Array.isArray(pinyin) ? pinyin[0] : pinyin
-      };
-    });
+    }
+
     setChars(newChars);
   }, [text]);
 
@@ -364,7 +387,7 @@ export default function ChinesePage() {
 
               {activeMode === 'character' ? (
                 // Character Preview - Fixed grid layout matching A4 generation (8 columns)
-                // 支持换行符和空格：换行符创建新行，空格创建空田字格
+                // 支持换行符和空格：换行符创建新行，空格/空白自动填充田字格
                 <div className="flex flex-col gap-y-4 sm:gap-y-6 content-start">
                   {(() => {
                     const rows: any[][] = [[]];
@@ -389,11 +412,11 @@ export default function ChinesePage() {
                               <span 
                                 className="text-xl sm:text-3xl font-serif z-10 relative"
                                 style={{ 
-                                  color: c.isSpace || c.isNewLine ? 'transparent' : (charConfig.mode === 'trace' ? '#999' : '#000'),
+                                  color: c.isBlank || c.isSpace || c.isNewLine ? 'transparent' : (charConfig.mode === 'trace' ? '#999' : '#000'),
                                   fontFamily: '"KaiTi", "楷体", serif'
                                 }}
                               >
-                                {c.char || (c.isSpace ? ' ' : '')}
+                                {c.char || ''}
                               </span>
                             </div>
                           </div>

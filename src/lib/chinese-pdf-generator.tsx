@@ -161,7 +161,7 @@ const MiGridSvg = () => (
 );
 
 interface ChinesePdfProps {
-  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean }[];
+  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean; isBlank?: boolean }[];
   config: { gridType: string; showPinyin: boolean; mode: string; color: string };
   title?: string;
 }
@@ -207,10 +207,10 @@ export const ChinesePdfDocument = ({ chars, config, title = 'Chinese Writing' }:
                             <Text style={styles.pinyinText}>{c.pinyin}</Text>
                         )}
                         
-                        {/* Box - always render, even for spaces */}
+                        {/* Box - always render, even for spaces/blanks */}
                         <View style={styles.gridBox}>
                             {config.gridType === 'mi' ? <MiGridSvg /> : <TianGridSvg />}
-                            <Text style={[styles.charText, { color: c.isSpace ? 'transparent' : config.color }]}>
+                            <Text style={[styles.charText, { color: c.isSpace || c.isBlank ? 'transparent' : config.color }]}>
                                 {c.char || ''}
                             </Text>
                         </View>

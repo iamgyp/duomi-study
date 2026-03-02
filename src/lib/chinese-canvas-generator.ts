@@ -1,5 +1,5 @@
 export const generateChineseImage = async (
-  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean }[],
+  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean; isBlank?: boolean }[],
   config: { gridType: string; showPinyin: boolean; mode: string; color: string },
   title: string = 'Chinese Writing'
 ): Promise<string> => {
