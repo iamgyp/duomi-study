@@ -403,11 +403,20 @@ export default function ChinesePage() {
                         {row.map((c, i) => (
                           <div key={i} className="flex flex-col items-center">
                             <div className="h-5 sm:h-6 text-xs sm:text-sm text-gray-600 font-mono text-center w-full">{charConfig.showPinyin && c.pinyin ? c.pinyin : ''}</div>
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500 relative flex items-center justify-center">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500 relative flex items-center justify-center overflow-hidden">
+                              {/* 田字格 - 横竖中线 */}
                               <div className="absolute top-0 left-1/2 w-px h-full bg-red-300 transform -translate-x-1/2 border-dashed border-l border-red-300"></div>
                               <div className="absolute top-1/2 left-0 w-full h-px bg-red-300 transform -translate-y-1/2 border-dashed border-t border-red-300"></div>
+                              {/* 米字格 - 对角线 */}
                               {charConfig.gridType === 'mi' && (
-                                <div className="absolute top-0 left-0 w-full h-full border-red-200 border-dashed" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0, 0 100%)', opacity: 0.3 }}></div>
+                                <>
+                                  <div className="absolute top-0 left-0 w-full h-full">
+                                    <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                      <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" strokeWidth="1.5" strokeDasharray="4 4" />
+                                      <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" strokeWidth="1.5" strokeDasharray="4 4" />
+                                    </svg>
+                                  </div>
+                                </>
                               )}
                               <span 
                                 className="text-xl sm:text-3xl font-serif z-10 relative"

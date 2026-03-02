@@ -47,10 +47,13 @@ export const generateChineseImage = async (
   const startY = 400; // Top margin
   const boxSize = 240; // Size of the Tian/Mi grid
   const gapX = 35; // Space between boxes horizontal
-  const gapY = 80; // Space between rows
+  const gapY = 40; // Space between rows (smaller gap for compact layout)
   
   // Fixed 8 columns to match the preview grid-cols-8
   const cols = 8;
+  
+  // Max rows per page (A4 height: 3508px)
+  const maxRows = Math.floor((3508 - startY - 400) / (boxSize + gapY));
   
   // Font settings
   const fontMain = '200px "KaiTi", "STKaiti", "楷体", "SimKai", "SimSun", "Songti SC", serif';
@@ -68,7 +71,7 @@ export const generateChineseImage = async (
 
   // Render each row
   rows.forEach((row, rowIdx) => {
-    if (rowIdx > 7) return; // Max 8 rows per page
+    if (rowIdx >= maxRows) return; // Max rows per page
     
     const y = startY + rowIdx * (boxSize + gapY);
     
@@ -222,6 +225,10 @@ function drawGrid(ctx: CanvasRenderingContext2D, x: number, y: number, size: num
   // Diagonals (Mi)
   if (type === 'mi') {
       ctx.beginPath();
+      ctx.strokeStyle = '#f87171'; // Red-400, more visible
+      ctx.lineWidth = 2;
+      ctx.setLineDash([10, 10]); // Dashed diagonals
+      
       // TL to BR
       ctx.moveTo(x, y);
       ctx.lineTo(x + size, y + size);
