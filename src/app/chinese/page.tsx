@@ -19,7 +19,7 @@ export default function ChinesePage() {
   const [activeMode, setActiveMode] = useState<'character' | 'poem'>('character');
   
   // Character mode state
-  const [text, setText] = useState('多米学习站');
+  const [text, setText] = useState('床前明月光 疑是地上霜 举头望明月 低头思故乡');
   const [charConfig, setCharConfig] = useState({
     gridType: 'tian' as 'tian' | 'mi',
     showPinyin: true,
@@ -51,6 +51,14 @@ export default function ChinesePage() {
 
   useEffect(() => {
     const newChars = text.split('').map(char => {
+      // 处理换行符和空格
+      if (char === '\n') {
+        return { char: '', pinyin: '', isNewLine: true };
+      }
+      if (char === ' ') {
+        return { char: '', pinyin: '', isSpace: true };
+      }
+      // 正常汉字处理
       const pinyin = (cnchar as any).spell(char, 'tone');
       return {
         char,
@@ -356,28 +364,43 @@ export default function ChinesePage() {
 
               {activeMode === 'character' ? (
                 // Character Preview - Fixed grid layout matching A4 generation (8 columns)
-                <div className="grid grid-cols-8 gap-x-2 sm:gap-x-3 gap-y-4 sm:gap-y-6 content-start">
-                  {chars.map((c, i) => (
-                    <div key={i} className="flex flex-col items-center">
-                      <div className="h-5 sm:h-6 text-xs sm:text-sm text-gray-600 font-mono text-center w-full">{charConfig.showPinyin ? c.pinyin : ''}</div>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500 relative flex items-center justify-center">
-                        <div className="absolute top-0 left-1/2 w-px h-full bg-red-300 transform -translate-x-1/2 border-dashed border-l border-red-300"></div>
-                        <div className="absolute top-1/2 left-0 w-full h-px bg-red-300 transform -translate-y-1/2 border-dashed border-t border-red-300"></div>
-                        {charConfig.gridType === 'mi' && (
-                          <div className="absolute top-0 left-0 w-full h-full border-red-200 border-dashed" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0, 0 100%)', opacity: 0.3 }}></div>
-                        )}
-                        <span 
-                          className="text-xl sm:text-3xl font-serif z-10 relative"
-                          style={{ 
-                            color: charConfig.mode === 'trace' ? '#999' : '#000',
-                            fontFamily: '"KaiTi", "楷体", serif'
-                          }}
-                        >
-                          {c.char}
-                        </span>
+                // 支持换行符和空格：换行符创建新行，空格创建空田字格
+                <div className="flex flex-col gap-y-4 sm:gap-y-6 content-start">
+                  {(() => {
+                    const rows: any[][] = [[]];
+                    chars.forEach((c, i) => {
+                      if (c.isNewLine) {
+                        rows.push([]);
+                      } else {
+                        rows[rows.length - 1].push(c);
+                      }
+                    });
+                    return rows.map((row, rowIdx) => (
+                      <div key={rowIdx} className="grid grid-cols-8 gap-x-2 sm:gap-x-3">
+                        {row.map((c, i) => (
+                          <div key={i} className="flex flex-col items-center">
+                            <div className="h-5 sm:h-6 text-xs sm:text-sm text-gray-600 font-mono text-center w-full">{charConfig.showPinyin && c.pinyin ? c.pinyin : ''}</div>
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500 relative flex items-center justify-center">
+                              <div className="absolute top-0 left-1/2 w-px h-full bg-red-300 transform -translate-x-1/2 border-dashed border-l border-red-300"></div>
+                              <div className="absolute top-1/2 left-0 w-full h-px bg-red-300 transform -translate-y-1/2 border-dashed border-t border-red-300"></div>
+                              {charConfig.gridType === 'mi' && (
+                                <div className="absolute top-0 left-0 w-full h-full border-red-200 border-dashed" style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0, 0 100%)', opacity: 0.3 }}></div>
+                              )}
+                              <span 
+                                className="text-xl sm:text-3xl font-serif z-10 relative"
+                                style={{ 
+                                  color: c.isSpace || c.isNewLine ? 'transparent' : (charConfig.mode === 'trace' ? '#999' : '#000'),
+                                  fontFamily: '"KaiTi", "楷体", serif'
+                                }}
+                              >
+                                {c.char || (c.isSpace ? ' ' : '')}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    </div>
-                  ))}
+                    ));
+                  })()}
                 </div>
               ) : (
                 // Poem Preview - Grid Layout (2 columns)

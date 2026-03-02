@@ -161,12 +161,22 @@ const MiGridSvg = () => (
 );
 
 interface ChinesePdfProps {
-  chars: { char: string; pinyin: string }[];
+  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean }[];
   config: { gridType: string; showPinyin: boolean; mode: string; color: string };
   title?: string;
 }
 
 export const ChinesePdfDocument = ({ chars, config, title = 'Chinese Writing' }: ChinesePdfProps) => {
+  // Split chars into rows by isNewLine marker
+  const rows: typeof chars[][] = [[]];
+  chars.forEach((c) => {
+    if (c.isNewLine) {
+      rows.push([]);
+    } else {
+      rows[rows.length - 1].push(c);
+    }
+  });
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -186,23 +196,27 @@ export const ChinesePdfDocument = ({ chars, config, title = 'Chinese Writing' }:
            </View>
         </View>
 
-        {/* Grid Content */}
-        <View style={styles.row}>
-            {chars.map((c, i) => (
-                <View key={i} style={styles.charBoxContainer}>
-                    {/* Pinyin */}
-                    {config.showPinyin && (
-                        <Text style={styles.pinyinText}>{c.pinyin}</Text>
-                    )}
-                    
-                    {/* Box */}
-                    <View style={styles.gridBox}>
-                        {config.gridType === 'mi' ? <MiGridSvg /> : <TianGridSvg />}
-                        <Text style={[styles.charText, { color: config.color }]}>
-                            {c.char}
-                        </Text>
+        {/* Grid Content - Row by Row */}
+        <View>
+            {rows.map((row, rowIdx) => (
+              <View key={rowIdx} style={styles.row}>
+                {row.map((c, i) => (
+                    <View key={i} style={styles.charBoxContainer}>
+                        {/* Pinyin */}
+                        {config.showPinyin && c.pinyin && !c.isSpace && (
+                            <Text style={styles.pinyinText}>{c.pinyin}</Text>
+                        )}
+                        
+                        {/* Box - always render, even for spaces */}
+                        <View style={styles.gridBox}>
+                            {config.gridType === 'mi' ? <MiGridSvg /> : <TianGridSvg />}
+                            <Text style={[styles.charText, { color: c.isSpace ? 'transparent' : config.color }]}>
+                                {c.char || ''}
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                ))}
+              </View>
             ))}
         </View>
 

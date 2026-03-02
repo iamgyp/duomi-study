@@ -1,5 +1,5 @@
 export const generateChineseImage = async (
-  chars: { char: string; pinyin: string }[],
+  chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean }[],
   config: { gridType: string; showPinyin: boolean; mode: string; color: string },
   title: string = 'Chinese Writing'
 ): Promise<string> => {
@@ -42,70 +42,75 @@ export const generateChineseImage = async (
   ctx.lineTo(2380, 300);
   ctx.stroke();
 
-  // 4. Content Grid - A4 Size Calculation (Fixed 8 columns to match preview)
+  // 4. Content Grid - Support newlines (row-based layout)
   const startX = 140; // Left margin
   const startY = 400; // Top margin
   const boxSize = 240; // Size of the Tian/Mi grid
   const gapX = 35; // Space between boxes horizontal
-  const gapY = 120; // Space between rows (includes pinyin space)
+  const gapY = 80; // Space between rows
   
   // Fixed 8 columns to match the preview grid-cols-8
   const cols = 8;
   
-  // Calculate right margin based on fixed 8 columns
-  const contentWidth = cols * boxSize + (cols - 1) * gapX;
-  const rightMargin = canvas.width - startX - contentWidth;
-
   // Font settings
-  // Try to use KaiTi if available, fallback to Serif
-  // Use a fallback stack that likely contains a Chinese serif font
   const fontMain = '200px "KaiTi", "STKaiti", "楷体", "SimKai", "SimSun", "Songti SC", serif';
   const fontPinyin = '40px Arial, sans-serif';
 
-  chars.forEach((c, i) => {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    
-    // Stop if out of page
-    if (row > 7) return; 
-
-    const x = startX + col * (boxSize + gapX);
-    const y = startY + row * (boxSize + gapY); 
-
-    // Draw Pinyin
-    if (config.showPinyin && c.pinyin) {
-        ctx.font = fontPinyin;
-        ctx.fillStyle = '#666666';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        // Pinyin centered above box
-        ctx.fillText(c.pinyin, x + boxSize/2, y - 10);
-    }
-
-    // Draw Grid Box
-    drawGrid(ctx, x, y, boxSize, config.gridType);
-
-    // Draw Character
-    ctx.font = fontMain;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Character center
-    const cx = x + boxSize/2;
-    const cy = y + boxSize/2 + 10; // Slightly lower optical center for KaiTi
-
-    if (config.mode === 'trace') {
-        ctx.fillStyle = '#cccccc'; // Light gray for tracing
-        ctx.fillText(c.char, cx, cy);
-    } else if (config.mode === 'outline') {
-        // Outline text is tricky in canvas if we want clean stroke
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#999999';
-        ctx.strokeText(c.char, cx, cy);
+  // Split chars into rows by isNewLine marker
+  const rows: typeof chars[][] = [[]];
+  chars.forEach((c) => {
+    if (c.isNewLine) {
+      rows.push([]);
     } else {
-        ctx.fillStyle = '#000000';
-        ctx.fillText(c.char, cx, cy);
+      rows[rows.length - 1].push(c);
     }
+  });
+
+  // Render each row
+  rows.forEach((row, rowIdx) => {
+    if (rowIdx > 7) return; // Max 8 rows per page
+    
+    const y = startY + rowIdx * (boxSize + gapY);
+    
+    row.forEach((c, colIdx) => {
+      if (colIdx >= cols) return; // Max 8 columns
+      
+      const x = startX + colIdx * (boxSize + gapX);
+
+      // Draw Pinyin (only for non-empty chars)
+      if (config.showPinyin && c.pinyin && !c.isSpace) {
+          ctx.font = fontPinyin;
+          ctx.fillStyle = '#666666';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(c.pinyin, x + boxSize/2, y - 10);
+      }
+
+      // Draw Grid Box (always draw, even for spaces)
+      drawGrid(ctx, x, y, boxSize, config.gridType);
+
+      // Draw Character (skip for spaces/newlines)
+      if (!c.isSpace && c.char) {
+        ctx.font = fontMain;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const cx = x + boxSize/2;
+        const cy = y + boxSize/2 + 10;
+
+        if (config.mode === 'trace') {
+            ctx.fillStyle = '#cccccc';
+            ctx.fillText(c.char, cx, cy);
+        } else if (config.mode === 'outline') {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#999999';
+            ctx.strokeText(c.char, cx, cy);
+        } else {
+            ctx.fillStyle = '#000000';
+            ctx.fillText(c.char, cx, cy);
+        }
+      }
+    });
   });
 
   // 5. Footer
