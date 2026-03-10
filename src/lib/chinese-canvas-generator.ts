@@ -60,7 +60,8 @@ export const generateChineseImage = async (
   const fontPinyin = '40px Arial, sans-serif';
 
   // Split chars into rows by isNewLine marker
-  const rows: typeof chars[][] = [[]];
+  type CharItem = { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean; isBlank?: boolean };
+  const rows: CharItem[][] = [[]];
   chars.forEach((c) => {
     if (c.isNewLine) {
       rows.push([]);
