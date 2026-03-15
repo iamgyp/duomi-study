@@ -10,6 +10,7 @@ import { AlgebraPdfDocument } from '@/lib/pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileSidebar } from '@/components/MobileSidebar';
 import { useTranslation } from '@/hooks/useTranslation';
+import { StudyRecordButton } from '@/components/StudyRecordButton';
 
 export default function AlgebraPage() {
   const { t, mounted } = useTranslation();
@@ -177,6 +178,16 @@ export default function AlgebraPage() {
               <RefreshCw className="h-5 w-5" />
               {t('Algebra.generateQuestions')}
             </button>
+
+            {/* 完成学习按钮 */}
+            {questions.length > 0 && (
+              <StudyRecordButton
+                subject="algebra"
+                contentType="algebra"
+                contentTitle={`代数练习 - ${config.difficulty}星难度 (${config.language === 'zh' ? '中文' : '英文'})`}
+                duration={25}
+              />
+            )}
           </div>
         </MobileSidebar>
 

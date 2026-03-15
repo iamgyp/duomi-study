@@ -8,6 +8,7 @@ import { EnglishPdfDocument } from '@/lib/english-pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileSidebar } from '@/components/MobileSidebar';
 import { useTranslation } from '@/hooks/useTranslation';
+import { StudyRecordButton } from '@/components/StudyRecordButton';
 
 export default function EnglishPage() {
   const { t, mounted } = useTranslation();
@@ -150,6 +151,14 @@ export default function EnglishPage() {
               <Printer className="h-5 w-5" />
               {isGenerating ? t('Common.crafting') : t('English.savePdf')}
             </button>
+
+            {/* 完成学习按钮 */}
+            <StudyRecordButton
+              subject="english"
+              contentType="english-word"
+              contentTitle={`英语单词 - ${words.slice(0, 3).join(', ')}${words.length > 3 ? '...' : ''}`}
+              duration={15}
+            />
           </div>
         </MobileSidebar>
 

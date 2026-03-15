@@ -9,6 +9,7 @@ import { MathPdfDocument } from '@/lib/pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileSidebar } from '@/components/MobileSidebar';
 import { useTranslation } from '@/hooks/useTranslation';
+import { StudyRecordButton } from '@/components/StudyRecordButton';
 
 export default function MathPage() {
   const { t, mounted } = useTranslation();
@@ -228,6 +229,16 @@ export default function MathPage() {
               <RefreshCw className="h-5 w-5" />
               {t('Math.craftSheet')}
             </button>
+
+            {/* 完成学习按钮 */}
+            {questions.length > 0 && (
+              <StudyRecordButton
+                subject="math"
+                contentType="basic-math"
+                contentTitle={`基础数学 - ${config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'mul' ? '乘法' : '混合'} (${config.max})`}
+                duration={20}
+              />
+            )}
           </div>
         </MobileSidebar>
 

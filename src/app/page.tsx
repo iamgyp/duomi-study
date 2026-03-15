@@ -46,7 +46,7 @@ export default function Home() {
       </div>
 
       {/* Main Menu Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 w-full max-w-5xl z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 w-full max-w-6xl z-10">
         
         {/* Math Block */}
         <Link href="/math" className="group">
@@ -86,6 +86,21 @@ export default function Home() {
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
                {t('Home.englishBtn')} &rarr;
+             </div>
+          </div>
+        </Link>
+
+        {/* History Block */}
+        <Link href="/history" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#10B981] hover:bg-[#059669] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">📊</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">学习记录</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               查看学习统计、记录进度。
+               追踪你的成长足迹！
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               查看记录 &rarr;
              </div>
           </div>
         </Link>

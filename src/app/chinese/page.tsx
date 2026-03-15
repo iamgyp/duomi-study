@@ -13,6 +13,7 @@ import { PoemPdfDocument } from '@/lib/poem-pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileSidebar } from '@/components/MobileSidebar';
 import { useTranslation } from '@/hooks/useTranslation';
+import { StudyRecordButton } from '@/components/StudyRecordButton';
 
 export default function ChinesePage() {
   const { t, mounted } = useTranslation();
@@ -273,6 +274,14 @@ export default function ChinesePage() {
                   <Printer className="h-5 w-5" />
                   {isGenerating ? t('Common.crafting') : t('Chinese.saveImage')}
                 </button>
+
+                {/* 完成学习按钮 - 写字练习 */}
+                <StudyRecordButton
+                  subject="chinese"
+                  contentType="character"
+                  contentTitle={`汉字练习 - ${text.slice(0, 20)}${text.length > 20 ? '...' : ''}`}
+                  duration={15}
+                />
               </>
             ) : (
               // Poem Mode Settings
@@ -344,6 +353,16 @@ export default function ChinesePage() {
                     <Printer className="h-5 w-5" />
                     {isGenerating ? t('Common.crafting') : t('Chinese.savePdf')}
                   </button>
+                )}
+
+                {/* 完成学习按钮 - 古诗填空 */}
+                {poemExercises.length > 0 && (
+                  <StudyRecordButton
+                    subject="chinese"
+                    contentType="poem"
+                    contentTitle={`古诗填空 - ${poemConfig.difficulty}星难度`}
+                    duration={20}
+                  />
                 )}
               </>
             )}
