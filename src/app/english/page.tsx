@@ -159,6 +159,10 @@ export default function EnglishPage() {
               contentTitle={`英语单词 - ${words.slice(0, 3).join(', ')}${words.length > 3 ? '...' : ''}`}
               duration={15}
             />
+
+            <Link href="/english/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
+              <span>🎮 在线做题</span>
+            </Link>
           </div>
         </MobileSidebar>
 
