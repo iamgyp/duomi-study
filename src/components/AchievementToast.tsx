@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { UnlockedAchievement } from '@/lib/achievement-engine';
 import { getAchievementById } from '@/lib/achievement-registry';
 
@@ -10,35 +10,47 @@ interface AchievementToastProps {
 }
 
 export function AchievementToast({ unlocks, onDismiss }: AchievementToastProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (unlocks.length === 0) return;
+
+    const showTimer = setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        if (currentIndex < unlocks.length - 1) {
+          setCurrentIndex(prev => prev + 1);
+          setIsVisible(true);
+        } else {
+          onDismiss();
+        }
+      }, 500);
+    }, 2500);
+
+    return () => clearTimeout(showTimer);
+  }, [currentIndex, unlocks.length, onDismiss]);
+
+  if (unlocks.length === 0) return null;
+
+  const unlock = unlocks[currentIndex];
+  const achievement = getAchievementById(unlock.achievementId);
+  if (!achievement) return null;
+
   return (
-    <div className="fixed bottom-4 right-4 z-50 space-y-2 max-w-sm animate-in slide-in-from-bottom-4">
-      {unlocks.map((unlock) => {
-        const achievement = getAchievementById(unlock.achievementId);
-        return (
-          <div
-            key={unlock.achievementId}
-            className="mc-card bg-gradient-to-r from-yellow-400 to-yellow-500 p-4 text-black shadow-lg border-4 border-yellow-600"
-          >
-            <div className="flex items-start gap-3">
-              <div className="text-3xl">🏆</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-700" />
-                  <span className="font-bold text-sm font-[var(--font-pixel)]">成就解锁！</span>
-                </div>
-                <p className="font-bold mt-1">{achievement?.name || unlock.achievementId}</p>
-                <p className="text-sm text-yellow-900/70">{achievement?.description || ''}</p>
-              </div>
-              <button
-                onClick={onDismiss}
-                className="p-1 hover:bg-black/10 rounded transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        );
-      })}
+    <div
+      className={`fixed top-4 right-4 z-[100] transition-all duration-500 ${
+        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+      }`}
+    >
+      <div className="mc-card bg-[#FFD700] p-4 flex items-center gap-3 animate-bounce-once">
+        <div className="text-4xl">{achievement.icon}</div>
+        <div>
+          <div className="text-xs font-bold text-black/60 uppercase">成就解锁!</div>
+          <div className="text-lg font-bold text-black">{achievement.name}</div>
+          <div className="text-sm text-black/70">{achievement.description}</div>
+        </div>
+      </div>
     </div>
   );
 }
