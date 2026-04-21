@@ -46,7 +46,7 @@ export default function Home() {
       </div>
 
       {/* Main Menu Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 w-full max-w-6xl z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 w-full max-w-7xl z-10">
         
         {/* Math Block */}
         <Link href="/math" className="group">
@@ -101,6 +101,21 @@ export default function Home() {
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
                查看记录 &rarr;
+             </div>
+          </div>
+        </Link>
+
+        {/* Achievements Block */}
+        <Link href="/achievements" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#9C27B0] hover:bg-[#7B1FA2] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">🏆</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">成就殿堂</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               解锁成就，收集徽章。
+               见证你的成长之路！
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               查看成就 &rarr;
              </div>
           </div>
         </Link>
