@@ -39,12 +39,13 @@ export default function AlgebraQuizPage() {
     questions.forEach((q, i) => {
       const userAnswer = quiz.answers.get(i) || '';
       const correct = userAnswer === q.options[q.correctIndex];
+      const itemDisplay = q.items.map(({ item, quantity }) => `${item.emoji}×${quantity}`).join(' + ');
       if (correct) {
         correctCount++;
       } else {
         wrongAnswers.push({
           questionIndex: i,
-          questionText: q.questionText,
+          questionText: itemDisplay,
           userAnswer: userAnswer || '未作答',
           correctAnswer: q.options[q.correctIndex],
         });
@@ -128,6 +129,19 @@ export default function AlgebraQuizPage() {
         </div>
 
         <div className="mc-card bg-white p-6 sm:p-12 mb-6">
+          {/* 当前题物品价格表 */}
+          {currentQ.items.length > 0 && (
+            <div className="mb-6 flex justify-center gap-6 flex-wrap">
+              {currentQ.items.map(({ item, quantity }, idx) => (
+                <div key={idx} className="flex items-center gap-2 bg-[#F5F5DC] border-2 border-black px-4 py-2 rounded-sm">
+                  <span className="text-2xl">{item.emoji}</span>
+                  <span className="text-sm text-gray-500">=</span>
+                  <span className="text-lg font-bold text-[#4CAF50]">{item.price}{config.language === 'zh' ? '元' : '$'}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="text-center mb-6">
             <span className="text-sm text-gray-400">第 {quiz.currentQuestion + 1} / {quiz.totalQuestions} 题</span>
             <h2 className="text-2xl sm:text-4xl font-bold text-[#333] mt-4">{currentQ.questionText}</h2>
