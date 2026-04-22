@@ -151,7 +151,7 @@ export default function MathQuizPage() {
               <button
                 key={i}
                 onClick={() => handleAnswer(opt)}
-                className={`mc-btn py-6 text-xl sm:text-2xl ${
+                className={`mc-btn py-6 text-xl sm:text-2xl font-sans ${
                   quiz.answers.get(quiz.currentQuestion) === opt
                     ? 'bg-[#4CAF50] text-white border-black'
                     : 'bg-white text-black hover:bg-gray-100'

@@ -38,6 +38,12 @@
 - 在线做题页面提供「导出本次练习为 PDF」按钮
 - 所有导出不依赖外部服务，纯前端生成
 
+### 错题本
+
+- **数据来源**: 自动从历史做题记录中提取错误题目
+- **学科筛选**: 支持按数学/代数/语文/英语筛选
+- **重做功能**: 一键跳转到对应学科重新练习
+
 ## 技术栈
 
 | 类别 | 技术 |
@@ -72,7 +78,8 @@ src/
 │   │   ├── page.tsx              #   配置页 — 单词输入
 │   │   └── quiz/page.tsx         #   在线做题 — 单词拼写
 │   ├── achievements/page.tsx     # 成就殿堂 — 分类 tab + 进度
-│   └── history/page.tsx          # 历史记录 — 统计 + 筛选
+│   ├── history/page.tsx          # 历史记录 — 统计 + 筛选
+│   └── wrong-answers/page.tsx    # 错题本 — 学科筛选 + 重做
 ├── lib/                          # 纯逻辑库
 │   ├── math-generator.ts         # 数学题目生成器
 │   ├── algebra-generator.ts      # 代数题目生成器 (40 种 Minecraft 物品)
@@ -83,6 +90,7 @@ src/
 │   ├── achievement-registry.ts   # 成就注册表 — 15 个成就定义
 │   ├── achievement-engine.ts     # 成就引擎 — 评估、解锁、持久化
 │   ├── study-storage.ts          # localStorage CRUD — 学习记录
+│   ├── wrong-answers.ts          # 错题提取 — 从做题记录中提取错题
 │   ├── english-pdf-generator.tsx # 英语 PDF 生成
 │   └── english-canvas-generator.ts # 英语 Canvas 图片生成
 ├── hooks/                        # React Hooks
