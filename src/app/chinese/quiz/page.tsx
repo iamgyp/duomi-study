@@ -29,14 +29,16 @@ export default function ChineseQuizPage() {
   )[0];
 
   const quiz = useQuiz(questions.length);
-  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
+  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: { poemTitle: string; author: string; dynasty: string; lines: Array<{ text: string; wrongChars: Array<{ charIndex: number; userAnswer: string; correctAnswer: string }> }> }[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
 
   const handleSubmit = () => {
     let correctCount = 0;
-    const wrongAnswers: any[] = [];
+    const wrongAnswers: { poemTitle: string; author: string; dynasty: string; lines: Array<{ text: string; wrongChars: Array<{ charIndex: number; userAnswer: string; correctAnswer: string }> }> }[] = [];
 
     questions.forEach((q, qi) => {
+      const lineErrors = new Map<number, { text: string; wrongChars: Array<{ charIndex: number; userAnswer: string; correctAnswer: string }> }>();
+
       q.blanks.forEach((blank, bi) => {
         const blankKey = qi * 100 + bi;
         const userAnswer = quiz.answers.get(blankKey) || '';
@@ -44,18 +46,28 @@ export default function ChineseQuizPage() {
         if (isCorrect) {
           correctCount++;
         } else {
-          // 构建完整诗句，高亮填空位置
-          const fullLine = q.poem.lines[blank.lineIndex].text;
-          wrongAnswers.push({
-            questionIndex: qi,
-            questionText: `${q.poem.title} — ${q.poem.dynasty} ${q.poem.author}`,
-            lineText: fullLine,
+          if (!lineErrors.has(blank.lineIndex)) {
+            lineErrors.set(blank.lineIndex, {
+              text: q.poem.lines[blank.lineIndex].text,
+              wrongChars: [],
+            });
+          }
+          lineErrors.get(blank.lineIndex)!.wrongChars.push({
             charIndex: blank.charIndex,
             userAnswer: userAnswer || '未作答',
             correctAnswer: blank.correctAnswer,
           });
         }
       });
+
+      if (lineErrors.size > 0) {
+        wrongAnswers.push({
+          poemTitle: q.poem.title,
+          author: q.poem.author,
+          dynasty: q.poem.dynasty,
+          lines: Array.from(lineErrors.values()),
+        });
+      }
     });
 
     const totalBlanks = questions.reduce((sum, q) => sum + q.blanks.length, 0);

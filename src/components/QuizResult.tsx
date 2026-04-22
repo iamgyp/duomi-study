@@ -6,7 +6,7 @@ interface QuizResultProps {
   totalQuestions: number;
   correctCount: number;
   elapsedSeconds: number;
-  wrongAnswers: Array<{ questionIndex: number; questionText: string; userAnswer: string; correctAnswer: string }>;
+  wrongAnswers: any[];
   onRetry: () => void;
   onExportPdf?: () => void;
 }
@@ -51,10 +51,10 @@ export function QuizResult({
             <h2 className="text-xl font-bold text-[#333] mb-3 flex items-center gap-2">
               <span className="text-red-500">❌</span> 错题回顾
             </h2>
-            <div className="space-y-3 max-h-80 overflow-y-auto">
+            <div className="space-y-4 max-h-80 overflow-y-auto">
               {wrongAnswers.map((wa, i) => (
                 <div key={i} className="bg-red-50 border-2 border-red-200 rounded p-3">
-                  <div className="font-bold text-sm text-[#333] mb-1">
+                  <div className="font-bold text-sm text-[#333] mb-2">
                     {wa.questionText}
                   </div>
                   {'lineText' in wa && wa.lineText ? (
@@ -71,6 +71,30 @@ export function QuizResult({
                         return <span key={ci}>{char}</span>;
                       })}
                     </div>
+                  ) : 'poemTitle' in wa ? (
+                    <>
+                      <div className="text-xs text-gray-500 mb-2">
+                        {(wa as any).dynasty} {(wa as any).author}
+                      </div>
+                      <div className="space-y-1">
+                        {(wa as any).lines.map((line: { text: string; wrongChars: { charIndex: number; userAnswer: string; correctAnswer: string }[] }, li: number) => (
+                          <div key={li} className="text-lg sm:text-xl font-serif text-center text-[#333]" style={{ fontFamily: '"KaiTi", "楷体", serif' }}>
+                            {line.text.split('').map((char: string, ci: number) => {
+                              const wrongChar = line.wrongChars.find((wc: { charIndex: number }) => wc.charIndex === ci);
+                              if (wrongChar) {
+                                return (
+                                  <span key={ci} className="inline-flex flex-col items-center mx-px">
+                                    <span className="line-through text-red-400">{char}</span>
+                                    <span className="text-green-600 font-bold text-sm">{wrongChar.correctAnswer}</span>
+                                  </span>
+                                );
+                              }
+                              return <span key={ci}>{char}</span>;
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   ) : (
                     <div className="text-sm">
                       <span className="text-red-600">你的答案: {wa.userAnswer}</span>
