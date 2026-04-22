@@ -44,9 +44,13 @@ export default function ChineseQuizPage() {
         if (isCorrect) {
           correctCount++;
         } else {
+          // 构建完整诗句，高亮填空位置
+          const fullLine = q.poem.lines[blank.lineIndex].text;
           wrongAnswers.push({
             questionIndex: qi,
-            questionText: `${q.poem.title} - 第 ${blank.lineIndex + 1} 句`,
+            questionText: `${q.poem.title} — ${q.poem.dynasty} ${q.poem.author}`,
+            lineText: fullLine,
+            charIndex: blank.charIndex,
             userAnswer: userAnswer || '未作答',
             correctAnswer: blank.correctAnswer,
           });

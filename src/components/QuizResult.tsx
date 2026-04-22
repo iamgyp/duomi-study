@@ -51,14 +51,32 @@ export function QuizResult({
             <h2 className="text-xl font-bold text-[#333] mb-3 flex items-center gap-2">
               <span className="text-red-500">❌</span> 错题回顾
             </h2>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
+            <div className="space-y-3 max-h-80 overflow-y-auto">
               {wrongAnswers.map((wa, i) => (
-                <div key={i} className="bg-red-50 border-2 border-red-200 rounded p-3 text-sm">
-                  <div className="font-bold text-[#333]">
-                    第 {wa.questionIndex + 1} 题: {wa.questionText}
+                <div key={i} className="bg-red-50 border-2 border-red-200 rounded p-3">
+                  <div className="font-bold text-sm text-[#333] mb-1">
+                    {wa.questionText}
                   </div>
-                  <div className="text-red-600 mt-1">你的答案: {wa.userAnswer}</div>
-                  <div className="text-green-600">正确答案: {wa.correctAnswer}</div>
+                  {'lineText' in wa && wa.lineText ? (
+                    <div className="text-xl sm:text-2xl font-serif text-center py-2 text-[#333]" style={{ fontFamily: '"KaiTi", "楷体", serif' }}>
+                      {(wa.lineText as string).split('').map((char, ci) => {
+                        if (ci === (wa as any).charIndex) {
+                          return (
+                            <span key={ci}>
+                              <span className="line-through text-red-400 mr-1">{char}</span>
+                              <span className="text-green-600 font-bold mx-1">→ {(wa as any).correctAnswer}</span>
+                            </span>
+                          );
+                        }
+                        return <span key={ci}>{char}</span>;
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-sm">
+                      <span className="text-red-600">你的答案: {wa.userAnswer}</span>
+                      <span className="text-green-600 ml-3">正确答案: {wa.correctAnswer}</span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
