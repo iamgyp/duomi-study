@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { AlgebraConfig } from '@/lib/algebra-generator';
@@ -31,6 +31,13 @@ export default function AlgebraQuizPage() {
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
+
+  const handleAnswer = useCallback((opt: string) => {
+    quiz.setAnswer(quiz.currentQuestion, opt);
+    if (quiz.currentQuestion < quiz.totalQuestions - 1) {
+      setTimeout(() => quiz.nextQuestion(), 400);
+    }
+  }, [quiz]);
 
   const handleSubmit = () => {
     let correctCount = 0;
@@ -151,7 +158,7 @@ export default function AlgebraQuizPage() {
             {currentQ.options.map((opt, i) => (
               <button
                 key={i}
-                onClick={() => quiz.setAnswer(quiz.currentQuestion, opt)}
+                onClick={() => handleAnswer(opt)}
                 className={`mc-btn py-6 text-lg sm:text-xl ${
                   quiz.answers.get(quiz.currentQuestion) === opt
                     ? 'bg-[#4CAF50] text-white border-black'

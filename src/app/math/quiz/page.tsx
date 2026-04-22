@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { MathConfig } from '@/lib/math-generator';
@@ -31,6 +31,13 @@ export default function MathQuizPage() {
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: { questionIndex: number; questionText: string; userAnswer: string; correctAnswer: string }[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
+
+  const handleAnswer = useCallback((opt: string) => {
+    quiz.setAnswer(quiz.currentQuestion, opt);
+    if (quiz.currentQuestion < quiz.totalQuestions - 1) {
+      setTimeout(() => quiz.nextQuestion(), 400);
+    }
+  }, [quiz]);
 
   const handleSubmit = () => {
     let correctCount = 0;
@@ -143,7 +150,7 @@ export default function MathQuizPage() {
             {currentQ.options.map((opt, i) => (
               <button
                 key={i}
-                onClick={() => quiz.setAnswer(quiz.currentQuestion, opt)}
+                onClick={() => handleAnswer(opt)}
                 className={`mc-btn py-6 text-xl sm:text-2xl ${
                   quiz.answers.get(quiz.currentQuestion) === opt
                     ? 'bg-[#4CAF50] text-white border-black'
