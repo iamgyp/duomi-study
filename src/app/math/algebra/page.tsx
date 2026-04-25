@@ -190,7 +190,7 @@ export default function AlgebraPage() {
             )}
 
             {/* 在线做题按钮 */}
-            <Link href="/math/algebra/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
+            <Link href={`/math/algebra/quiz?difficulty=${config.difficulty}&count=${config.count}&language=${config.language}`} className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
               <span>🎮 在线做题</span>
             </Link>
           </div>

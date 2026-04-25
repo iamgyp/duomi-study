@@ -13,11 +13,22 @@ import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
-const defaultConfig: AlgebraConfig = {
-  difficulty: 2,
-  count: 20,
-  language: 'zh',
-};
+function getConfigFromUrl(): AlgebraConfig {
+  if (typeof window === 'undefined') {
+    return { difficulty: 2, count: 20, language: 'zh' };
+  }
+  const params = new URLSearchParams(window.location.search);
+  const difficulty = parseInt(params.get('difficulty') || '2', 10);
+  const count = parseInt(params.get('count') || '20', 10);
+  const language = params.get('language') || 'zh';
+  return {
+    difficulty: [1, 2, 3].includes(difficulty) ? difficulty as 1 | 2 | 3 : 2,
+    count: [10, 20, 50].includes(count) ? count as 10 | 20 | 50 : 20,
+    language: language === 'en' ? 'en' : 'zh',
+  };
+}
+
+const defaultConfig: AlgebraConfig = getConfigFromUrl();
 
 export default function AlgebraQuizPage() {
   const [config] = useState<AlgebraConfig>(defaultConfig);
