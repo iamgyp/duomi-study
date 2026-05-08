@@ -198,6 +198,59 @@ export const ACHIEVEMENTS: Achievement[] = [
     progressValue: (_stats, unlockedCount = 0) => Math.min(unlockedCount, 10),
     progressMax: 10,
   },
+  // === Speed Challenge ===
+  {
+    id: 'speed-starter',
+    name: '速算新手',
+    description: '完成第一次口算速算挑战',
+    icon: '⚡',
+    category: 'milestone',
+    check: (stats) => stats.subjectStats['speed-challenge'].sessions >= 1,
+    progressLabel: (stats) => `${stats.subjectStats['speed-challenge'].sessions}/1`,
+    progressValue: (stats) => Math.min(stats.subjectStats['speed-challenge'].sessions, 1),
+    progressMax: 1,
+  },
+  {
+    id: 'speed-demon',
+    name: '速算达人',
+    description: '完成 10 次口算速算挑战',
+    icon: '💨',
+    category: 'milestone',
+    check: (stats) => stats.subjectStats['speed-challenge'].sessions >= 10,
+    progressLabel: (stats) => `${stats.subjectStats['speed-challenge'].sessions}/10`,
+    progressValue: (stats) => Math.min(stats.subjectStats['speed-challenge'].sessions, 10),
+    progressMax: 10,
+  },
+  {
+    id: 'lightning-10',
+    name: '闪电十题',
+    description: '在60秒内答对10题',
+    icon: '🌩️',
+    category: 'perfect',
+    check: () => false, // handled specially in engine
+    progressLabel: () => '在60秒挑战中达到10题',
+    progressValue: () => 0,
+    progressMax: 1,
+  },
+  {
+    id: 'math-sharpshooter',
+    name: '数学神射手',
+    description: '数学类（含速算）累计做对 1000 题',
+    icon: '🎯',
+    category: 'perfect',
+    check: (stats) =>
+      stats.subjectStats.math.correct +
+      stats.subjectStats['speed-challenge'].correct >= 1000,
+    progressLabel: (stats) => {
+      const total = stats.subjectStats.math.correct + stats.subjectStats['speed-challenge'].correct;
+      return `${total}/1000`;
+    },
+    progressValue: (stats) => {
+      const total = stats.subjectStats.math.correct + stats.subjectStats['speed-challenge'].correct;
+      return Math.min(total, 1000);
+    },
+    progressMax: 1000,
+  },
 ];
 
 export function getAchievementsByCategory(category: AchievementCategory): Achievement[] {

@@ -38,6 +38,9 @@ export function evaluateAchievements(): UnlockedAchievement[] {
     else if (achievement.id === 'triple-perfect') {
       isUnlocked = checkTriplePerfect();
     }
+    else if (achievement.id === 'lightning-10') {
+      isUnlocked = checkLightning10();
+    }
     else if (achievement.category === 'collection') {
       isUnlocked = achievement.check(stats, unlocked.length);
     }
@@ -76,6 +79,16 @@ function checkTriplePerfect(): boolean {
     }
   }
   return false;
+}
+
+function checkLightning10(): boolean {
+  const sessions = getAllQuizSessions();
+  return sessions.some(
+    (s) =>
+      s.subject === 'speed-challenge' &&
+      s.correctCount >= 10 &&
+      s.duration <= 60,
+  );
 }
 
 export function unlockAchievement(achievementId: string): UnlockedAchievement | null {
