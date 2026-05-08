@@ -13,8 +13,6 @@ export type SpeedQuestion = {
   questionText: string;
 };
 
-let idCounter = 0;
-
 export function generateSpeedQuestion(config: SpeedQuizConfig): SpeedQuestion {
   let q: SpeedQuestion | null = null;
   let attempts = 0;
@@ -29,12 +27,11 @@ export function generateSpeedQuestion(config: SpeedQuizConfig): SpeedQuestion {
     q = { id: '', num1: 1, num2: 1, operator: '+', answer: 2, questionText: '1 + 1 = ?' };
   }
 
-  idCounter++;
-  q.id = `speed-${Date.now()}-${idCounter}`;
+  q.id = `speed-${Math.random().toString(36).substr(2, 9)}`;
   return q;
 }
 
-function generateOne(op: string, max: number): SpeedQuestion | null {
+function generateOne(op: SpeedQuizConfig['operation'], max: number): SpeedQuestion | null {
   const operator = op === 'mix'
     ? (Math.random() > 0.5 ? '+' : '-')
     : (op === 'mul' ? '×' : (op === 'sub' ? '-' : '+'));
