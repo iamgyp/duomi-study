@@ -13,13 +13,14 @@ export type WrongAnswerGroup = {
   items: WrongAnswerItem[];
 };
 
-const SUBJECT_ORDER: QuizSubject[] = ['math', 'algebra', 'chinese-poem', 'english'];
+const SUBJECT_ORDER: QuizSubject[] = ['math', 'algebra', 'chinese-poem', 'english', 'speed-challenge'];
 
 export const SUBJECT_LABELS: Record<QuizSubject, string> = {
   math: '数学',
   algebra: '代数',
   'chinese-poem': '语文',
   english: '英语',
+  'speed-challenge': '速算挑战',
 };
 
 export const SUBJECT_ROUTES: Record<QuizSubject, string> = {
@@ -27,6 +28,7 @@ export const SUBJECT_ROUTES: Record<QuizSubject, string> = {
   algebra: '/math/algebra/quiz',
   'chinese-poem': '/chinese/quiz',
   english: '/english/quiz',
+  'speed-challenge': '/math/speed-challenge/quiz',
 };
 
 export function getWrongAnswers(): WrongAnswerGroup[] {

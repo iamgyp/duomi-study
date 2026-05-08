@@ -42,6 +42,7 @@ export function rebuildStats(): AggregatedStats {
     algebra: { ...DEFAULT_SUBJECT_STATS },
     'chinese-poem': { ...DEFAULT_SUBJECT_STATS },
     english: { ...DEFAULT_SUBJECT_STATS },
+    'speed-challenge': { ...DEFAULT_SUBJECT_STATS },
   };
 
   let totalCorrect = 0;

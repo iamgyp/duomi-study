@@ -5,7 +5,7 @@ import { Poem, PoemLine } from './poem-data';
 
 // ── Subject union ────────────────────────────────────────────────────────────
 
-export type QuizSubject = 'math' | 'algebra' | 'chinese-poem' | 'english';
+export type QuizSubject = 'math' | 'algebra' | 'chinese-poem' | 'english' | 'speed-challenge';
 
 // ── Question types ───────────────────────────────────────────────────────────
 
