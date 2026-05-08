@@ -244,6 +244,11 @@ export default function MathPage() {
             <Link href="/math/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
               <span>🎮 在线做题</span>
             </Link>
+
+            {/* 口算速算挑战按钮 */}
+            <Link href="/math/speed-challenge" className="mc-btn w-full bg-[#9C27B0] text-white text-lg sm:text-xl hover:bg-[#7B1FA2] flex items-center justify-center gap-2 py-3">
+              <span>⚡ 口算速算挑战</span>
+            </Link>
           </div>
         </MobileSidebar>
 
