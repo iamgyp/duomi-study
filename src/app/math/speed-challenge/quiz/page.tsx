@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { SpeedQuizConfig, SpeedQuestion } from '@/lib/speed-generator';
-import { useSpeedQuiz, SpeedQuizAnswer } from '@/hooks/useSpeedQuiz';
+import { SpeedQuizConfig } from '@/lib/speed-generator';
+import { useSpeedQuiz } from '@/hooks/useSpeedQuiz';
 import { saveQuizSession } from '@/lib/quiz-engine';
 import { useAchievements } from '@/hooks/useAchievements';
 import { CountdownTimer } from '@/components/CountdownTimer';
@@ -45,8 +45,6 @@ export default function SpeedChallengeQuizPage() {
   useEffect(() => {
     if (quiz.state === 'timeUp' && !finished) {
       setFinished(true);
-
-      const wrongAnswers = quiz.answers.filter((a) => !a.correct);
 
       saveQuizSession({
         subject: 'speed-challenge',

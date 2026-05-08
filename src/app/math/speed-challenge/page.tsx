@@ -100,7 +100,7 @@ export default function SpeedChallengePage() {
               <select
                 className="w-full border-2 border-black bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono"
                 value={operation}
-                onChange={(e) => setOperation(e.target.value as any)}
+                onChange={(e) => setOperation(e.target.value as 'add' | 'sub' | 'mul' | 'mix')}
               >
                 <option value="add">加法 (+)</option>
                 <option value="sub">减法 (-)</option>
