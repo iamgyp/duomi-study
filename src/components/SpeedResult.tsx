@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, RefreshCw, Trophy } from 'lucide-react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { SpeedQuizAnswer } from '@/hooks/useSpeedQuiz';
 
