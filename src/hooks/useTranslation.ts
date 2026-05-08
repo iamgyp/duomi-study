@@ -12,6 +12,7 @@ interface TranslationMessages {
   Chinese: Record<string, string>;
   English: Record<string, string>;
   Footer: Record<string, string>;
+  SpeedChallenge: Record<string, string>;
 }
 
 function getNestedValue(obj: Record<string, any>, path: string): any {

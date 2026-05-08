@@ -102,5 +102,32 @@
     "duomiStudy": "Duomi Study - Level Up Your Brain!",
     "shopSmart": "Duomi Study - Shop Smart!",
     "craftKnowledge": "Duomi Study - Craft Your Knowledge!"
+  },
+  "SpeedChallenge": {
+    "title": "口算速算挑战",
+    "description": "在限定时间内尽可能多地答题！",
+    "timeLimit": "时间限制",
+    "timeLimit30s": "30秒",
+    "timeLimit60s": "60秒",
+    "timeLimit120s": "120秒",
+    "startChallenge": "开始挑战",
+    "ready": "准备好了吗？",
+    "configSummary": "{time}秒 · 最大值{max} · {op}",
+    "timeUp": "时间到！",
+    "questionsPerMinute": "每分钟 {n} 题",
+    "enterAnswer": "输入答案...",
+    "retry": "再试一次",
+    "backToConfig": "返回设置",
+    "operationLabel": "运算类型",
+    "correct": "正确!",
+    "wrong": "错误!",
+    "accuracy": "正确率",
+    "speed": "每分钟题数",
+    "timeUsed": "用时",
+    "wrongReview": "错题回顾",
+    "yourAnswer": "你的答案",
+    "correctAnswer": "正确答案",
+    "perfectComplete": "完美通关！",
+    "instructions": "输入答案后按 Enter 键确认，答对自动进入下一题。"
   }
 }

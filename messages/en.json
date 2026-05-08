@@ -102,5 +102,32 @@
     "duomiStudy": "Duomi Study - Level Up Your Brain!",
     "shopSmart": "Duomi Study - Shop Smart!",
     "craftKnowledge": "Duomi Study - Craft Your Knowledge!"
+  },
+  "SpeedChallenge": {
+    "title": "Mental Math Speed Challenge",
+    "description": "Answer as many questions as you can in the time limit!",
+    "timeLimit": "Time Limit",
+    "timeLimit30s": "30 seconds",
+    "timeLimit60s": "60 seconds",
+    "timeLimit120s": "120 seconds",
+    "startChallenge": "Start Challenge",
+    "ready": "Ready?",
+    "configSummary": "{time}s · Max {max} · {op}",
+    "timeUp": "Time's Up!",
+    "questionsPerMinute": "{n} questions/min",
+    "enterAnswer": "Enter answer...",
+    "retry": "Try Again",
+    "backToConfig": "Back to Settings",
+    "operationLabel": "Operation",
+    "correct": "Correct!",
+    "wrong": "Wrong!",
+    "accuracy": "Accuracy",
+    "speed": "Questions/min",
+    "timeUsed": "Time Used",
+    "wrongReview": "Wrong Answers",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "perfectComplete": "Perfect!",
+    "instructions": "Type your answer and press Enter. Correct answers auto-advance."
   }
 }
