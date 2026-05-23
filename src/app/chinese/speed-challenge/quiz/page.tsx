@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, SuspenseProps } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -10,7 +10,6 @@ import { saveQuizSession } from '@/lib/quiz-engine';
 import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useAchievements } from '@/hooks/useAchievements';
 import { CountdownTimer } from '@/components/CountdownTimer';
-import { SpeedResult } from '@/components/SpeedResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { addScore } from '@/lib/leaderboard';
@@ -21,6 +20,16 @@ const defaultConfig: ChineseSpeedQuizConfig = {
 };
 
 export default function ChineseSpeedChallengeQuizPage() {
+  return (
+    <Suspense>
+      <ChineseSpeedChallengeQuizContent />
+    </Suspense>
+  );
+}
+
+import { Suspense } from 'react';
+
+function ChineseSpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
   const [finished, setFinished] = useState(false);
   const [started, setStarted] = useState(false);
@@ -185,7 +194,6 @@ export default function ChineseSpeedChallengeQuizPage() {
   );
 }
 
-// Chinese speed result component (inline since SpeedResult expects math-specific types)
 function ChineseSpeedResult({
   correctCount,
   attemptedCount,

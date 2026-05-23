@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -22,6 +22,14 @@ const defaultConfig: SpeedQuizConfig = {
 };
 
 export default function SpeedChallengeQuizPage() {
+  return (
+    <Suspense>
+      <SpeedChallengeQuizContent />
+    </Suspense>
+  );
+}
+
+function SpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const [finished, setFinished] = useState(false);

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -20,6 +21,14 @@ const defaultConfig: EnglishSpeedQuizConfig = {
 };
 
 export default function EnglishSpeedChallengeQuizPage() {
+  return (
+    <Suspense>
+      <EnglishSpeedChallengeQuizContent />
+    </Suspense>
+  );
+}
+
+function EnglishSpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
   const [finished, setFinished] = useState(false);
   const [started, setStarted] = useState(false);
@@ -35,6 +44,7 @@ export default function EnglishSpeedChallengeQuizPage() {
   useEffect(() => {
     if (quiz.state === 'timeUp' && !finished) {
       setFinished(true);
+
       const accuracy = quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0;
       const qpm = config.timeLimitSeconds > 0 ? (quiz.correctCount / config.timeLimitSeconds) * 60 : 0;
 
