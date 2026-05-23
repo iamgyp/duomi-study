@@ -14,7 +14,7 @@ export interface EnglishSpeedQuizAnswer {
 
 export function useEnglishSpeedQuiz(config: EnglishSpeedQuizConfig) {
   const [state, setState] = useState<SpeedQuizState>('idle');
-  const [timeRemaining, setTimeRemaining] = useState(config.timeLimitSeconds);
+  const [timeRemaining, setTimeRemaining] = useState<number>(config.timeLimitSeconds);
   const [currentQuestion, setCurrentQuestion] = useState<EnglishSpeedQuestion | null>(null);
   const [answers, setAnswers] = useState<EnglishSpeedQuizAnswer[]>([]);
   const [correctCount, setCorrectCount] = useState(0);

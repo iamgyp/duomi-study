@@ -12,7 +12,7 @@ export interface ChineseSpeedQuizAnswer {
 
 export function useChineseSpeedQuiz(config: ChineseSpeedQuizConfig) {
   const [state, setState] = useState<SpeedQuizState>('idle');
-  const [timeRemaining, setTimeRemaining] = useState(config.timeLimitSeconds);
+  const [timeRemaining, setTimeRemaining] = useState<number>(config.timeLimitSeconds);
   const [currentQuestion, setCurrentQuestion] = useState<ChineseSpeedQuestion | null>(null);
   const [answers, setAnswers] = useState<ChineseSpeedQuizAnswer[]>([]);
   const [correctCount, setCorrectCount] = useState(0);

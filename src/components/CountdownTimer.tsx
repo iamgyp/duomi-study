@@ -3,7 +3,7 @@
 interface CountdownTimerProps {
   secondsRemaining: number;
   totalSeconds: number;
-  state: 'running' | 'timeUp';
+  state: 'idle' | 'running' | 'timeUp';
 }
 
 export function CountdownTimer({ secondsRemaining, totalSeconds, state }: CountdownTimerProps) {
