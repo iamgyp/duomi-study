@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { DuomiSteve } from '@/components/DuomiSteve';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Home() {
@@ -23,8 +24,9 @@ export default function Home() {
       <div className="absolute top-5 sm:top-10 left-5 sm:left-10 w-24 sm:w-32 h-8 sm:h-12 bg-white opacity-80" style={{ boxShadow: '8px 8px 0 rgba(0,0,0,0.1)' }}></div>
       <div className="absolute top-10 sm:top-20 right-5 sm:right-20 w-32 sm:w-48 h-10 sm:h-16 bg-white opacity-80" style={{ boxShadow: '8px 8px 0 rgba(0,0,0,0.1)' }}></div>
 
-      {/* Language Switcher - Top Right */}
-      <div className="absolute top-4 right-4 z-50">
+      {/* Language Switcher + Theme Switcher - Top Right */}
+      <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <ThemeSwitcher />
         <LanguageSwitcher />
       </div>
 
@@ -131,6 +133,36 @@ export default function Home() {
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
                查看错题 &rarr;
+             </div>
+          </div>
+        </Link>
+
+        {/* Leaderboard Block */}
+        <Link href="/leaderboard" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#FF9800] hover:bg-[#F57C00] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">🏅</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">排行榜</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               查看各科目的最佳成绩。
+               挑战自己的极限！
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               查看排行 &rarr;
+             </div>
+          </div>
+        </Link>
+
+        {/* Daily Challenge Block */}
+        <Link href="/daily-challenge" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#00BCD4] hover:bg-[#0097A7] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">📅</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">每日挑战</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               每天一道新题，连续打卡。
+               保持你的连胜纪录！
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               今日挑战 &rarr;
              </div>
           </div>
         </Link>

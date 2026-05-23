@@ -41,13 +41,17 @@
     "takeTen": "破十法",
     "craftSheet": "生成试卷",
     "previewMap": "预览地图",
-    "showAnswers": "显示答案",
+    "showAnswers": "附带答案",
+    "showAnswersDesc": "PDF末尾附答案页",
     "printMap": "打印试卷",
     "waitingForInput": "等待输入...",
     "operationAdd": "加法 (+)",
     "operationSub": "减法 (-)",
     "operationMul": "乘法 (×)",
-    "operationMix": "混合 (+/-)"
+    "operationDiv": "除法 (÷)",
+    "operationMix": "混合 (+/-/×/÷)",
+    "practiceMode": "练习模式",
+    "practiceModeDesc": "答错后显示解题提示，帮助理解"
   },
   "Algebra": {
     "title": "代数商店",

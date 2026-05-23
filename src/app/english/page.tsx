@@ -163,6 +163,10 @@ export default function EnglishPage() {
             <Link href="/english/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
               <span>🎮 在线做题</span>
             </Link>
+
+            <Link href="/english/speed-challenge" className="mc-btn w-full bg-[#3B82F6] text-white text-lg sm:text-xl hover:bg-[#2563EB] flex items-center justify-center gap-2 py-3">
+              <span>⚡ 英语速认挑战</span>
+            </Link>
           </div>
         </MobileSidebar>
 

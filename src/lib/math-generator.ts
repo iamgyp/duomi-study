@@ -1,5 +1,5 @@
 export type MathConfig = {
-  operation: 'add' | 'sub' | 'mul' | 'mix';
+  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix';
   max: number; // Maximum result or operand
   count: number;
   mode: 'normal' | 'make-ten' | 'take-ten';
@@ -14,9 +14,11 @@ export type MathQuestion = {
   answer: number;
   // For special modes
   decomposition?: {
-    part1: number; // Split of the second number (e.g., 5 -> 2)
-    part2: number; // Remainder (e.g., 5 -> 3)
+    part1: number; // Split of the second number (e.g., 8 + 5: 5 -> 2)
+    part2: number; // Remainder (e.g., 8 + 5: 5 -> 3)
   };
+  // Practice mode hint
+  hint?: string;
 };
 
 export function generateMathQuestions(config: MathConfig): MathQuestion[] {
@@ -49,32 +51,66 @@ export function generateMathQuestions(config: MathConfig): MathQuestion[] {
   return questions;
 }
 
+function generateHint(
+  num1: number,
+  num2: number,
+  operator: '+' | '-' | '×' | '÷',
+  decomposition?: { part1: number; part2: number },
+): string {
+  if (operator === '+') {
+    if (decomposition) {
+      // Make-ten mode
+      return `先凑十：${num1} + ${decomposition.part1} = 10，再加 ${decomposition.part2}，得 ${num1 + num2}`;
+    }
+    return `从 ${num1} 开始，往上数 ${num2} 个`;
+  }
+  if (operator === '-') {
+    if (decomposition) {
+      // Take-ten mode: 破十法
+      const unit = decomposition.part2;
+      return `破十：10 - ${num2} = ${10 - num2}，再加 ${unit}，得 ${10 - num2 + unit}`;
+    }
+    return `想一想：${num2} 加几等于 ${num1}？`;
+  }
+  if (operator === '×') {
+    return `${num1} 个 ${num2} 相加`;
+  }
+  if (operator === '÷') {
+    return `${num1} 分成每组 ${num2} 个，可以分几组？`;
+  }
+  return '';
+}
+
 function generateNormalQuestion(op: string, max: number): MathQuestion | null {
-  const operator = op === 'mix' ? (Math.random() > 0.5 ? '+' : '-') : (op === 'mul' ? '×' : (op === 'sub' ? '-' : '+'));
-  
-  let num1 = Math.floor(Math.random() * max); // 0 to max-1 ? usually 1 to max
+  const operator = op === 'mix'
+    ? (['+', '-', '×'][Math.floor(Math.random() * 3)])
+    : (op === 'mul' ? '×' : (op === 'sub' ? '-' : (op === 'div' ? '÷' : '+')));
+
+  let num1 = Math.floor(Math.random() * max);
   let num2 = Math.floor(Math.random() * max);
 
-  // Avoid 0 for pedagogical reasons usually? Let's allow 0 for now but maybe restrict 1-max.
-  // Actually for kids, 0+5 is valid.
-
   if (operator === '+') {
-    // Ensure result <= max
     if (num1 + num2 > max) return null;
-    return { id: '', num1, num2, operator: '+', answer: num1 + num2 };
+    const answer = num1 + num2;
+    return { id: '', num1, num2, operator: '+', answer, hint: generateHint(num1, num2, '+') };
   } else if (operator === '-') {
-    // Ensure non-negative result
     if (num1 < num2) {
-      [num1, num2] = [num2, num1]; // Swap
+      [num1, num2] = [num2, num1];
     }
-    return { id: '', num1, num2, operator: '-', answer: num1 - num2 };
+    const answer = num1 - num2;
+    return { id: '', num1, num2, operator: '-', answer, hint: generateHint(num1, num2, '-') };
   } else if (operator === '×') {
-    // For multiplication, max usually refers to the operands, e.g., 9x9 table.
-    // If max=20, maybe 1-9?
-    const m = Math.min(max, 9); 
+    const m = Math.min(max, 9);
     num1 = Math.floor(Math.random() * m) + 1;
     num2 = Math.floor(Math.random() * m) + 1;
-    return { id: '', num1, num2, operator: '×', answer: num1 * num2 };
+    const answer = num1 * num2;
+    return { id: '', num1, num2, operator: '×', answer, hint: generateHint(num1, num2, '×') };
+  } else if (operator === '÷') {
+    const m = Math.min(max, 9);
+    const divisor = Math.floor(Math.random() * m) + 1;
+    const answer = Math.floor(Math.random() * m) + 1;
+    const dividend = divisor * answer;
+    return { id: '', num1: dividend, num2: divisor, operator: '÷', answer, hint: generateHint(dividend, divisor, '÷') };
   }
 
   return null;
@@ -110,7 +146,8 @@ function generateMakeTenQuestion(): MathQuestion | null {
     decomposition: {
       part1: needed,
       part2: num2 - needed
-    }
+    },
+    hint: generateHint(num1, num2, '+', { part1: needed, part2: num2 - needed })
   };
 }
 
@@ -139,8 +176,9 @@ function generateTakeTenQuestion(): MathQuestion | null {
     operator: '-',
     answer: num1 - num2,
     decomposition: {
-      part1: 10, // Not used in same way, but keeping structure
+      part1: 10,
       part2: unit
-    }
+    },
+    hint: generateHint(num1, num2, '-', { part1: 10, part2: unit })
   };
 }

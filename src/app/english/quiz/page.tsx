@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { generateEnglishQuizQuestions, saveQuizSession } from '@/lib/quiz-engine';
+import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useQuiz } from '@/hooks/useQuiz';
 import { useAchievements } from '@/hooks/useAchievements';
 import { QuizProgressBar } from '@/components/QuizProgressBar';
@@ -11,6 +12,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { addScore } from '@/lib/leaderboard';
 
 const DEFAULT_WORDS = ['Apple', 'Banana', 'Cat', 'Dog', 'Elephant', 'Fish', 'Grape', 'Hat', 'Ice', 'Jump'];
 
@@ -46,13 +48,15 @@ export default function EnglishQuizPage() {
     });
 
     const elapsed = quiz.getElapsedSeconds();
+    const accuracy = questions.length > 0 ? correctCount / questions.length : 0;
+    const qpm = elapsed > 0 ? (correctCount / elapsed) * 60 : 0;
 
     saveQuizSession({
       subject: 'english',
       timestamp: new Date().toISOString(),
       totalQuestions: questions.length,
       correctCount,
-      accuracy: questions.length > 0 ? correctCount / questions.length : 0,
+      accuracy,
       duration: elapsed,
       answers: questions.map((q, i) => ({
         questionId: q.id,
@@ -60,6 +64,10 @@ export default function EnglishQuizPage() {
         correct: quiz.answers.get(i)?.trim().toLowerCase() === q.word.toLowerCase(),
       })),
     });
+
+    addScore('english', { score: accuracy, totalQuestions: questions.length, duration: elapsed, questionsPerMinute: qpm, date: new Date().toISOString() });
+
+    updateDifficultyProgression('english');
 
     setResults({ correctCount, wrongAnswers });
     checkAndUnlock();

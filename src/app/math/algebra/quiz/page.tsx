@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { AlgebraConfig } from '@/lib/algebra-generator';
 import { generateAlgebraQuizQuestions, saveQuizSession } from '@/lib/quiz-engine';
+import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useQuiz } from '@/hooks/useQuiz';
 import { useAchievements } from '@/hooks/useAchievements';
 import { QuizProgressBar } from '@/components/QuizProgressBar';
@@ -12,6 +13,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { addScore } from '@/lib/leaderboard';
 
 function getConfigFromUrl(): AlgebraConfig {
   if (typeof window === 'undefined') {
@@ -71,13 +73,15 @@ export default function AlgebraQuizPage() {
     });
 
     const elapsed = quiz.getElapsedSeconds();
+    const accuracy = questions.length > 0 ? correctCount / questions.length : 0;
+    const qpm = elapsed > 0 ? (correctCount / elapsed) * 60 : 0;
 
     saveQuizSession({
       subject: 'algebra',
       timestamp: new Date().toISOString(),
       totalQuestions: questions.length,
       correctCount,
-      accuracy: questions.length > 0 ? correctCount / questions.length : 0,
+      accuracy,
       duration: elapsed,
       answers: questions.map((q, i) => ({
         questionId: q.id,
@@ -85,6 +89,10 @@ export default function AlgebraQuizPage() {
         correct: quiz.answers.get(i) === q.options[q.correctIndex],
       })),
     });
+
+    addScore('algebra', { score: accuracy, totalQuestions: questions.length, duration: elapsed, questionsPerMinute: qpm, date: new Date().toISOString() });
+
+    updateDifficultyProgression('algebra');
 
     setResults({ correctCount, wrongAnswers });
     checkAndUnlock();

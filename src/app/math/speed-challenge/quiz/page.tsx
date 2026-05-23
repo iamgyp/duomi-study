@@ -7,11 +7,13 @@ import { useSearchParams } from 'next/navigation';
 import { SpeedQuizConfig } from '@/lib/speed-generator';
 import { useSpeedQuiz } from '@/hooks/useSpeedQuiz';
 import { saveQuizSession } from '@/lib/quiz-engine';
+import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useAchievements } from '@/hooks/useAchievements';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import { SpeedResult } from '@/components/SpeedResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { addScore } from '@/lib/leaderboard';
 
 const defaultConfig: SpeedQuizConfig = {
   timeLimitSeconds: 60,
@@ -46,12 +48,15 @@ export default function SpeedChallengeQuizPage() {
     if (quiz.state === 'timeUp' && !finished) {
       setFinished(true);
 
+      const accuracy = quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0;
+      const qpm = config.timeLimitSeconds > 0 ? (quiz.correctCount / config.timeLimitSeconds) * 60 : 0;
+
       saveQuizSession({
         subject: 'speed-challenge',
         timestamp: new Date().toISOString(),
         totalQuestions: quiz.attemptedCount,
         correctCount: quiz.correctCount,
-        accuracy: quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0,
+        accuracy,
         duration: config.timeLimitSeconds,
         answers: quiz.answers.map((a) => ({
           questionId: a.question.id,
@@ -59,6 +64,10 @@ export default function SpeedChallengeQuizPage() {
           correct: a.correct,
         })),
       });
+
+      addScore('speed-challenge', { score: accuracy, totalQuestions: quiz.attemptedCount, duration: config.timeLimitSeconds, questionsPerMinute: qpm, date: new Date().toISOString() });
+
+      updateDifficultyProgression('speed-challenge');
 
       checkAndUnlock();
     }
@@ -98,7 +107,7 @@ export default function SpeedChallengeQuizPage() {
 
   // Ready screen
   if (!started) {
-    const opLabel = config.operation === 'mix' ? '混合' : config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : '乘法';
+    const opLabel = config.operation === 'mix' ? '混合' : config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'div' ? '除法' : '乘法';
     return (
       <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-4 sm:p-8 font-[var(--font-pixel)] flex items-center justify-center">
         <div className="mc-card bg-[#E2E8F0] p-6 sm:p-12 max-w-lg w-full text-center">

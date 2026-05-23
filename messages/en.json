@@ -42,12 +42,16 @@
     "craftSheet": "Craft Sheet",
     "previewMap": "Preview Map",
     "showAnswers": "Show Answers",
+    "showAnswersDesc": "Include answer key page at end of PDF",
     "printMap": "Print Map",
     "waitingForInput": "Waiting for input...",
     "operationAdd": "Addition (+)",
     "operationSub": "Subtraction (-)",
     "operationMul": "Multiplication (×)",
-    "operationMix": "Mixed (+/-)"
+    "operationDiv": "Division (÷)",
+    "operationMix": "Mixed (+/-/×/÷)",
+    "practiceMode": "Practice Mode",
+    "practiceModeDesc": "Shows hints after wrong answers to help understanding"
   },
   "Algebra": {
     "title": "Algebra Shop",

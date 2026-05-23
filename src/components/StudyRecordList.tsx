@@ -3,19 +3,22 @@
 import { useEffect, useState } from 'react';
 import { Trash2, Download, Upload, AlertCircle } from 'lucide-react';
 import { StudyRecord } from '@/types/study-record';
-import { 
-  getRecentRecords, 
-  deleteRecord, 
-  exportRecords, 
+import {
+  getRecentRecords,
+  deleteRecord,
+  exportRecords,
   importRecords,
   formatDuration,
   getSubjectLabel,
   getContentTypeLabel,
 } from '@/lib/study-storage';
+import { exportAsJson, exportAsCsv } from '@/lib/data-export';
+import { getAllQuizSessions } from '@/lib/quiz-engine';
 
 export function StudyRecordList() {
   const [records, setRecords] = useState<StudyRecord[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [showExportOptions, setShowExportOptions] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState('');
   const [importResult, setImportResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -48,6 +51,18 @@ export function StudyRecordList() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  const exportStudyRecordsAsJson = () => {
+    handleExport();
+  };
+
+  const exportAllAsJson = () => {
+    exportAsJson();
+  };
+
+  const exportAllAsCsv = () => {
+    exportAsCsv();
   };
 
   const handleImport = () => {
@@ -99,14 +114,38 @@ export function StudyRecordList() {
   return (
     <div className="space-y-4">
       {/* 操作按钮 */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={handleExport}
-          className="mc-btn bg-[#3B82F6] text-white text-sm py-2 px-4 hover:bg-[#2563EB] flex items-center gap-2"
-        >
-          <Download className="h-4 w-4" />
-          导出数据
-        </button>
+      <div className="flex flex-wrap gap-2 relative">
+        <div className="relative">
+          <button
+            onClick={() => setShowExportOptions(!showExportOptions)}
+            className="mc-btn bg-[#3B82F6] text-white text-sm py-2 px-4 hover:bg-[#2563EB] flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            导出数据
+          </button>
+          {showExportOptions && (
+            <div className="absolute top-full left-0 mt-1 bg-white border-2 border-black rounded-sm shadow-lg z-10 min-w-[180px]">
+              <button
+                onClick={() => { setShowExportOptions(false); exportStudyRecordsAsJson(); }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition-colors flex items-center gap-2"
+              >
+                <span>📋</span> 学习记录 (JSON)
+              </button>
+              <button
+                onClick={() => { setShowExportOptions(false); exportAllAsJson(); }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition-colors flex items-center gap-2"
+              >
+                <span>📊</span> 全部数据 (JSON)
+              </button>
+              <button
+                onClick={() => { setShowExportOptions(false); exportAllAsCsv(); }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition-colors flex items-center gap-2"
+              >
+                <span>📈</span> 全部数据 (CSV)
+              </button>
+            </div>
+          )}
+        </div>
         <button
           onClick={() => setShowImportModal(true)}
           className="mc-btn bg-[#10B981] text-white text-sm py-2 px-4 hover:bg-[#059669] flex items-center gap-2"

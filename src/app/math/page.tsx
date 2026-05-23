@@ -25,6 +25,8 @@ export default function MathPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [previewPage, setPreviewPage] = useState(1);
+  const [practiceMode, setPracticeMode] = useState(false);
+  const [withAnswers, setWithAnswers] = useState(false);
   const questionsPerPage = 20;
   const totalPages = Math.max(1, Math.ceil(questions.length / questionsPerPage));
   const currentQuestions = questions.slice((previewPage - 1) * questionsPerPage, previewPage * questionsPerPage);
@@ -50,7 +52,7 @@ export default function MathPage() {
         <MathPdfDocument 
           questions={questions} 
           title={config.mode === 'normal' ? 'Math Worksheet' : (config.mode === 'make-ten' ? 'Make a Ten' : 'Take from Ten')}
-          withAnswers={false}
+          withAnswers={withAnswers}
         />
       ).toBlob();
       
@@ -144,6 +146,7 @@ export default function MathPage() {
                 <option value="add">{t('Math.operationAdd')}</option>
                 <option value="sub">{t('Math.operationSub')}</option>
                 <option value="mul">{t('Math.operationMul')}</option>
+                <option value="div">{t('Math.operationDiv')}</option>
                 <option value="mix">{t('Math.operationMix')}</option>
               </select>
             </div>
@@ -222,6 +225,21 @@ export default function MathPage() {
               </div>
             </div>
 
+            {/* 附带答案 */}
+            <div className="border-t-2 border-[#777] pt-4 border-dashed">
+              <label className="flex items-center justify-between cursor-pointer hover:bg-white/20 p-2 rounded">
+                <span className="text-sm font-bold">📝 {t('Math.showAnswers')}</span>
+                <input
+                  type="checkbox"
+                  checked={withAnswers}
+                  onChange={(e) => setWithAnswers(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-yellow-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500 relative"></div>
+              </label>
+              <p className="text-xs text-gray-400 mt-1 px-2">{t('Math.showAnswersDesc')}</p>
+            </div>
+
             <button
               onClick={handleGenerate}
               className="mc-btn w-full mt-4 bg-[#4CAF50] text-white text-lg sm:text-xl hover:bg-[#45a049] flex items-center justify-center gap-2 py-3"
@@ -235,15 +253,31 @@ export default function MathPage() {
               <StudyRecordButton
                 subject="math"
                 contentType="basic-math"
-                contentTitle={`基础数学 - ${config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'mul' ? '乘法' : '混合'} (${config.max})`}
+                contentTitle={`基础数学 - ${config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'mul' ? '乘法' : config.operation === 'div' ? '除法' : '混合'} (${config.max})`}
                 duration={20}
               />
             )}
 
             {/* 在线做题按钮 */}
-            <Link href="/math/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
+            <Link href={`/math/quiz?difficulty=${config.max >= 50 ? 3 : config.max >= 20 ? 2 : 1}&count=${config.count}${practiceMode ? '&practice=1' : ''}`} className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
               <span>🎮 在线做题</span>
+              {practiceMode && <span className="text-xs ml-1">({t('Math.practiceMode')})</span>}
             </Link>
+
+            {/* 练习模式开关 */}
+            <div className="border-t-2 border-[#777] pt-4 border-dashed">
+              <label className="flex items-center justify-between cursor-pointer hover:bg-white/20 p-2 rounded">
+                <span className="text-sm font-bold">💡 {t('Math.practiceMode')}</span>
+                <input
+                  type="checkbox"
+                  checked={practiceMode}
+                  onChange={(e) => setPracticeMode(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-yellow-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500 relative"></div>
+              </label>
+              <p className="text-xs text-gray-400 mt-1 px-2">{t('Math.practiceModeDesc')}</p>
+            </div>
 
             {/* 口算速算挑战按钮 */}
             <Link href="/math/speed-challenge" className="mc-btn w-full bg-[#9C27B0] text-white text-lg sm:text-xl hover:bg-[#7B1FA2] flex items-center justify-center gap-2 py-3">

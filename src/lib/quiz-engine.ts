@@ -5,7 +5,7 @@ import { Poem, PoemLine } from './poem-data';
 
 // ── Subject union ────────────────────────────────────────────────────────────
 
-export type QuizSubject = 'math' | 'algebra' | 'chinese-poem' | 'english' | 'speed-challenge';
+export type QuizSubject = 'math' | 'algebra' | 'chinese-poem' | 'chinese-speed' | 'english' | 'english-speed' | 'speed-challenge';
 
 // ── Question types ───────────────────────────────────────────────────────────
 
@@ -17,6 +17,7 @@ export type MathQuizQuestion = {
   num1: number;
   num2: number;
   operator: '+' | '-' | '×' | '÷';
+  hint?: string;
 };
 
 export type AlgebraQuizQuestion = {
@@ -99,6 +100,8 @@ export function generateNumericDistractors(
     candidates.push(num1 + num2, num2 - num1);
   } else if (operator === '×') {
     candidates.push(num1 + num2, num1 - num2);
+  } else if (operator === '÷') {
+    candidates.push(num1 - num2, num1 + num2, num1 * num2);
   }
 
   // Off-by-2 as fallback

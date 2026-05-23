@@ -1,14 +1,14 @@
 export type SpeedQuizConfig = {
   timeLimitSeconds: 30 | 60 | 120;
   max: number;
-  operation: 'add' | 'sub' | 'mul' | 'mix';
+  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix';
 };
 
 export type SpeedQuestion = {
   id: string;
   num1: number;
   num2: number;
-  operator: '+' | '-' | '×';
+  operator: '+' | '-' | '×' | '÷';
   answer: number;
   questionText: string;
 };
@@ -32,49 +32,42 @@ export function generateSpeedQuestion(config: SpeedQuizConfig): SpeedQuestion {
 }
 
 function generateOne(op: SpeedQuizConfig['operation'], max: number): SpeedQuestion | null {
-  const operator = op === 'mix'
-    ? (Math.random() > 0.5 ? '+' : '-')
-    : (op === 'mul' ? '×' : (op === 'sub' ? '-' : '+'));
+  const opPool: Array<{ op: SpeedQuestion['operator']; gen: () => SpeedQuestion | null }> = [
+    { op: '+', gen: () => {
+      const a = Math.floor(Math.random() * max) + 1;
+      const b = Math.floor(Math.random() * max) + 1;
+      if (a + b > max) return null;
+      return { id: '', num1: a, num2: b, operator: '+', answer: a + b, questionText: `${a} + ${b} = ?` };
+    }},
+    { op: '-', gen: () => {
+      let a = Math.floor(Math.random() * max) + 1;
+      let b = Math.floor(Math.random() * max) + 1;
+      if (a < b) [a, b] = [b, a];
+      return { id: '', num1: a, num2: b, operator: '-', answer: a - b, questionText: `${a} - ${b} = ?` };
+    }},
+    { op: '×', gen: () => {
+      const m = Math.min(max, 9);
+      const a = Math.floor(Math.random() * m) + 1;
+      const b = Math.floor(Math.random() * m) + 1;
+      return { id: '', num1: a, num2: b, operator: '×', answer: a * b, questionText: `${a} × ${b} = ?` };
+    }},
+    { op: '÷', gen: () => {
+      const m = Math.min(max, 9);
+      const divisor = Math.floor(Math.random() * m) + 1;
+      const answer = Math.floor(Math.random() * m) + 1;
+      return { id: '', num1: divisor * answer, num2: divisor, operator: '÷', answer, questionText: `${divisor * answer} ÷ ${divisor} = ?` };
+    }},
+  ];
 
-  let num1 = Math.floor(Math.random() * max) + 1;
-  let num2 = Math.floor(Math.random() * max) + 1;
+  const pool = op === 'mix' ? opPool : opPool.filter(p => {
+    if (op === 'add') return p.op === '+';
+    if (op === 'sub') return p.op === '-';
+    if (op === 'mul') return p.op === '×';
+    if (op === 'div') return p.op === '÷';
+    return false;
+  });
 
-  if (operator === '+') {
-    if (num1 + num2 > max) return null;
-    return {
-      id: '',
-      num1,
-      num2,
-      operator: '+',
-      answer: num1 + num2,
-      questionText: `${num1} + ${num2} = ?`,
-    };
-  }
-
-  if (operator === '-') {
-    if (num1 < num2) {
-      [num1, num2] = [num2, num1];
-    }
-    return {
-      id: '',
-      num1,
-      num2,
-      operator: '-',
-      answer: num1 - num2,
-      questionText: `${num1} - ${num2} = ?`,
-    };
-  }
-
-  // multiplication
-  const m = Math.min(max, 9);
-  num1 = Math.floor(Math.random() * m) + 1;
-  num2 = Math.floor(Math.random() * m) + 1;
-  return {
-    id: '',
-    num1,
-    num2,
-    operator: '×',
-    answer: num1 * num2,
-    questionText: `${num1} × ${num2} = ?`,
-  };
+  if (pool.length === 0) return null;
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  return chosen.gen();
 }

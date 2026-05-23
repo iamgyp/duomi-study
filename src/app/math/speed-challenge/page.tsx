@@ -13,7 +13,7 @@ export default function SpeedChallengePage() {
   const router = useRouter();
   const [timeLimit, setTimeLimit] = useState<30 | 60 | 120>(60);
   const [max, setMax] = useState(20);
-  const [operation, setOperation] = useState<'add' | 'sub' | 'mul' | 'mix'>('mix');
+  const [operation, setOperation] = useState<'add' | 'sub' | 'mul' | 'div' | 'mix'>('mix');
 
   const handleStart = () => {
     router.push(`/math/speed-challenge/quiz?timeLimit=${timeLimit}&max=${max}&operation=${operation}`);
@@ -27,7 +27,7 @@ export default function SpeedChallengePage() {
     );
   }
 
-  const opLabel = operation === 'mix' ? '混合' : operation === 'add' ? '加法' : operation === 'sub' ? '减法' : '乘法';
+  const opLabel = operation === 'mix' ? '混合' : operation === 'add' ? '加法' : operation === 'sub' ? '减法' : operation === 'div' ? '除法' : '乘法';
 
   return (
     <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-4 sm:p-8 font-[var(--font-pixel)]">
@@ -100,12 +100,13 @@ export default function SpeedChallengePage() {
               <select
                 className="w-full border-2 border-black bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono"
                 value={operation}
-                onChange={(e) => setOperation(e.target.value as 'add' | 'sub' | 'mul' | 'mix')}
+                onChange={(e) => setOperation(e.target.value as 'add' | 'sub' | 'mul' | 'div' | 'mix')}
               >
                 <option value="add">加法 (+)</option>
                 <option value="sub">减法 (-)</option>
                 <option value="mul">乘法 (×)</option>
-                <option value="mix">混合 (+/-)</option>
+                <option value="div">除法 (÷)</option>
+                <option value="mix">混合 (+/−/×/÷)</option>
               </select>
             </div>
 

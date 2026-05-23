@@ -368,6 +368,10 @@ export default function ChinesePage() {
                 <Link href="/chinese/quiz" className="mc-btn w-full bg-[#FF9800] text-white text-lg sm:text-xl hover:bg-[#F57C00] flex items-center justify-center gap-2 py-3">
                   <span>🎮 在线做题</span>
                 </Link>
+
+                <Link href="/chinese/speed-challenge" className="mc-btn w-full bg-[#F59E0B] text-white text-lg sm:text-xl hover:bg-[#D97706] flex items-center justify-center gap-2 py-3">
+                  <span>⚡ 汉字速认挑战</span>
+                </Link>
               </>
             )}
           </div>

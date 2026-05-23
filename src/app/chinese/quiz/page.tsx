@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { PoemConfig } from '@/lib/poem-generator';
 import { generateChineseQuizQuestions, saveQuizSession } from '@/lib/quiz-engine';
+import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useQuiz } from '@/hooks/useQuiz';
 import { useAchievements } from '@/hooks/useAchievements';
 import { QuizProgressBar } from '@/components/QuizProgressBar';
@@ -12,6 +13,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { addScore } from '@/lib/leaderboard';
 
 const defaultConfig: PoemConfig = {
   difficulty: 1,
@@ -72,16 +74,22 @@ export default function ChineseQuizPage() {
 
     const totalBlanks = questions.reduce((sum, q) => sum + q.blanks.length, 0);
     const elapsed = quiz.getElapsedSeconds();
+    const accuracy = totalBlanks > 0 ? correctCount / totalBlanks : 0;
+    const qpm = elapsed > 0 ? (correctCount / elapsed) * 60 : 0;
 
     saveQuizSession({
       subject: 'chinese-poem',
       timestamp: new Date().toISOString(),
       totalQuestions: totalBlanks,
       correctCount,
-      accuracy: totalBlanks > 0 ? correctCount / totalBlanks : 0,
+      accuracy,
       duration: elapsed,
       answers: [],
     });
+
+    addScore('chinese-poem', { score: accuracy, totalQuestions: totalBlanks, duration: elapsed, questionsPerMinute: qpm, date: new Date().toISOString() });
+
+    updateDifficultyProgression('chinese-poem');
 
     setResults({ correctCount, wrongAnswers });
     checkAndUnlock();
