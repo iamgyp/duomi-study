@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Suspense, useMemo } from 'react';
 import { ArrowLeft, CheckCircle, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { MathConfig } from '@/lib/math-generator';
@@ -15,17 +15,14 @@ import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { HintDisplay } from '@/components/HintDisplay';
 import { addScore } from '@/lib/leaderboard';
+import { useSearchParams } from 'next/navigation';
 
-function getConfigFromUrl(): { config: MathConfig; practice: boolean } {
-  if (typeof window === 'undefined') {
-    return { config: { operation: 'mix', max: 20, count: 20, mode: 'normal' }, practice: false };
-  }
-  const params = new URLSearchParams(window.location.search);
-  const operation = (params.get('operation') as MathConfig['operation']) || 'mix';
-  const max = parseInt(params.get('max') || '20', 10);
-  const count = parseInt(params.get('count') || '20', 10);
-  const mode = (params.get('mode') as MathConfig['mode']) || 'normal';
-  const practice = params.get('practice') === '1';
+function parseUrlParams(searchParams: URLSearchParams): { config: MathConfig; practice: boolean } {
+  const operation = (searchParams.get('operation') as MathConfig['operation']) || 'mix';
+  const max = parseInt(searchParams.get('max') || '20', 10);
+  const count = parseInt(searchParams.get('count') || '20', 10);
+  const mode = (searchParams.get('mode') as MathConfig['mode']) || 'normal';
+  const practice = searchParams.get('practice') === '1';
   return {
     config: {
       operation,
@@ -37,16 +34,25 @@ function getConfigFromUrl(): { config: MathConfig; practice: boolean } {
   };
 }
 
-const { config: defaultConfig, practice: defaultPractice } = getConfigFromUrl();
-
 export default function MathQuizPage() {
-  const [config] = useState<MathConfig>(defaultConfig);
-  const [practiceMode] = useState(defaultPractice);
+  return (
+    <Suspense>
+      <MathQuizContent />
+    </Suspense>
+  );
+}
+
+function MathQuizContent() {
+  const searchParams = useSearchParams();
+  const { config: urlConfig, practice: urlPractice } = parseUrlParams(searchParams);
+  const [config] = useState<MathConfig>(urlConfig);
+  const [practiceMode] = useState(urlPractice);
   const [started, setStarted] = useState(false);
 
-  const questions = useState(() =>
-    generateMathQuizQuestions(config)
-  )[0];
+  const questions = useMemo(
+    () => generateMathQuizQuestions(config),
+    [config],
+  );
 
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: { questionIndex: number; questionText: string; userAnswer: string; correctAnswer: string }[] } | null>(null);
