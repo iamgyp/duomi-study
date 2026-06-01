@@ -21,16 +21,17 @@ function getConfigFromUrl(): { config: MathConfig; practice: boolean } {
     return { config: { operation: 'mix', max: 20, count: 20, mode: 'normal' }, practice: false };
   }
   const params = new URLSearchParams(window.location.search);
-  const difficulty = parseInt(params.get('difficulty') || '2', 10);
+  const operation = (params.get('operation') as MathConfig['operation']) || 'mix';
+  const max = parseInt(params.get('max') || '20', 10);
   const count = parseInt(params.get('count') || '20', 10);
+  const mode = (params.get('mode') as MathConfig['mode']) || 'normal';
   const practice = params.get('practice') === '1';
-  const maxMap: Record<number, number> = { 1: 10, 2: 20, 3: 50 };
   return {
     config: {
-      operation: 'mix',
-      max: maxMap[difficulty] || 20,
-      count: [10, 20, 50].includes(count) ? count : 20,
-      mode: 'normal',
+      operation,
+      max: [10, 20, 50, 100].includes(max) ? max : 20,
+      count: [20, 50, 100].includes(count) ? count : 20,
+      mode,
     },
     practice,
   };
