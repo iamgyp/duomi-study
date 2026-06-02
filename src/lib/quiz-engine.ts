@@ -339,7 +339,7 @@ export function checkAnswer(
 const STORAGE_KEY = 'duomi-quiz-sessions';
 
 export function saveQuizSession(session: Omit<QuizSession, 'id'>): QuizSession {
-  const id = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const id = `session-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
   const fullSession: QuizSession = { ...session, id };
 
   try {

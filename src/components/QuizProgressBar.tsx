@@ -7,7 +7,14 @@ export function QuizProgressBar({ answered, total }: QuizProgressBarProps) {
   const percentage = total > 0 ? (answered / total) * 100 : 0;
 
   return (
-    <div className="w-full bg-black/30 rounded-sm border-2 border-white/20 h-6 overflow-hidden relative">
+    <div
+      role="progressbar"
+      aria-valuenow={answered}
+      aria-valuemin={0}
+      aria-valuemax={total}
+      aria-label={`Progress: ${answered} of ${total} questions answered`}
+      className="w-full bg-black/30 rounded-sm border-2 border-white/20 h-6 overflow-hidden relative"
+    >
       <div
         className="h-full bg-[#4CAF50] transition-all duration-300"
         style={{ width: `${percentage}%` }}

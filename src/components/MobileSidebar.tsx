@@ -21,6 +21,17 @@ export function MobileSidebar({ children, title = 'Settings' }: MobileSidebarPro
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Close sidebar on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
   if (!isMobile) {
     return (
       <div className="mc-card bg-[#C6C6C6] p-1 lg:col-span-1 h-fit">
@@ -40,6 +51,7 @@ export function MobileSidebar({ children, title = 'Settings' }: MobileSidebarPro
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(true)}
+        aria-label="Open settings"
         className="fixed bottom-6 right-6 z-40 bg-[#4CAF50] hover:bg-[#45a049] text-white p-4 rounded-full shadow-lg border-4 border-black transition-transform active:scale-95 lg:hidden"
       >
         <Settings2 className="h-8 w-8" />

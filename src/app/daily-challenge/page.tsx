@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { ArrowLeft, Calendar, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -30,6 +30,13 @@ export default function DailyChallengePage() {
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [results, setResults] = useState<{ correctCount: number; timeUsed: number } | null>(null);
   const [streak] = useState(() => getDailyStreak());
+
+  // Use refs to avoid stale closures in handleSubmitResults
+  const answersRef = useRef<Map<number, string>>(answers);
+  const timeRemainingRef = useRef(timeRemaining);
+
+  useEffect(() => { answersRef.current = answers; }, [answers]);
+  useEffect(() => { timeRemainingRef.current = timeRemaining; }, [timeRemaining]);
 
   useEffect(() => {
     if (!timerRunning || timeRemaining <= 0) return;
