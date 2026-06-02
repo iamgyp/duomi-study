@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, Suspense } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { AlgebraConfig } from '@/lib/algebra-generator';
 import { generateAlgebraQuizQuestions, saveQuizSession } from '@/lib/quiz-engine';
 import { updateDifficultyProgression } from '@/lib/difficulty-progression';
@@ -15,14 +16,10 @@ import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { addScore } from '@/lib/leaderboard';
 
-function getConfigFromUrl(): AlgebraConfig {
-  if (typeof window === 'undefined') {
-    return { difficulty: 2, count: 20, language: 'zh' };
-  }
-  const params = new URLSearchParams(window.location.search);
-  const difficulty = parseInt(params.get('difficulty') || '2', 10);
-  const count = parseInt(params.get('count') || '20', 10);
-  const language = params.get('language') || 'zh';
+function parseUrlParams(searchParams: URLSearchParams): AlgebraConfig {
+  const difficulty = parseInt(searchParams.get('difficulty') || '2', 10);
+  const count = parseInt(searchParams.get('count') || '20', 10);
+  const language = searchParams.get('language') || 'zh';
   return {
     difficulty: [1, 2, 3].includes(difficulty) ? difficulty as 1 | 2 | 3 : 2,
     count: [10, 20, 50].includes(count) ? count as 10 | 20 | 50 : 20,
@@ -30,9 +27,17 @@ function getConfigFromUrl(): AlgebraConfig {
   };
 }
 
-const defaultConfig: AlgebraConfig = getConfigFromUrl();
-
 export default function AlgebraQuizPage() {
+  return (
+    <Suspense>
+      <AlgebraQuizContent />
+    </Suspense>
+  );
+}
+
+function AlgebraQuizContent() {
+  const searchParams = useSearchParams();
+  const defaultConfig = parseUrlParams(searchParams);
   const [config] = useState<AlgebraConfig>(defaultConfig);
   const [started, setStarted] = useState(false);
 
