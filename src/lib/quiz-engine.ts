@@ -206,11 +206,11 @@ export function generateAlgebraQuizQuestions(config: AlgebraConfig): {
       q.total - 2,
     ];
 
-    // Also vary individual item prices * quantities
+    // Also vary individual item prices to create plausible wrong answers
     for (const entry of q.items) {
       const subTotal = entry.item.price * entry.quantity;
-      candidates.push(q.total - subTotal + subTotal + 1);
-      candidates.push(q.total - subTotal + Math.max(0, subTotal - 1));
+      candidates.push(q.total - subTotal + (entry.item.price + 1) * entry.quantity);
+      candidates.push(q.total - subTotal + Math.max(1, subTotal - 1) * entry.quantity);
     }
 
     for (const n of candidates) {
@@ -307,7 +307,7 @@ export function generateEnglishQuizQuestions(words: string[]): EnglishQuizQuesti
     }
 
     return {
-      id: `en-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `en-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
       word: cleaned,
       hint,
     };

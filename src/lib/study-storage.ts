@@ -12,7 +12,7 @@ const LAST_STUDY_DATE_KEY = 'duomi-last-study-date';
  * 生成唯一ID
  */
 export function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
 /**
@@ -115,7 +115,7 @@ export function calculateConsecutiveDays(): number {
     const prevDate = new Date(studyDates[i]);
     const diffDays = (currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24);
     
-    if (diffDays === 1) {
+    if (Math.round(diffDays) === 1) {
       consecutiveDays++;
     } else {
       break;

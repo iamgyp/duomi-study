@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, SuspenseProps } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -26,8 +26,6 @@ export default function ChineseSpeedChallengeQuizPage() {
     </Suspense>
   );
 }
-
-import { Suspense } from 'react';
 
 function ChineseSpeedChallengeQuizContent() {
   const searchParams = useSearchParams();

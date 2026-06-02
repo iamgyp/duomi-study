@@ -96,7 +96,7 @@ function generateSingleItemQuestion(items: McItem[]): AlgebraQuestion {
   const total = item.price * quantity;
   
   return {
-    id: `alg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `alg-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     items: [{ item, quantity }],
     total,
     expression: `${item.emoji} × ${quantity}`,
@@ -111,7 +111,7 @@ function generateTwoItemQuestion(items: McItem[]): AlgebraQuestion {
   const total = selected[0].price * qty1 + selected[1].price * qty2;
   
   return {
-    id: `alg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `alg-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     items: [
       { item: selected[0], quantity: qty1 },
       { item: selected[1], quantity: qty2 },
@@ -130,7 +130,7 @@ function generateThreeItemQuestion(items: McItem[]): AlgebraQuestion {
   const total = selected[0].price * qty1 + selected[1].price * qty2 + selected[2].price * qty3;
   
   return {
-    id: `alg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `alg-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     items: [
       { item: selected[0], quantity: qty1 },
       { item: selected[1], quantity: qty2 },

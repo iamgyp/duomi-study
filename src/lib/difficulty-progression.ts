@@ -40,7 +40,6 @@ export function updateDifficultyProgression(subject: QuizSubject) {
 
   if (sessions.length < 2) return;
 
-  const avgAccuracy = sessions.reduce((sum, s) => sum + s.accuracy, 0) / sessions.length;
   const recentAccuracy = sessions.slice(-3).reduce((sum, s) => sum + s.accuracy, 0) / Math.min(sessions.length, 3);
 
   let newMax = currentMax;

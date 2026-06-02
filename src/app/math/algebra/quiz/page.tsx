@@ -51,9 +51,13 @@ function AlgebraQuizContent() {
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
 
   const handleAnswer = useCallback((opt: string) => {
-    quiz.setAnswer(quiz.currentQuestion, opt);
-    if (quiz.currentQuestion < quiz.totalQuestions - 1) {
-      setTimeout(() => quiz.nextQuestion(), 400);
+    const qi = quiz.currentQuestion;
+    quiz.setAnswer(qi, opt);
+    // Capture stable values before setTimeout to avoid stale closure
+    const nextQ = quiz.nextQuestion;
+    const totalQ = quiz.totalQuestions;
+    if (qi < totalQ - 1) {
+      setTimeout(() => nextQ(), 400);
     }
   }, [quiz]);
 

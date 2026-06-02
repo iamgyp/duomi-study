@@ -67,6 +67,10 @@ function MathQuizContent() {
     const qi = quiz.currentQuestion;
     quiz.setAnswer(qi, opt);
 
+    // Capture stable values before setTimeout to avoid stale closure
+    const nextQ = quiz.nextQuestion;
+    const totalQ = quiz.totalQuestions;
+
     if (practiceMode) {
       const correct = opt === questions[qi].options[questions[qi].correctIndex];
       const newFeedback = new Map(questionFeedback);
@@ -82,16 +86,16 @@ function MathQuizContent() {
       setShowingFeedback(true);
       setTimeout(() => {
         setShowingFeedback(false);
-        if (qi < quiz.totalQuestions - 1) {
-          quiz.nextQuestion();
+        if (qi < totalQ - 1) {
+          nextQ();
         }
       }, 1500);
     } else {
-      if (qi < quiz.totalQuestions - 1) {
-        setTimeout(() => quiz.nextQuestion(), 400);
+      if (qi < totalQ - 1) {
+        setTimeout(() => nextQ(), 400);
       }
     }
-  }, [quiz, practiceMode, questionFeedback, showHintFor]);
+  }, [quiz, practiceMode, questionFeedback, showHintFor, questions]);
 
   const toggleHint = useCallback(() => {
     const qi = quiz.currentQuestion;

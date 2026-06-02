@@ -34,7 +34,10 @@ export function useTranslation() {
       .then((mod) => setMessages(mod.default as TranslationMessages))
       .catch(() => {
         import(`../../messages/zh.json`)
-          .then((mod) => setMessages(mod.default as TranslationMessages));
+          .then((mod) => {
+            setLocale('zh');
+            setMessages(mod.default as TranslationMessages);
+          });
       });
   }, []);
 

@@ -43,7 +43,7 @@ export function generateMathQuestions(config: MathConfig): MathQuestion[] {
     }
 
     if (q) {
-      q.id = Math.random().toString(36).substr(2, 9);
+      q.id = Math.random().toString(36).slice(2, 11);
       questions.push(q);
     }
   }
