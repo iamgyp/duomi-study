@@ -1,24 +1,20 @@
 import { Document, Page, Text, View, StyleSheet, Font, Svg, Line, Path } from '@react-pdf/renderer';
 
-// Register standard fonts
-// We need a font that supports Chinese. 
-// Ideally we bundle a font. Since we can't easily upload one, let's try to use a standard one if the system has it,
-// or use a Google Font URL.
-// Noto Serif SC is good.
+// Register Chinese font
+Font.register({
+  family: 'Noto Sans SC',
+  src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/files/noto-sans-sc-chinese-simplified-400-normal.woff'
+});
 
-// Font.register({
-//   family: 'Noto Serif SC',
-//   src: 'https://fonts.gstatic.com/s/notoserifsc/v12/H4ckBXKAlMnTn0CskyY6wr-dq0tbJisiEWd3.ttf'
-// });
-
-// Fallback: Use standard font (Helvetica) which doesn't support Chinese characters (will show empty squares),
-// BUT it won't crash.
-// To fix Chinese characters, we really need a local font file in public/ folder.
+Font.register({
+  family: 'Noto Sans SC Bold',
+  src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@5.0.0/files/noto-sans-sc-chinese-simplified-700-normal.woff'
+});
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
-    fontFamily: 'Helvetica', 
+    fontFamily: 'Noto Sans SC',
     fontSize: 12,
     color: '#333',
   },
@@ -71,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666',
     textAlign: 'center',
-    fontFamily: 'Helvetica', // Pinyin is usually english letters + tones, Helvetica is safer
+    fontFamily: 'Noto Sans SC', // Pinyin is now also in Noto Sans SC for consistent CJK support
   },
   gridBox: {
     width: 60,

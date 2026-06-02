@@ -119,7 +119,7 @@ function ChineseSpeedChallengeQuizContent() {
             看汉字选择正确的拼音，答对自动进入下一题。
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => setStarted(true)} className="mc-btn bg-[#F59E0B] text-white flex-1 py-3">
+            <button onClick={() => { quiz.start(); setStarted(true); }} className="mc-btn bg-[#F59E0B] text-white flex-1 py-3">
               开始挑战
             </button>
             <Link href="/chinese/speed-challenge" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">

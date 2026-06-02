@@ -106,7 +106,7 @@ function EnglishSpeedChallengeQuizContent() {
           <p className="text-gray-600 mb-6">{config.timeLimitSeconds}秒 · {diffLabel}</p>
           <p className="text-gray-500 mb-6 text-sm">看中文选择正确的英文单词，答对自动进入下一题。</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => setStarted(true)} className="mc-btn bg-[#3B82F6] text-white flex-1 py-3">开始挑战</button>
+            <button onClick={() => { quiz.start(); setStarted(true); }} className="mc-btn bg-[#3B82F6] text-white flex-1 py-3">开始挑战</button>
             <Link href="/english/speed-challenge" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">
               <ArrowLeft className="h-4 w-4" /> 返回设置
             </Link>

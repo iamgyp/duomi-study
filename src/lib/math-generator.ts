@@ -83,7 +83,7 @@ function generateHint(
 
 function generateNormalQuestion(op: string, max: number): MathQuestion | null {
   const operator = op === 'mix'
-    ? (['+', '-', '×'][Math.floor(Math.random() * 3)])
+    ? (['+', '-', '×', '÷'][Math.floor(Math.random() * 4)])
     : (op === 'mul' ? '×' : (op === 'sub' ? '-' : (op === 'div' ? '÷' : '+')));
 
   let num1 = Math.floor(Math.random() * max);

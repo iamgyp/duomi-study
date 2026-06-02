@@ -129,7 +129,10 @@ function SpeedChallengeQuizContent() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => setStarted(true)}
+              onClick={() => {
+                setStarted(true);
+                quiz.start();
+              }}
               className="mc-btn bg-[#9C27B0] text-white flex-1 py-3"
             >
               开始挑战

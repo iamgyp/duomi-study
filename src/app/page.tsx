@@ -96,13 +96,12 @@ export default function Home() {
         <Link href="/history" className="group">
           <div className="mc-card h-full p-4 sm:p-6 bg-[#10B981] hover:bg-[#059669] transition-transform hover:-translate-y-2 relative overflow-hidden">
              <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">📊</div>
-             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">学习记录</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.historyTitle')}</h2>
              <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
-               查看学习统计、记录进度。
-               追踪你的成长足迹！
+               {t('Home.historyDesc')}
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
-               查看记录 &rarr;
+               {t('Home.historyBtn')} &rarr;
              </div>
           </div>
         </Link>
@@ -111,13 +110,12 @@ export default function Home() {
         <Link href="/achievements" className="group">
           <div className="mc-card h-full p-4 sm:p-6 bg-[#9C27B0] hover:bg-[#7B1FA2] transition-transform hover:-translate-y-2 relative overflow-hidden">
              <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">🏆</div>
-             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">成就殿堂</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.achievementTitle')}</h2>
              <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
-               解锁成就，收集徽章。
-               见证你的成长之路！
+               {t('Home.achievementDesc')}
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
-               查看成就 &rarr;
+               {t('Home.achievementBtn')} &rarr;
              </div>
           </div>
         </Link>
@@ -126,13 +124,12 @@ export default function Home() {
         <Link href="/wrong-answers" className="group">
           <div className="mc-card h-full p-4 sm:p-6 bg-[#EF4444] hover:bg-[#DC2626] transition-transform hover:-translate-y-2 relative overflow-hidden">
              <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">📕</div>
-             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">错题本</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.wrongAnswerTitle')}</h2>
              <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
-               查看做错的题目，针对性复习。
-               攻克薄弱环节！
+               {t('Home.wrongAnswerDesc')}
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
-               查看错题 &rarr;
+               {t('Home.wrongAnswerBtn')} &rarr;
              </div>
           </div>
         </Link>
@@ -141,13 +138,12 @@ export default function Home() {
         <Link href="/leaderboard" className="group">
           <div className="mc-card h-full p-4 sm:p-6 bg-[#FF9800] hover:bg-[#F57C00] transition-transform hover:-translate-y-2 relative overflow-hidden">
              <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">🏅</div>
-             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">排行榜</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.leaderboardTitle')}</h2>
              <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
-               查看各科目的最佳成绩。
-               挑战自己的极限！
+               {t('Home.leaderboardDesc')}
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
-               查看排行 &rarr;
+               {t('Home.leaderboardBtn')} &rarr;
              </div>
           </div>
         </Link>
@@ -156,13 +152,12 @@ export default function Home() {
         <Link href="/daily-challenge" className="group">
           <div className="mc-card h-full p-4 sm:p-6 bg-[#00BCD4] hover:bg-[#0097A7] transition-transform hover:-translate-y-2 relative overflow-hidden">
              <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">📅</div>
-             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">每日挑战</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.dailyChallengeTitle')}</h2>
              <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
-               每天一道新题，连续打卡。
-               保持你的连胜纪录！
+               {t('Home.dailyChallengeDesc')}
              </p>
              <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
-               今日挑战 &rarr;
+               {t('Home.dailyChallengeBtn')} &rarr;
              </div>
           </div>
         </Link>

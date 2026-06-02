@@ -46,10 +46,13 @@ export function saveRecord(record: Omit<StudyRecord, 'id'>): StudyRecord {
     id: generateId(),
   };
   records.push(newRecord);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-  
-  // 更新最后学习日期
-  localStorage.setItem(LAST_STUDY_DATE_KEY, getTodayString());
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    // 更新最后学习日期
+    localStorage.setItem(LAST_STUDY_DATE_KEY, getTodayString());
+  } catch (error) {
+    console.error('Failed to save study record to localStorage:', error);
+  }
   
   return newRecord;
 }

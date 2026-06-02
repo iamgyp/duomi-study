@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Svg, Path } from '@react-pdf/renderer';
 import { PoemExercise } from './poem-generator';
 
 // Register Chinese font
@@ -152,15 +152,15 @@ const styles = StyleSheet.create({
 
 // Steve Avatar SVG Component for PDF
 const SteveAvatar = () => (
-  <svg width="40" height="40" viewBox="0 0 8 8">
-    <path d="M0 0h8v8H0z" fill="#F0A57C" />
-    <path d="M0 0h8v2H0z" fill="#4A3020" />
-    <path d="M0 2h1v1H0zM7 2h1v1H7z" fill="#4A3020" />
-    <path d="M1 3h2v1H1zM5 3h2v1H5z" fill="#FFFFFF" />
-    <path d="M2 3h1v1H2zM6 3h1v1H6z" fill="#3B82F6" />
-    <path d="M3 4h2v1H3z" fill="#B87850" />
-    <path d="M2 6h4v1H2z" fill="#8B4513" />
-  </svg>
+  <Svg width="40" height="40" viewBox="0 0 8 8">
+    <Path d="M0 0h8v8H0z" fill="#F0A57C" />
+    <Path d="M0 0h8v2H0z" fill="#4A3020" />
+    <Path d="M0 2h1v1H0zM7 2h1v1H7z" fill="#4A3020" />
+    <Path d="M1 3h2v1H1zM5 3h2v1H5z" fill="#FFFFFF" />
+    <Path d="M2 3h1v1H2zM6 3h1v1H6z" fill="#3B82F6" />
+    <Path d="M3 4h2v1H3z" fill="#B87850" />
+    <Path d="M2 6h4v1H2z" fill="#8B4513" />
+  </Svg>
 );
 
 export const PoemPdfDocument = ({

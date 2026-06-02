@@ -1,5 +1,8 @@
+'use client';
+
 import { ArrowLeft, RefreshCw, Printer } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface QuizResultProps {
   subject: string;
@@ -20,6 +23,7 @@ export function QuizResult({
   onRetry,
   onExportPdf,
 }: QuizResultProps) {
+  const { t } = useTranslation();
   const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
   const minutes = Math.floor(elapsedSeconds / 60);
   const seconds = elapsedSeconds % 60;
@@ -30,26 +34,26 @@ export function QuizResult({
       <div className="mc-card bg-[#E2E8F0] p-6 sm:p-12 max-w-2xl w-full text-center">
         <div className="text-6xl mb-4">{isPerfect ? '🏆' : '🎉'}</div>
         <h1 className="text-3xl sm:text-4xl font-bold text-[#333] mb-2">
-          {isPerfect ? '完美通关！' : '完成！'}
+          {isPerfect ? t('QuizResult.perfectTitle') : t('QuizResult.title')}
         </h1>
         <p className="text-lg text-gray-600 mb-6">{subject}</p>
 
         <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-white border-2 border-black p-4">
             <div className="text-4xl font-bold text-[#4CAF50]">{accuracy}%</div>
-            <div className="text-sm text-gray-500 mt-1">正确率</div>
+            <div className="text-sm text-gray-500 mt-1">{t('QuizResult.accuracy')}</div>
             <div className="text-lg font-bold text-[#333] mt-1">{correctCount}/{totalQuestions}</div>
           </div>
           <div className="bg-white border-2 border-black p-4">
             <div className="text-4xl font-bold text-[#2196F3]">{minutes}:{seconds.toString().padStart(2, '0')}</div>
-            <div className="text-sm text-gray-500 mt-1">用时</div>
+            <div className="text-sm text-gray-500 mt-1">{t('QuizResult.timeUsed')}</div>
           </div>
         </div>
 
         {wrongAnswers.length > 0 && (
           <div className="mb-8 text-left">
             <h2 className="text-xl font-bold text-[#333] mb-3 flex items-center gap-2">
-              <span className="text-red-500">❌</span> 错题回顾
+              <span className="text-red-500">❌</span> {t('QuizResult.wrongReview')}
             </h2>
             <div className="space-y-4 max-h-80 overflow-y-auto">
               {wrongAnswers.map((wa, i) => (
@@ -97,8 +101,8 @@ export function QuizResult({
                     </>
                   ) : (
                     <div className="text-sm">
-                      <span className="text-red-600">你的答案: {wa.userAnswer}</span>
-                      <span className="text-green-600 ml-3">正确答案: {wa.correctAnswer}</span>
+                      <span className="text-red-600">{t('QuizResult.yourAnswer')}: {wa.userAnswer}</span>
+                      <span className="text-green-600 ml-3">{t('QuizResult.correctAnswer')}: {wa.correctAnswer}</span>
                     </div>
                   )}
                 </div>
@@ -112,18 +116,18 @@ export function QuizResult({
             onClick={onRetry}
             className="mc-btn bg-[#4CAF50] text-white flex-1 py-3 flex items-center justify-center gap-2"
           >
-            <RefreshCw className="h-4 w-4" /> 重新练习
+            <RefreshCw className="h-4 w-4" /> {t('QuizResult.retry')}
           </button>
           {onExportPdf && (
             <button
               onClick={onExportPdf}
               className="mc-btn bg-[#2196F3] text-white flex-1 py-3 flex items-center justify-center gap-2"
             >
-              <Printer className="h-4 w-4" /> 导出PDF
+              <Printer className="h-4 w-4" /> {t('QuizResult.exportPdf')}
             </button>
           )}
           <Link href="/" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">
-            <ArrowLeft className="h-4 w-4" /> 返回首页
+            <ArrowLeft className="h-4 w-4" /> {t('QuizResult.backToHome')}
           </Link>
         </div>
       </div>
