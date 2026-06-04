@@ -30,7 +30,7 @@ export default function HistoryPage() {
         </Link>
         
         <div className="flex items-center gap-2 sm:gap-4 bg-black/40 px-4 sm:px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-           <div className="text-3xl sm:text-4xl">??</div>
+           <div className="text-3xl sm:text-4xl">📊</div>
            <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">{t('History.title')}</h1>
         </div>
         
@@ -46,7 +46,7 @@ export default function HistoryPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* ???? */}
+        {/* 统计区域 */}
         <section>
           <h2 className="text-xl sm:text-2xl text-white font-bold mb-4 flex items-center gap-2">
             <History className="h-6 w-6" />
@@ -55,12 +55,12 @@ export default function HistoryPage() {
           <StudyStats />
         </section>
 
-        {/* ??????? */}
+        {/* 学习趋势图 */}
         <section>
           <StudyChart days={7} />
         </section>
 
-        {/* ?????? */}
+        {/* 学习历史列表 */}
         <section>
           <h2 className="text-xl sm:text-2xl text-white font-bold mb-4">{t('History.historyTitle')}</h2>
           <StudyRecordList />
@@ -69,7 +69,7 @@ export default function HistoryPage() {
 
       {/* Footer Decoration */}
       <div className="mt-12 text-center text-white/80 font-bold text-xs sm:text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
-        {t('History.footer')} ??
+        {t('History.footer')} 🌟
       </div>
     </div>
   );

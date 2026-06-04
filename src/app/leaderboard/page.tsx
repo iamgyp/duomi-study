@@ -7,13 +7,13 @@ import { getAllLeaderboards, LeaderboardEntry, clearLeaderboard } from '@/lib/le
 import { useTranslation } from '@/hooks/useTranslation';
 
 const SUBJECT_EMOJIS: Record<string, string> = {
-  math: '??',
-  algebra: '??',
-  'chinese-poem': '??',
-  'chinese-speed': '?',
-  english: '??',
-  'english-speed': '??',
-  'speed-challenge': '?',
+  math: '🧮 数学',
+  algebra: '🛒 代数',
+  'chinese-poem': '📝 古诗填空',
+  'chinese-speed': '⚡ 汉字速认',
+  english: '🔤 英语拼写',
+  'english-speed': '🏃 英语速认',
+  'speed-challenge': '⚡ 口算速算',
 };
 
 function formatQpm(qpm: number): string {
@@ -26,7 +26,7 @@ function formatDate(dateStr: string): string {
 }
 
 function ScoreRow({ entry, rank, t }: { entry: LeaderboardEntry; rank: number; t: (key: string) => string }) {
-  const medal = rank === 0 ? '??' : rank === 1 ? '??' : rank === 2 ? '??' : `#${rank + 1}`;
+  const medal = rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : `#${rank + 1}`;
 
   return (
     <div className={`flex items-center gap-3 p-3 rounded-sm ${
@@ -69,7 +69,7 @@ export default function LeaderboardPage() {
   }, []);
 
   const handleClear = (subject: string) => {
-    if (confirm(`??????????????`)) {
+    if (confirm(`确定要清空该项目的排行榜吗？`)) {
       clearLeaderboard(subject);
       setLeaderboards(getAllLeaderboards());
     }
@@ -89,13 +89,13 @@ export default function LeaderboardPage() {
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-base sm:text-xl w-full sm:w-auto justify-center">
           <ArrowLeft className="h-5 w-5" /> {t('Leaderboard.back')}
         </Link>
-        <h1 className="text-2xl sm:text-3xl text-white drop-shadow-md">?? {t('Leaderboard.title')}</h1>
+        <h1 className="text-2xl sm:text-3xl text-white drop-shadow-md">🏆 {t('Leaderboard.title')}</h1>
       </div>
 
       <div className="max-w-4xl mx-auto space-y-6">
         {activeSubjects.length === 0 ? (
           <div className="mc-card bg-white p-12 text-center">
-            <div className="text-6xl mb-4">??</div>
+            <div className="text-6xl mb-4">🏆</div>
             <p className="text-gray-500 text-lg">{t('Leaderboard.noEntries')}</p>
             <p className="text-gray-400 text-sm mt-2">{t('Leaderboard.noEntriesHint')}</p>
           </div>
@@ -104,15 +104,15 @@ export default function LeaderboardPage() {
             <div key={subject} className="mc-card bg-white p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-[#333]">
-                  {SUBJECT_EMOJIS[subject] || '??'} {subject}
+                  {SUBJECT_EMOJIS[subject] || subject}
                 </h2>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-400">{entries.length} ???</span>
+                  <span className="text-sm text-gray-400">{entries.length} 条记录</span>
                   <button
                     onClick={() => handleClear(subject)}
                     className="text-xs text-red-400 hover:text-red-600"
                   >
-                    ??
+                    清空
                   </button>
                 </div>
               </div>

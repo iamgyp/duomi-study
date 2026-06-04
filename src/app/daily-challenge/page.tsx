@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { ArrowLeft, Calendar, CheckCircle } from 'lucide-react';
@@ -114,11 +114,11 @@ export default function DailyChallengePage() {
     return (
       <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-4 sm:p-8 font-[var(--font-pixel)] flex items-center justify-center">
         <div className="mc-card bg-[#E2E8F0] p-6 sm:p-12 max-w-2xl w-full text-center">
-          <div className="text-6xl mb-4">{isPerfect ? '??' : '??'}</div>
+          <div className="text-6xl mb-4">{isPerfect ? '🌟' : '⭐'}</div>
           <h1 className="text-3xl sm:text-4xl font-bold text-[#333] mb-2">
             {isPerfect ? t('DailyChallenge.perfectTitle') : t('DailyChallenge.completeTitle')}
           </h1>
-          <p className="text-lg text-gray-600 mb-6">{t('DailyChallenge.todayChallenge')} ? {getTodaySeed()}</p>
+          <p className="text-lg text-gray-600 mb-6">{t('DailyChallenge.todayDate')} 📅 {getTodaySeed()}</p>
 
           <div className="grid grid-cols-3 gap-4 mb-8">
             <div className="bg-white border-2 border-black p-4">
@@ -153,22 +153,22 @@ export default function DailyChallengePage() {
     return (
       <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-4 sm:p-8 font-[var(--font-pixel)] flex items-center justify-center">
         <div className="mc-card bg-[#E2E8F0] p-6 sm:p-12 max-w-lg w-full text-center">
-          <div className="text-6xl mb-4">??</div>
+          <div className="text-6xl mb-4">📅</div>
           <h1 className="text-3xl font-bold text-[#333] mb-2">{t('DailyChallenge.title')}</h1>
           <p className="text-gray-600 mb-4">{getTodaySeed()}</p>
           <div className="space-y-3 mb-6">
             <div className="bg-white border-2 border-black p-3">
               <span className="text-sm text-gray-500">{t('DailyChallenge.questionCount')}</span>
-              <p className="text-2xl font-bold text-[#333]">{challenge.questions.length} ?</p>
+              <p className="text-2xl font-bold text-[#333]">{challenge.questions.length} 题</p>
             </div>
             <div className="bg-white border-2 border-black p-3">
               <span className="text-sm text-gray-500">{t('DailyChallenge.timeLimit')}</span>
-              <p className="text-2xl font-bold text-[#F59E0B]">{challenge.timeLimitSeconds} ?</p>
+              <p className="text-2xl font-bold text-[#F59E0B]">{challenge.timeLimitSeconds} 秒</p>
             </div>
             {streak > 0 && (
               <div className="bg-white border-2 border-black p-3">
                 <span className="text-sm text-gray-500">{t('DailyChallenge.streak')}</span>
-                <p className="text-2xl font-bold text-[#EF4444]">{streak} ? ??</p>
+                <p className="text-2xl font-bold text-[#EF4444]">{streak} 天连胜</p>
               </div>
             )}
           </div>
@@ -199,7 +199,7 @@ export default function DailyChallengePage() {
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-base sm:text-xl w-full sm:w-auto justify-center">
           <ArrowLeft className="h-5 w-5" /> {t('DailyChallenge.backHome')}
         </Link>
-        <h1 className="text-2xl sm:text-3xl text-white drop-shadow-md">?? {t('DailyChallenge.title')}</h1>
+        <h1 className="text-2xl sm:text-3xl text-white drop-shadow-md">📅 {t('DailyChallenge.title')}</h1>
         <span className="text-white/80 text-sm">{getTodaySeed()}</span>
       </div>
 
@@ -286,7 +286,7 @@ export default function DailyChallengePage() {
             onClick={handleSubmitResults}
             className="mc-btn bg-[#FF9800] text-white px-8 py-3 flex items-center justify-center gap-2 mx-auto"
           >
-            <CheckCircle className="h-5 w-5" /> ??
+            <CheckCircle className="h-5 w-5" /> 提交答案
           </button>
         </div>
       </div>

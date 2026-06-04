@@ -61,7 +61,7 @@ export default function AchievementsPage() {
           <ArrowLeft className="h-5 w-5" /> {t('Common.backToHome')}
         </Link>
         <div className="flex items-center gap-2 sm:gap-4 bg-black/40 px-4 sm:px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-          <div className="text-3xl sm:text-4xl">??</div>
+          <div className="text-3xl sm:text-4xl">🏆</div>
           <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">{t('Achievements.title')}</h1>
         </div>
         <div className="hidden sm:block">
@@ -100,7 +100,7 @@ export default function AchievementsPage() {
               : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
           }`}
         >
-          ?? {t('Achievements.tabAll')}
+          🏆 {t('Achievements.tabAll')}
         </button>
         {(['milestone', 'perfect', 'subject', 'collection'] as AchievementCategory[]).map(cat => (
           <button

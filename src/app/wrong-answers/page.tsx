@@ -40,8 +40,8 @@ function WrongAnswerCard({ item, index }: { item: WrongAnswerItem; index: number
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-red-500 font-bold">????: {item.userAnswer || '???'}</span>
-          <span className="text-xs text-green-600 font-bold">????: {item.correctAnswer}</span>
+          <span className="text-xs text-red-500 font-bold">你的答案: {item.userAnswer || '无'}</span>
+          <span className="text-xs text-green-600 font-bold">正确答案: {item.correctAnswer}</span>
           {expanded ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />}
         </div>
       </button>
@@ -101,7 +101,7 @@ export default function WrongAnswersPage() {
       {/* Stats bar */}
       <div className="max-w-4xl mx-auto mb-6">
         <div className="mc-card bg-[#E2E8F0] p-4 sm:p-6 text-center">
-          <div className="text-4xl mb-2">??</div>
+          <div className="text-4xl mb-2">📕</div>
           <div className="text-2xl font-bold text-[#333]">
             {totalWrong === 0 ? t('WrongAnswers.noWrong') : t('WrongAnswers.totalWrong', { count: totalWrong })}
           </div>
@@ -147,7 +147,7 @@ export default function WrongAnswersPage() {
           <div key={group.subject} className="mc-card bg-[#E2E8F0] p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-[#333]">
-                {getSubjectLabel(group.subject as keyof typeof SUBJECT_LABELS, t)} ? {group.items.length} ???
+                {getSubjectLabel(group.subject as keyof typeof SUBJECT_LABELS, t)} · {group.items.length} 道错题
               </h2>
               <button
                 onClick={() => handleRedo(group.subject as keyof typeof SUBJECT_ROUTES)}
