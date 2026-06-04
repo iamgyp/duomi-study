@@ -64,7 +64,9 @@
     "operationSub": "减法 (-)",
     "operationMul": "乘法 (×)",
     "operationDiv": "除法 (÷)",
-    "operationMix": "混合 (+/-/×/÷)",
+    "operationAddSub": "加减混合 (+/−)",
+    "operationMulDiv": "乘除混合 (×/÷)",
+    "operationMix": "混合 (+/−/×/÷)",
     "practiceMode": "练习模式",
     "practiceModeDesc": "答错后显示解题提示，帮助理解"
   },

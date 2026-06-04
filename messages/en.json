@@ -64,7 +64,9 @@
     "operationSub": "Subtraction (-)",
     "operationMul": "Multiplication (×)",
     "operationDiv": "Division (÷)",
-    "operationMix": "Mixed (+/-/×/÷)",
+    "operationAddSub": "Mixed Add/Sub (+/−)",
+    "operationMulDiv": "Mixed Mul/Div (×/÷)",
+    "operationMix": "Mixed (+/−/×/÷)",
     "practiceMode": "Practice Mode",
     "practiceModeDesc": "Shows hints after wrong answers to help understanding"
   },
