@@ -106,6 +106,8 @@ export default function SpeedChallengePage() {
                 <option value="sub">减法 (-)</option>
                 <option value="mul">乘法 (×)</option>
                 <option value="div">除法 (÷)</option>
+                <option value="add-sub">加减混合 (+/−)</option>
+                <option value="mul-div">乘除混合 (×/÷)</option>
                 <option value="mix">混合 (+/−/×/÷)</option>
               </select>
             </div>
