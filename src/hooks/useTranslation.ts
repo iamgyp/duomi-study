@@ -1,19 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 type Locale = 'zh' | 'en';
-
-interface TranslationMessages {
-  Common: Record<string, string>;
-  Home: Record<string, string>;
-  Math: Record<string, string>;
-  Algebra: Record<string, string>;
-  Chinese: Record<string, string>;
-  English: Record<string, string>;
-  Footer: Record<string, string>;
-  SpeedChallenge: Record<string, string>;
-}
 
 function getNestedValue(obj: Record<string, any>, path: string): any {
   return path.split('.').reduce((acc, key) => acc?.[key], obj);
@@ -21,35 +10,47 @@ function getNestedValue(obj: Record<string, any>, path: string): any {
 
 export function useTranslation() {
   const [locale, setLocale] = useState<Locale>('zh');
-  const [messages, setMessages] = useState<TranslationMessages | null>(null);
+  const [messages, setMessages] = useState<Record<string, any> | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     setMounted(true);
-    const savedLocale = (localStorage.getItem('NEXT_LOCALE') as Locale) || 'zh';
-    setLocale(savedLocale);
-    
-    // Load messages
-    import(`../../messages/${savedLocale}.json`)
-      .then((mod) => setMessages(mod.default as TranslationMessages))
-      .catch(() => {
-        import(`../../messages/zh.json`)
-          .then((mod) => {
-            setLocale('zh');
-            setMessages(mod.default as TranslationMessages);
-          });
-      });
   }, []);
 
-  const t = (key: string): string => {
+  useEffect(() => {
+    const savedLocale = (localStorage.getItem('NEXT_LOCALE') as Locale) || 'zh';
+    loadMessages(savedLocale);
+  }, [refreshKey]);
+
+  const loadMessages = useCallback((loc: Locale) => {
+    setLocale(loc);
+    import(`../../messages/${loc}.json`)
+      .then((mod) => setMessages(mod.default))
+      .catch(() => import(`../../messages/zh.json`).then((mod) => {
+        setLocale('zh');
+        setMessages(mod.default);
+      }));
+  }, []);
+
+  const t = useCallback((key: string, params?: Record<string, string | number>): string => {
     if (!messages) return key;
     const value = getNestedValue(messages, key);
-    return typeof value === 'string' ? value : key;
-  };
+    let result = typeof value === 'string' ? value : key;
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        result = result.replace(`{${k}}`, String(v));
+      });
+    }
+    return result;
+  }, [messages]);
 
-  return {
-    t,
-    locale,
-    mounted,
-  };
+  const switchLocale = useCallback((newLocale: Locale) => {
+    localStorage.setItem('NEXT_LOCALE', newLocale);
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
+    // Force re-render with new locale
+    setRefreshKey((k) => k + 1);
+  }, []);
+
+  return { t, locale, mounted, switchLocale };
 }

@@ -84,7 +84,19 @@ export default function ChineseQuizPage() {
       correctCount,
       accuracy,
       duration: elapsed,
-      answers: [],
+      answers: questions.flatMap((q, qi) =>
+        q.blanks.map((blank, bi) => {
+          const blankKey = qi * 100 + bi;
+          const userAnswer = quiz.answers.get(blankKey) || '';
+          return {
+            questionId: `poem-${qi}-${bi}`,
+            userAnswer,
+            correct: userAnswer.trim() === blank.correctAnswer.trim(),
+            questionText: blank.hint,
+            correctAnswer: blank.correctAnswer,
+          };
+        })
+      ),
     });
 
     addScore('chinese-poem', { score: accuracy, totalQuestions: totalBlanks, duration: elapsed, questionsPerMinute: qpm, date: new Date().toISOString() });

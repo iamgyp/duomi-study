@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, VT323 } from "next/font/google";
 import "./globals.css";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,7 +64,11 @@ export default function RootLayout({
             `,
           }}
         />
+        <ErrorBoundary>
+          <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#795548" />
         {children}
+        </ErrorBoundary>
       </body>
     </html>
   );

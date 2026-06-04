@@ -8,19 +8,24 @@ import { ACHIEVEMENTS, AchievementCategory, getAchievementsByCategory } from '@/
 import { getUnlockedAchievements } from '@/lib/achievement-engine';
 import { getStats, AggregatedStats } from '@/lib/stats-aggregator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
-const categoryLabels: Record<AchievementCategory, string> = {
-  milestone: '学习里程碑',
-  perfect: '全对成就',
-  subject: '学科专精',
-  collection: '收集图鉴',
-};
+function getCategoryTabKey(cat: AchievementCategory): string {
+  const keys: Record<AchievementCategory, string> = {
+    milestone: 'Achievements.tabMilestone',
+    perfect: 'Achievements.tabPerfect',
+    subject: 'Achievements.tabSubject',
+    collection: 'Achievements.tabCollection',
+  };
+  return keys[cat];
+}
 
 export default function AchievementsPage() {
   const [activeTab, setActiveTab] = useState<AchievementCategory | 'all'>('all');
   const [stats, setStats] = useState<AggregatedStats | null>(null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const [unlockedMap, setUnlockedMap] = useState<Record<string, { achievementId: string; unlockedAt: string }>>({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     setStats(getStats());
@@ -53,11 +58,11 @@ export default function AchievementsPage() {
       {/* Header */}
       <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row items-center gap-4 max-w-7xl mx-auto">
         <Link href="/" className="mc-btn bg-white hover:bg-gray-100 flex items-center gap-2 text-base sm:text-xl w-full sm:w-auto justify-center">
-          <ArrowLeft className="h-5 w-5" /> 返回首页
+          <ArrowLeft className="h-5 w-5" /> {t('Common.backToHome')}
         </Link>
         <div className="flex items-center gap-2 sm:gap-4 bg-black/40 px-4 sm:px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-          <div className="text-3xl sm:text-4xl">🏆</div>
-          <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">成就殿堂</h1>
+          <div className="text-3xl sm:text-4xl">??</div>
+          <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">{t('Achievements.title')}</h1>
         </div>
         <div className="hidden sm:block">
           <LanguageSwitcher />
@@ -72,7 +77,7 @@ export default function AchievementsPage() {
       <div className="max-w-7xl mx-auto mb-6">
         <div className="mc-card bg-[#E2E8F0] p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg sm:text-xl font-bold text-[#333]">总进度</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#333]">{t('Achievements.totalProgress')}</h2>
             <span className="text-lg sm:text-xl font-bold text-[#4CAF50]">{unlockedCount} / {totalAchievements}</span>
           </div>
           <div className="w-full bg-gray-300 rounded-sm h-6 overflow-hidden border-2 border-black">
@@ -81,7 +86,7 @@ export default function AchievementsPage() {
               style={{ width: `${percentage}%` }}
             />
           </div>
-          <p className="text-center text-sm text-gray-500 mt-1">{percentage}% 已解锁</p>
+          <p className="text-center text-sm text-gray-500 mt-1">{t('Achievements.unlockedPercent', { percent: percentage })}</p>
         </div>
       </div>
 
@@ -95,7 +100,7 @@ export default function AchievementsPage() {
               : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
           }`}
         >
-          🏆 全部
+          ?? {t('Achievements.tabAll')}
         </button>
         {(['milestone', 'perfect', 'subject', 'collection'] as AchievementCategory[]).map(cat => (
           <button
@@ -107,7 +112,7 @@ export default function AchievementsPage() {
                 : 'bg-[#C6C6C6] text-gray-700 border-gray-400 hover:bg-gray-200'
             }`}
           >
-            {categoryLabels[cat]}
+            {t(getCategoryTabKey(cat))}
           </button>
         ))}
       </div>
@@ -128,7 +133,7 @@ export default function AchievementsPage() {
 
       {/* Footer */}
       <div className="mt-12 text-center text-white/80 font-bold text-xs sm:text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
-        成就殿堂 — 记录每一份努力
+        {t('Achievements.footer')}
       </div>
     </div>
   );

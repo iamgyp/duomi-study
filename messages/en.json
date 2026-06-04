@@ -235,5 +235,90 @@
     "clearConfirmTitle": "Confirm Clear",
     "clearConfirmMessage": "Are you sure you want to clear all study records? This action cannot be undone!",
     "confirmClear": "Confirm Clear"
+  },
+  "WrongAnswers": {
+    "title": "Wrong Answers",
+    "noWrong": "Great job, no wrong answers!",
+    "totalWrong": "{count} wrong answers total",
+    "filterAll": "All",
+    "filterEmpty": "No wrong answers for this subject",
+    "noPractice": "You have not done any online practice yet, or all answers were correct!",
+    "recentWrong": "Recent mistake",
+    "redo": "Redo",
+    "back": "Back",
+    "wrongQuestionCount": "{subject} · {count} wrong answers"
+  },
+  "Achievements": {
+    "title": "Achievement Hall",
+    "tabAll": "All",
+    "tabMilestone": "Milestones",
+    "tabPerfect": "Perfect Scores",
+    "tabSubject": "Subject Mastery",
+    "tabCollection": "Collection",
+    "totalProgress": "Total Progress",
+    "unlockedPercent": "{percent}% Unlocked",
+    "back": "Back to Home",
+    "footer": "Achievement Hall — Record Every Effort"
+  },
+  "Leaderboard": {
+    "title": "Leaderboard",
+    "back": "Back to Home",
+    "noEntries": "No entries yet",
+    "noEntriesHint": "Complete practice to appear on the leaderboard",
+    "rank": "Rank",
+    "score": "Score",
+    "qpm": "Q/min",
+    "accuracy": "Accuracy",
+    "totalQ": "Questions"
+  },
+  "DailyChallenge": {
+    "title": "Daily Challenge",
+    "todayDate": "Today's Challenge",
+    "back": "Back",
+    "backHome": "Back to Home",
+    "questionCount": "Questions",
+    "timeLimit": "Time Limit",
+    "streak": "Streak",
+    "alreadyDone": "You have already completed today's challenge!",
+    "startChallenge": "Start Challenge",
+    "retry": "Try Again",
+    "answered": "Answered",
+    "questionNum": "Question {current} / {total}",
+    "correct": "✓ Correct!",
+    "incorrect": "✗ Not quite!",
+    "perfectTitle": "Perfect!",
+    "completeTitle": "Challenge Complete!",
+    "accuracy": "Accuracy",
+    "timeUsed": "Time Used",
+    "consecutiveDays": "Consecutive Days",
+    "questions": "{count} questions",
+    "seconds": "{seconds}s",
+    "days": "{count} days"
+  },
+  "History": {
+    "title": "Study Records",
+    "statsTitle": "Study Statistics",
+    "historyTitle": "Study History",
+    "footer": "Track every step, witness every progress"
+  },
+  "StudyRecordButton": {
+    "label": "Complete Study",
+    "title": "Record Study Duration",
+    "subjectLabel": "Subject",
+    "durationLabel": "Study Duration (minutes)",
+    "noteLabel": "Notes",
+    "submit": "Save Record",
+    "cancel": "Cancel",
+    "success": "Record saved!"
+  },
+  "StudyStats": {
+    "totalDuration": "Total Study Time",
+    "todayDuration": "Today's Study",
+    "consecutiveDays": "Consecutive Days",
+    "totalRecords": "Total Records"
+  },
+  "LanguageSwitcher": {
+    "chinese": "中文",
+    "english": "EN"
   }
 }

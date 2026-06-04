@@ -3,6 +3,7 @@
 import { ArrowLeft, History } from 'lucide-react';
 import Link from 'next/link';
 import { StudyStats } from '@/components/StudyStats';
+import { StudyChart } from '@/components/StudyChart';
 import { StudyRecordList } from '@/components/StudyRecordList';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -29,8 +30,8 @@ export default function HistoryPage() {
         </Link>
         
         <div className="flex items-center gap-2 sm:gap-4 bg-black/40 px-4 sm:px-6 py-2 rounded-sm border-2 border-white/20 backdrop-blur-sm">
-           <div className="text-3xl sm:text-4xl">📊</div>
-           <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">学习记录</h1>
+           <div className="text-3xl sm:text-4xl">??</div>
+           <h1 className="text-2xl sm:text-4xl text-white drop-shadow-md tracking-wider">{t('History.title')}</h1>
         </div>
         
         <div className="hidden sm:block">
@@ -45,25 +46,30 @@ export default function HistoryPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* 统计区域 */}
+        {/* ???? */}
         <section>
           <h2 className="text-xl sm:text-2xl text-white font-bold mb-4 flex items-center gap-2">
             <History className="h-6 w-6" />
-            学习统计
+            {t('History.statsTitle')}
           </h2>
           <StudyStats />
         </section>
 
-        {/* 记录列表区域 */}
+        {/* ??????? */}
         <section>
-          <h2 className="text-xl sm:text-2xl text-white font-bold mb-4">学习历史</h2>
+          <StudyChart days={7} />
+        </section>
+
+        {/* ?????? */}
+        <section>
+          <h2 className="text-xl sm:text-2xl text-white font-bold mb-4">{t('History.historyTitle')}</h2>
           <StudyRecordList />
         </section>
       </div>
 
       {/* Footer Decoration */}
       <div className="mt-12 text-center text-white/80 font-bold text-xs sm:text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
-        记录每一步成长，见证每一次进步 🌟
+        {t('History.footer')} ??
       </div>
     </div>
   );

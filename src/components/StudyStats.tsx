@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { Clock, Calendar, Flame, BookOpen } from 'lucide-react';
 import { StudyStats as StudyStatsType, Subject } from '@/types/study-record';
 import { getStudyStats, formatDuration } from '@/lib/study-storage';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function StudyStats() {
   const [stats, setStats] = useState<StudyStatsType | null>(null);
   const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -27,43 +29,43 @@ export function StudyStats() {
   const statCards = [
     {
       icon: Clock,
-      label: '总学习时长',
+      label: t('StudyStats.totalDuration'),
       value: formatDuration(stats.totalDuration),
       color: 'bg-[#3B82F6]',
     },
     {
       icon: Calendar,
-      label: '今日学习',
+      label: t('StudyStats.todayDuration'),
       value: formatDuration(stats.todayDuration),
       color: 'bg-[#10B981]',
     },
     {
       icon: Flame,
-      label: '连续学习',
-      value: `${stats.consecutiveDays}天`,
+      label: t('StudyStats.consecutiveDays'),
+      value: `${stats.consecutiveDays} ?`,
       color: 'bg-[#F59E0B]',
     },
     {
       icon: BookOpen,
-      label: '学习记录',
-      value: `${stats.totalRecords}条`,
+      label: t('StudyStats.totalRecords'),
+      value: `${stats.totalRecords} ?`,
       color: 'bg-[#8B5CF6]',
     },
   ];
 
-  // 学科分布数据
+  // ??????
   const subjectData: { subject: Subject; label: string; color: string }[] = [
-    { subject: 'chinese', label: '语文', color: '#F59E0B' },
-    { subject: 'math', label: '数学', color: '#EF4444' },
-    { subject: 'english', label: '英语', color: '#3B82F6' },
-    { subject: 'algebra', label: '代数', color: '#8B5CF6' },
+    { subject: 'chinese', label: t('StudyRecordButton.chinese'), color: '#F59E0B' },
+    { subject: 'math', label: t('StudyRecordButton.math'), color: '#EF4444' },
+    { subject: 'english', label: t('StudyRecordButton.english'), color: '#3B82F6' },
+    { subject: 'algebra', label: t('StudyRecordButton.algebra'), color: '#8B5CF6' },
   ];
 
   const maxDuration = Math.max(...Object.values(stats.subjectDistribution), 1);
 
   return (
     <div className="space-y-6">
-      {/* 统计卡片 */}
+      {/* ???? */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statCards.map((card, index) => (
           <div
@@ -81,11 +83,11 @@ export function StudyStats() {
         ))}
       </div>
 
-      {/* 学科分布图表 */}
+      {/* ?????? */}
       <div className="mc-card bg-white p-4 sm:p-6">
         <h3 className="text-lg font-bold text-[#333] mb-4 flex items-center gap-2">
           <BookOpen className="h-5 w-5" />
-          学科分布
+          ????
         </h3>
         
         <div className="space-y-3">

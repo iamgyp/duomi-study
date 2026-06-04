@@ -62,6 +62,8 @@ export default function EnglishQuizPage() {
         questionId: q.id,
         userAnswer: quiz.answers.get(i) || '',
         correct: quiz.answers.get(i)?.trim().toLowerCase() === q.word.toLowerCase(),
+        questionText: q.word,
+        correctAnswer: q.word,
       })),
     });
 

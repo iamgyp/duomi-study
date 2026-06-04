@@ -54,6 +54,9 @@ export type QuizAnswer = {
   questionId: string;
   userAnswer: string;
   correct: boolean;
+  questionText?: string;
+  correctAnswer?: string;
+  options?: string[];
 };
 
 export type QuizSession = {
@@ -344,6 +347,14 @@ export function saveQuizSession(session: Omit<QuizSession, 'id'>): QuizSession {
 
   try {
     const existing = getAllQuizSessions();
+    // Add question context to answers if not already present
+    const enrichedAnswers = fullSession.answers.map((a, idx) => ({
+      ...a,
+      questionText: a.questionText,
+      correctAnswer: a.correctAnswer,
+      options: a.options,
+    }));
+    fullSession.answers = enrichedAnswers;
     existing.push(fullSession);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
   } catch {

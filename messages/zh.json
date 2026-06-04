@@ -235,5 +235,90 @@
     "clearConfirmTitle": "确认清空",
     "clearConfirmMessage": "确定要清空所有学习记录吗？此操作不可恢复！",
     "confirmClear": "确认清空"
+  },
+  "WrongAnswers": {
+    "title": "错题本",
+    "noWrong": "太棒了，没有错题！",
+    "totalWrong": "共 {count} 道错题",
+    "filterAll": "全部",
+    "filterEmpty": "该学科没有错题",
+    "noPractice": "你还没有做过在线练习，或者所有练习都全对了！",
+    "recentWrong": "最近错误",
+    "redo": "重做",
+    "back": "返回",
+    "wrongQuestionCount": "{subject} · {count} 道错题"
+  },
+  "Achievements": {
+    "title": "成就殿堂",
+    "tabAll": "全部",
+    "tabMilestone": "学习里程碑",
+    "tabPerfect": "全对成就",
+    "tabSubject": "学科专精",
+    "tabCollection": "收集图鉴",
+    "totalProgress": "总进度",
+    "unlockedPercent": "{percent}% 已解锁",
+    "back": "返回首页",
+    "footer": "成就殿堂 — 记录每一份努力"
+  },
+  "Leaderboard": {
+    "title": "排行榜",
+    "back": "返回首页",
+    "noEntries": "暂无记录",
+    "noEntriesHint": "完成练习后会自动上榜",
+    "rank": "排名",
+    "score": "得分",
+    "qpm": "题/分钟",
+    "accuracy": "正确率",
+    "totalQ": "题目数"
+  },
+  "DailyChallenge": {
+    "title": "每日挑战",
+    "todayDate": "今日挑战",
+    "back": "返回",
+    "backHome": "返回首页",
+    "questionCount": "题目数量",
+    "timeLimit": "时间限制",
+    "streak": "连续挑战",
+    "alreadyDone": "今天已经完成了挑战！",
+    "startChallenge": "开始挑战",
+    "retry": "再来一次",
+    "answered": "已答",
+    "questionNum": "第 {current} / {total} 题",
+    "correct": "✓ 正确！",
+    "incorrect": "✗ 不对哦！",
+    "perfectTitle": "完美通关！",
+    "completeTitle": "挑战完成！",
+    "accuracy": "正确率",
+    "timeUsed": "用时",
+    "consecutiveDays": "连续天数",
+    "questions": "{count} 题",
+    "seconds": "{seconds} 秒",
+    "days": "{count} 天"
+  },
+  "History": {
+    "title": "学习记录",
+    "statsTitle": "学习统计",
+    "historyTitle": "学习历史",
+    "footer": "记录每一步成长，见证每一次进步"
+  },
+  "StudyRecordButton": {
+    "label": "完成学习",
+    "title": "记录学习时长",
+    "subjectLabel": "学科",
+    "durationLabel": "学习时长（分钟）",
+    "noteLabel": "备注",
+    "submit": "保存记录",
+    "cancel": "取消",
+    "success": "记录成功！"
+  },
+  "StudyStats": {
+    "totalDuration": "总学习时长",
+    "todayDuration": "今日学习",
+    "consecutiveDays": "连续天数",
+    "totalRecords": "总记录数"
+  },
+  "LanguageSwitcher": {
+    "chinese": "中文",
+    "english": "EN"
   }
 }

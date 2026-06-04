@@ -70,6 +70,8 @@ function SpeedChallengeQuizContent() {
           questionId: a.question.id,
           userAnswer: a.userAnswer,
           correct: a.correct,
+          questionText: a.question.questionText,
+          correctAnswer: String(a.question.answer),
         })),
       });
 

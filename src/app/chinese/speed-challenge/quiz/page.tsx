@@ -59,6 +59,8 @@ function ChineseSpeedChallengeQuizContent() {
           questionId: a.question.id,
           userAnswer: a.selectedOption,
           correct: a.correct,
+          questionText: a.question.character ? a.question.character : a.question.id,
+          correctAnswer: a.question.pinyin,
         })),
       });
 

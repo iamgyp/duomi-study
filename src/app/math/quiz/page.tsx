@@ -139,6 +139,9 @@ function MathQuizContent() {
         questionId: q.id,
         userAnswer: quiz.answers.get(i) || '',
         correct: quiz.answers.get(i) === q.options[q.correctIndex],
+        questionText: q.questionText,
+        correctAnswer: q.options[q.correctIndex],
+        options: q.options,
       })),
     });
 
