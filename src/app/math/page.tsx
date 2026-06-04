@@ -147,6 +147,8 @@ export default function MathPage() {
                 <option value="sub">{t('Math.operationSub')}</option>
                 <option value="mul">{t('Math.operationMul')}</option>
                 <option value="div">{t('Math.operationDiv')}</option>
+                <option value="add-sub">{t('Math.operationAddSub')}</option>
+                <option value="mul-div">{t('Math.operationMulDiv')}</option>
                 <option value="mix">{t('Math.operationMix')}</option>
               </select>
             </div>
