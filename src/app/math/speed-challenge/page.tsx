@@ -13,7 +13,7 @@ export default function SpeedChallengePage() {
   const router = useRouter();
   const [timeLimit, setTimeLimit] = useState<30 | 60 | 120>(60);
   const [max, setMax] = useState(20);
-  const [operation, setOperation] = useState<'add' | 'sub' | 'mul' | 'div' | 'mix'>('mix');
+  const [operation, setOperation] = useState<'add' | 'sub' | 'mul' | 'div' | 'mix' | 'add-sub' | 'mul-div'>('mix');
 
   const handleStart = () => {
     router.push(`/math/speed-challenge/quiz?timeLimit=${timeLimit}&max=${max}&operation=${operation}`);
