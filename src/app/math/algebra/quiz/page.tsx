@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useMemo, useCallback, Suspense } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -141,7 +141,7 @@ function AlgebraQuizContent() {
           <h1 className="text-3xl font-bold text-[#333] mb-2">代数在线挑战</h1>
           <p className="text-gray-600 mb-6">{questions.length} 道题目</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => setStarted(true)} className="mc-btn bg-[#4CAF50] text-white flex-1 py-3">
+            <button onClick={() => { play('click'); setStarted(true); }} className="mc-btn bg-[#4CAF50] text-white flex-1 py-3">
               开始答题
             </button>
             <Link href="/math/algebra" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">

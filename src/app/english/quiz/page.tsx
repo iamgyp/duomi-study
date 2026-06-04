@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -104,7 +104,7 @@ export default function EnglishQuizPage() {
           <h1 className="text-3xl font-bold text-[#333] mb-2">英语拼写在线练习</h1>
           <p className="text-gray-600 mb-6">{questions.length} 个单词</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => setStarted(true)} className="mc-btn bg-[#3B82F6] text-white flex-1 py-3">
+            <button onClick={() => { play('click'); setStarted(true); }} className="mc-btn bg-[#3B82F6] text-white flex-1 py-3">
               开始答题
             </button>
             <Link href="/english" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">

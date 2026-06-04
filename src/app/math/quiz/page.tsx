@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useCallback, Suspense, useMemo } from 'react';
 import { ArrowLeft, CheckCircle, Lightbulb } from 'lucide-react';
@@ -200,7 +200,7 @@ function MathQuizContent() {
           )}
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => setStarted(true)}
+              onClick={() => { play('click'); setStarted(true); }}
               className="mc-btn bg-[#4CAF50] text-white flex-1 py-3"
             >
               开始答题

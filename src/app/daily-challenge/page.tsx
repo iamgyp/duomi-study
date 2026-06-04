@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { ArrowLeft, Calendar, CheckCircle } from 'lucide-react';
@@ -178,7 +178,7 @@ export default function DailyChallengePage() {
             </div>
           ) : null}
           <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={() => { setStarted(true); setTimerRunning(true); }} className="mc-btn bg-[#4CAF50] text-white flex-1 py-3 flex items-center justify-center gap-2">
+            <button onClick={() => { play('click'); setStarted(true); setTimerRunning(true); }} className="mc-btn bg-[#4CAF50] text-white flex-1 py-3 flex items-center justify-center gap-2">
               <Calendar className="h-5 w-5" /> {completed ? t('DailyChallenge.retry') : t('DailyChallenge.startChallenge')}
             </button>
             <Link href="/" className="mc-btn bg-white text-black flex-1 py-3 flex items-center justify-center gap-2">
