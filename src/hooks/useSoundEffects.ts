@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 type SoundType =
   | 'correct'
@@ -76,69 +76,120 @@ function playNoise(ctx: AudioContext, duration: number, gainValue = 0.05, delay 
 
 export function useSoundEffects() {
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const pendingRef = useRef<Array<() => void>>([]);
 
   const getCtx = useCallback(() => {
     if (!audioCtxRef.current) {
       audioCtxRef.current = createAudioContext();
     }
-    if (audioCtxRef.current?.state === 'suspended') {
-      audioCtxRef.current.resume();
-    }
     return audioCtxRef.current;
   }, []);
+
+  // Ensure context is running (resumed)
+  const ensureRunning = useCallback(async () => {
+    const ctx = getCtx();
+    if (!ctx) return false;
+    if (ctx.state === 'suspended') {
+      try {
+        await ctx.resume();
+      } catch {
+        return false;
+      }
+    }
+    return true;
+  }, [getCtx]);
+
+  // On mount, listen for the first user interaction to initialize audio
+  useEffect(() => {
+    const initAudio = () => {
+      const ctx = getCtx();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume();
+      }
+    };
+    // Try to initialize on any user interaction
+    document.addEventListener('click', initAudio, { once: true });
+    document.addEventListener('keydown', initAudio, { once: true });
+    document.addEventListener('touchstart', initAudio, { once: true });
+    return () => {
+      document.removeEventListener('click', initAudio);
+      document.removeEventListener('keydown', initAudio);
+      document.removeEventListener('touchstart', initAudio);
+    };
+  }, [getCtx]);
 
   const play = useCallback(
     (type: SoundType) => {
       const ctx = getCtx();
       if (!ctx) return;
 
-      switch (type) {
-        case 'correct':
-          playTone(ctx, 523.25, 0.12, 'sine', 0.15, 0);
-          playTone(ctx, 659.25, 0.18, 'sine', 0.15, 0.08);
-          break;
-
-        case 'incorrect':
-          playTone(ctx, 220, 0.25, 'square', 0.08, 0);
-          playNoise(ctx, 0.15, 0.04, 0);
-          playTone(ctx, 165, 0.2, 'sawtooth', 0.06, 0.1);
-          break;
-
-        case 'achievement':
-          playTone(ctx, 523.25, 0.15, 'sine', 0.12, 0);
-          playTone(ctx, 659.25, 0.15, 'sine', 0.12, 0.1);
-          playTone(ctx, 783.99, 0.15, 'sine', 0.12, 0.2);
-          playTone(ctx, 1046.5, 0.35, 'sine', 0.15, 0.3);
-          playTone(ctx, 1318.5, 0.2, 'triangle', 0.06, 0.4);
-          break;
-
-        case 'click':
-          playTone(ctx, 800, 0.04, 'square', 0.06, 0);
-          break;
-
-        case 'complete':
-          playTone(ctx, 523.25, 0.15, 'triangle', 0.12, 0);
-          playTone(ctx, 659.25, 0.15, 'triangle', 0.12, 0.12);
-          playTone(ctx, 783.99, 0.15, 'triangle', 0.12, 0.24);
-          playTone(ctx, 1046.5, 0.15, 'triangle', 0.12, 0.36);
-          playTone(ctx, 1318.5, 0.15, 'triangle', 0.12, 0.48);
-          playTone(ctx, 1567.98, 0.4, 'sine', 0.15, 0.6);
-          break;
-
-        case 'timer_warning':
-          playTone(ctx, 880, 0.1, 'square', 0.1, 0);
-          playTone(ctx, 880, 0.1, 'square', 0.1, 0.15);
-          break;
-
-        case 'countdown_beep':
-          playTone(ctx, 440, 0.3, 'sine', 0.12, 0);
-          playTone(ctx, 440, 0.3, 'sine', 0.12, 0.35);
-          playTone(ctx, 880, 0.5, 'sine', 0.15, 0.7);
-          break;
+      // Try to resume if suspended (sync attempt for user gesture context)
+      if (ctx.state === 'suspended') {
+        ctx.resume();
       }
+
+      // Only play if context is running or running
+      if (ctx.state !== 'running') {
+        // If still suspended, try again and play after resume
+        ctx.resume().then(() => {
+          if (ctx.state === 'running') {
+            doPlay(ctx, type);
+          }
+        });
+        return;
+      }
+
+      doPlay(ctx, type);
     },
     [getCtx],
   );
 
-  return { play };
+  return { play, ensureRunning };
+}
+
+function doPlay(ctx: AudioContext, type: SoundType) {
+  switch (type) {
+    case 'correct':
+      playTone(ctx, 523.25, 0.12, 'sine', 0.15, 0);
+      playTone(ctx, 659.25, 0.18, 'sine', 0.15, 0.08);
+      break;
+
+    case 'incorrect':
+      playTone(ctx, 220, 0.25, 'square', 0.08, 0);
+      playNoise(ctx, 0.15, 0.04, 0);
+      playTone(ctx, 165, 0.2, 'sawtooth', 0.06, 0.1);
+      break;
+
+    case 'achievement':
+      playTone(ctx, 523.25, 0.15, 'sine', 0.12, 0);
+      playTone(ctx, 659.25, 0.15, 'sine', 0.12, 0.1);
+      playTone(ctx, 783.99, 0.15, 'sine', 0.12, 0.2);
+      playTone(ctx, 1046.5, 0.35, 'sine', 0.15, 0.3);
+      playTone(ctx, 1318.5, 0.2, 'triangle', 0.06, 0.4);
+      break;
+
+    case 'click':
+      playTone(ctx, 800, 0.04, 'square', 0.06, 0);
+      break;
+
+    case 'complete':
+      playTone(ctx, 523.25, 0.15, 'triangle', 0.12, 0);
+      playTone(ctx, 659.25, 0.15, 'triangle', 0.12, 0.12);
+      playTone(ctx, 783.99, 0.15, 'triangle', 0.12, 0.24);
+      playTone(ctx, 1046.5, 0.15, 'triangle', 0.12, 0.36);
+      playTone(ctx, 1318.5, 0.15, 'triangle', 0.12, 0.48);
+      playTone(ctx, 1567.98, 0.4, 'sine', 0.15, 0.6);
+      break;
+
+    case 'timer_warning':
+      playTone(ctx, 880, 0.1, 'square', 0.1, 0);
+      playTone(ctx, 880, 0.1, 'square', 0.1, 0.15);
+      break;
+
+    case 'countdown_beep':
+      playTone(ctx, 440, 0.3, 'sine', 0.12, 0);
+      playTone(ctx, 440, 0.3, 'sine', 0.12, 0.35);
+      playTone(ctx, 880, 0.5, 'sine', 0.15, 0.7);
+      break;
+  }
 }

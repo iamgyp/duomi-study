@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
@@ -144,6 +144,7 @@ function SpeedChallengeQuizContent() {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => {
+                play('click');
                 setStarted(true);
                 quiz.start();
               }}
