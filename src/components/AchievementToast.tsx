@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Share2 } from 'lucide-react';
 import { UnlockedAchievement } from '@/lib/achievement-engine';
 import { getAchievementById } from '@/lib/achievement-registry';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 interface AchievementToastProps {
   unlocks: UnlockedAchievement[];
@@ -14,6 +15,7 @@ export function AchievementToast({ unlocks, onDismiss }: AchievementToastProps) 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [showShare, setShowShare] = useState(false);
+  const { play } = useSoundEffects();
 
   useEffect(() => {
     if (unlocks.length === 0) return;
@@ -23,6 +25,7 @@ export function AchievementToast({ unlocks, onDismiss }: AchievementToastProps) 
       setTimeout(() => {
         if (currentIndex < unlocks.length - 1) {
           setCurrentIndex(prev => prev + 1);
+          play('achievement');
           setIsVisible(true);
         } else {
           onDismiss();
@@ -32,6 +35,11 @@ export function AchievementToast({ unlocks, onDismiss }: AchievementToastProps) 
 
     return () => clearTimeout(showTimer);
   }, [currentIndex, unlocks.length, onDismiss]);
+
+  // Play achievement sound on first mount
+  useEffect(() => {
+    play('achievement');
+  }, []);
 
   const handleShare = () => {
     if (!achievement) return;

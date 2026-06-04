@@ -14,6 +14,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { addScore } from '@/lib/leaderboard';
 
 function parseUrlParams(searchParams: URLSearchParams): AlgebraConfig {
@@ -46,6 +47,7 @@ function AlgebraQuizContent() {
     [config],
   );
 
+  const { play } = useSoundEffects();
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
@@ -53,13 +55,15 @@ function AlgebraQuizContent() {
   const handleAnswer = useCallback((opt: string) => {
     const qi = quiz.currentQuestion;
     quiz.setAnswer(qi, opt);
+    const correct = opt === questions[qi].options[questions[qi].correctIndex];
+    play(correct ? 'correct' : 'incorrect');
     // Capture stable values before setTimeout to avoid stale closure
     const nextQ = quiz.nextQuestion;
     const totalQ = quiz.totalQuestions;
     if (qi < totalQ - 1) {
       setTimeout(() => nextQ(), 400);
     }
-  }, [quiz]);
+  }, [quiz, play, questions]);
 
   const handleSubmit = () => {
     let correctCount = 0;
@@ -107,6 +111,7 @@ function AlgebraQuizContent() {
     updateDifficultyProgression('algebra');
 
     setResults({ correctCount, wrongAnswers });
+    if (correctCount > 0) play('complete');
     checkAndUnlock();
   };
 

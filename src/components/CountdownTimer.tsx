@@ -1,6 +1,8 @@
 'use client';
 
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 interface CountdownTimerProps {
   secondsRemaining: number;
@@ -10,6 +12,7 @@ interface CountdownTimerProps {
 
 export function CountdownTimer({ secondsRemaining, totalSeconds, state }: CountdownTimerProps) {
   const { t } = useTranslation();
+  const { play } = useSoundEffects();
   const ratio = totalSeconds > 0 ? secondsRemaining / totalSeconds : 0;
 
   let barColor = '#4CAF50'; // green
@@ -20,6 +23,15 @@ export function CountdownTimer({ secondsRemaining, totalSeconds, state }: Countd
   }
 
   const isFlashing = ratio <= 0.25 && state === 'running';
+  const prevSecondsRef = useRef(secondsRemaining);
+
+  // Play timer warning sound when entering final 10 seconds
+  useEffect(() => {
+    if (secondsRemaining <= 10 && secondsRemaining > 0 && prevSecondsRef.current > secondsRemaining) {
+      play('timer_warning');
+    }
+    prevSecondsRef.current = secondsRemaining;
+  }, [secondsRemaining, play]);
 
   if (state === 'timeUp') {
     return (

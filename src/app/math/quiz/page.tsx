@@ -13,6 +13,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { HintDisplay } from '@/components/HintDisplay';
 import { addScore } from '@/lib/leaderboard';
 import { useSearchParams } from 'next/navigation';
@@ -55,6 +56,7 @@ function MathQuizContent() {
   );
 
   const quiz = useQuiz(questions.length);
+  const { play } = useSoundEffects();
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: { questionIndex: number; questionText: string; userAnswer: string; correctAnswer: string }[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
 
@@ -77,10 +79,13 @@ function MathQuizContent() {
       newFeedback.set(qi, correct ? 'correct' : 'incorrect');
       setQuestionFeedback(newFeedback);
 
-      if (!correct) {
+      if (correct) {
+        play('correct');
+      } else {
         const newHints = new Map(showHintFor);
         newHints.set(qi, true);
         setShowHintFor(newHints);
+        play('incorrect');
       }
 
       setShowingFeedback(true);
@@ -156,6 +161,7 @@ function MathQuizContent() {
     updateDifficultyProgression('math');
 
     setResults({ correctCount, wrongAnswers });
+    if (correctCount > 0) play('complete');
     checkAndUnlock();
   };
 

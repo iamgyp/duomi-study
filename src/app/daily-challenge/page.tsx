@@ -12,9 +12,12 @@ import {
   getDailyStreak,
 } from '@/lib/daily-challenge';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 export default function DailyChallengePage() {
   const { t } = useTranslation();
+  const { play } = useSoundEffects();
+
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
 
@@ -64,6 +67,7 @@ export default function DailyChallengePage() {
   const handleAnswer = useCallback((opt: string) => {
     setAnswers((prev) => new Map(prev).set(currentQuestion, opt));
     const correct = opt === challenge.questions[currentQuestion].options[challenge.questions[currentQuestion].correctIndex];
+    play(correct ? 'correct' : 'incorrect');
     setFeedback(correct ? 'correct' : 'incorrect');
     setTimeout(() => {
       setFeedback(null);
@@ -75,7 +79,7 @@ export default function DailyChallengePage() {
         setTimeRemaining(0);
       }
     }, 600);
-  }, [currentQuestion, challenge, timeRemaining]);
+  }, [currentQuestion, challenge, timeRemaining, play]);
 
   const handleSubmitResults = () => {
     let correctCount = 0;
@@ -90,6 +94,7 @@ export default function DailyChallengePage() {
 
     saveDailyResult({ date: getTodaySeed(), correctCount, totalQuestions: challenge.questions.length, accuracy, timeUsed });
     setResults({ correctCount, timeUsed });
+    if (correctCount > 0) play('complete');
     setCompleted(true);
   };
 

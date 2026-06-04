@@ -12,6 +12,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { addScore } from '@/lib/leaderboard';
 
 const DEFAULT_WORDS = ['Apple', 'Banana', 'Cat', 'Dog', 'Elephant', 'Fish', 'Grape', 'Hat', 'Ice', 'Jump'];
@@ -24,6 +25,7 @@ export default function EnglishQuizPage() {
     generateEnglishQuizQuestions(words)
   )[0];
 
+  const { play } = useSoundEffects();
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
@@ -72,6 +74,7 @@ export default function EnglishQuizPage() {
     updateDifficultyProgression('english');
 
     setResults({ correctCount, wrongAnswers });
+    if (correctCount > 0) play('complete');
     checkAndUnlock();
   };
 

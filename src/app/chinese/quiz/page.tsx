@@ -13,6 +13,7 @@ import { QuizNav } from '@/components/QuizNav';
 import { QuizResult } from '@/components/QuizResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { addScore } from '@/lib/leaderboard';
 
 const defaultConfig: PoemConfig = {
@@ -30,6 +31,7 @@ export default function ChineseQuizPage() {
     generateChineseQuizQuestions(config)
   )[0];
 
+  const { play } = useSoundEffects();
   const quiz = useQuiz(questions.length);
   const [results, setResults] = useState<{ correctCount: number; wrongAnswers: { poemTitle: string; author: string; dynasty: string; lines: Array<{ text: string; wrongChars: Array<{ charIndex: number; userAnswer: string; correctAnswer: string }> }> }[] } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
@@ -104,6 +106,7 @@ export default function ChineseQuizPage() {
     updateDifficultyProgression('chinese-poem');
 
     setResults({ correctCount, wrongAnswers });
+    if (correctCount > 0) play('complete');
     checkAndUnlock();
   };
 

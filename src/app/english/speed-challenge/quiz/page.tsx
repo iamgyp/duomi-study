@@ -13,6 +13,7 @@ import { useAchievements } from '@/hooks/useAchievements';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { addScore } from '@/lib/leaderboard';
 
 const defaultConfig: EnglishSpeedQuizConfig = {
@@ -40,6 +41,7 @@ function EnglishSpeedChallengeQuizContent() {
 
   const quiz = useEnglishSpeedQuiz(config);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
+  const { play } = useSoundEffects();
 
   useEffect(() => {
     if (quiz.state === 'timeUp' && !finished) {
@@ -67,9 +69,19 @@ function EnglishSpeedChallengeQuizContent() {
       addScore('english-speed', { score: accuracy, totalQuestions: quiz.attemptedCount, duration: config.timeLimitSeconds, questionsPerMinute: qpm, date: new Date().toISOString() });
 
       updateDifficultyProgression('english-speed');
+      if (quiz.correctCount > 0) play('complete');
       checkAndUnlock();
     }
   }, [quiz.state, finished, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, checkAndUnlock]);
+
+  // Play correct/incorrect sounds based on feedback
+  useEffect(() => {
+    if (quiz.feedback === 'correct') {
+      play('correct');
+    } else if (quiz.feedback === 'wrong') {
+      play('incorrect');
+    }
+  }, [quiz.feedback, play]);
 
   const handleAnswer = useCallback((option: string) => {
     quiz.submitAnswer(option);

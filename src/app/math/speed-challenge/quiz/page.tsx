@@ -13,6 +13,7 @@ import { CountdownTimer } from '@/components/CountdownTimer';
 import { SpeedResult } from '@/components/SpeedResult';
 import { AchievementToast } from '@/components/AchievementToast';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { addScore } from '@/lib/leaderboard';
 
 const defaultConfig: SpeedQuizConfig = {
@@ -43,6 +44,16 @@ function SpeedChallengeQuizContent() {
 
   const quiz = useSpeedQuiz(config);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
+  const { play } = useSoundEffects();
+
+  // Play correct/incorrect sounds based on feedback
+  useEffect(() => {
+    if (quiz.feedback === 'correct') {
+      play('correct');
+    } else if (quiz.feedback === 'wrong') {
+      play('incorrect');
+    }
+  }, [quiz.feedback, play]);
 
   // Auto-focus input when question changes
   useEffect(() => {
@@ -78,6 +89,7 @@ function SpeedChallengeQuizContent() {
       addScore('speed-challenge', { score: accuracy, totalQuestions: quiz.attemptedCount, duration: config.timeLimitSeconds, questionsPerMinute: qpm, date: new Date().toISOString() });
 
       updateDifficultyProgression('speed-challenge');
+      if (quiz.correctCount > 0) play('complete');
 
       checkAndUnlock();
     }
