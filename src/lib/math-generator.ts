@@ -1,5 +1,5 @@
 export type MathConfig = {
-  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix';
+  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix' | 'add-sub' | 'mul-div';
   max: number; // Maximum result or operand
   count: number;
   mode: 'normal' | 'make-ten' | 'take-ten';
@@ -84,7 +84,11 @@ function generateHint(
 function generateNormalQuestion(op: string, max: number): MathQuestion | null {
   const operator = op === 'mix'
     ? (['+', '-', '×', '÷'][Math.floor(Math.random() * 4)])
-    : (op === 'mul' ? '×' : (op === 'sub' ? '-' : (op === 'div' ? '÷' : '+')));
+    : op === 'add-sub'
+      ? (['+', '-'][Math.floor(Math.random() * 2)])
+      : op === 'mul-div'
+        ? (['×', '÷'][Math.floor(Math.random() * 2)])
+        : (op === 'mul' ? '×' : (op === 'sub' ? '-' : (op === 'div' ? '÷' : '+')));
 
   let num1 = Math.floor(Math.random() * max);
   let num2 = Math.floor(Math.random() * max);

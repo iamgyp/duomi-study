@@ -50,6 +50,7 @@ function MathQuizContent() {
   const [practiceMode] = useState(urlPractice);
   const [started, setStarted] = useState(false);
 
+  const opLabel = config.operation === 'mix' ? '混合' : config.operation === 'add-sub' ? '加减混合' : config.operation === 'mul-div' ? '乘除混合' : config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'mul' ? '乘法' : '除法';
   const questions = useMemo(
     () => generateMathQuizQuestions(config),
     [config],
@@ -184,7 +185,6 @@ function MathQuizContent() {
   }
 
   if (!started) {
-    const opLabel = config.operation === 'mix' ? '混合' : config.operation === 'add' ? '加法' : config.operation === 'sub' ? '减法' : config.operation === 'mul' ? '乘法' : '除法';
     return (
       <div className="min-h-screen bg-[#795548] bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] p-4 sm:p-8 font-[var(--font-pixel)] flex items-center justify-center">
         <div className="mc-card bg-[#E2E8F0] p-6 sm:p-12 max-w-lg w-full text-center">

@@ -1,7 +1,7 @@
 export type SpeedQuizConfig = {
   timeLimitSeconds: 30 | 60 | 120;
   max: number;
-  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix';
+  operation: 'add' | 'sub' | 'mul' | 'div' | 'mix' | 'add-sub' | 'mul-div';
 };
 
 export type SpeedQuestion = {
@@ -61,6 +61,8 @@ function generateOne(op: SpeedQuizConfig['operation'], max: number): SpeedQuesti
 
   const pool = op === 'mix' ? opPool : opPool.filter(p => {
     if (op === 'add') return p.op === '+';
+    if (op === 'add-sub') return p.op === '+' || p.op === '-';
+    if (op === 'mul-div') return p.op === '×' || p.op === '÷';
     if (op === 'sub') return p.op === '-';
     if (op === 'mul') return p.op === '×';
     if (op === 'div') return p.op === '÷';
