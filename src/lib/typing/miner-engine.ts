@@ -76,13 +76,18 @@ export class MinerGame {
   private lavaY = -180; // Ceiling lava in challenge mode
   private particles: PixelParticle[] = [];
   private orbs: XpOrb[] = [];
+  private dpr = 1;
 
   constructor(canvas: HTMLCanvasElement, config: GameConfig, callbacks: GameCallbacks) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d')!;
     this.config = config;
     this.callbacks = callbacks;
     this.hearts = config.practice ? 5 : config.hearts;
+
+    this.dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+    canvas.width = W * this.dpr;
+    canvas.height = H * this.dpr;
+    this.ctx = canvas.getContext('2d')!;
 
     this.initBlocks();
   }
@@ -377,6 +382,9 @@ export class MinerGame {
 
   private render() {
     const ctx = this.ctx;
+    ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+
     ctx.clearRect(0, 0, W, H);
 
     // Background gradient: Dark Cave Walls

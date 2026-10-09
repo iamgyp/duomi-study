@@ -406,7 +406,7 @@ function TypingPlayContent() {
         <canvas
           ref={canvasRef}
           className="w-full h-auto block"
-          style={{ imageRendering: 'pixelated', maxHeight: '56vh', aspectRatio: '2 / 1' }}
+          style={{ imageRendering: 'pixelated', maxHeight: '56vh', aspectRatio: '16 / 9' }}
         />
       </div>
 
