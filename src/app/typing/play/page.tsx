@@ -52,7 +52,7 @@ function TypingPlayContent() {
   // 模式与类别参数
   const category = (searchParams.get('category') || 'keys') as 'keys' | 'phonics' | 'pinyin' | 'math';
   const mode = (searchParams.get('mode') || 'practice') as 'practice' | 'challenge';
-  const speed = (searchParams.get('speed') || 'slow') as 'slow' | 'normal' | 'fast';
+  const speed = (searchParams.get('speed') || 'slow') as 'slow' | 'normal' | 'fast' | 'extreme';
   const biome = (searchParams.get('biome') || 'plains') as BiomeType;
   const gameType = (searchParams.get('gameType') || 'archery') as 'archery' | 'miner' | 'runner';
   const showToneHint = searchParams.get('hint') !== 'off';
@@ -75,19 +75,23 @@ function TypingPlayContent() {
   const [ttsOn, setTtsOn] = useState(() => isTtsEnabled());
   const [gameNonce, setGameNonce] = useState(0);
 
-  // 速度计算
+  // 速度计算 (引入严苛极端级别，大幅提升节奏与手速考验)
   const baseSpeed =
     mode === 'practice'
       ? speed === 'slow'
-        ? 20
+        ? 22
         : speed === 'normal'
-        ? 30
-        : 42
+        ? 35
+        : speed === 'fast'
+        ? 52
+        : 76
       : speed === 'slow'
-      ? 28
+      ? 30
       : speed === 'normal'
-      ? 40
-      : 55;
+      ? 48
+      : speed === 'fast'
+      ? 72
+      : 110;
 
   // 标题与下一关路由计算
   let lessonTitle = '';
@@ -349,6 +353,27 @@ function TypingPlayContent() {
             }`}
           >
             {mode === 'practice' ? '🌱 练习模式 (无限心·怪物等待)' : '⚔️ 挑战模式'}
+          </span>
+
+          {/* 速度标签 */}
+          <span
+            className={`px-2.5 py-1 text-xs font-bold rounded-md border border-black ${
+              speed === 'extreme'
+                ? 'bg-rose-600 text-white shadow-sm ring-1 ring-rose-300'
+                : speed === 'fast'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : speed === 'normal'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-emerald-700/80 text-white shadow-sm'
+            }`}
+          >
+            {speed === 'extreme'
+              ? '⚡ 严苛狂暴'
+              : speed === 'fast'
+              ? '⚡ 快速'
+              : speed === 'normal'
+              ? '⚡ 中速'
+              : '⚡ 慢速'}
           </span>
 
           {/* TTS 语音朗读开关 (仅自然拼读与拼音需要朗读) */}

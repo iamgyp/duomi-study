@@ -594,7 +594,8 @@ export class TypingGame {
         if (this.toSpawn > 0 && this.spawnTimer <= 0 && this.mobs.filter((m) => !m.dying).length < this.maxAlive()) {
           this.spawnMob();
           this.toSpawn--;
-          this.spawnTimer = Math.max(1.4, 3.2 - this.wave * 0.3);
+          const speedRatio = Math.min(1.8, Math.max(0.65, 45 / this.cfg.baseSpeed));
+          this.spawnTimer = Math.max(0.9, (3.2 - this.wave * 0.3) * speedRatio);
         }
         if (this.toSpawn === 0 && !this.bossPending && this.mobs.length === 0 && this.arrows.length === 0) {
           if (this.wave >= this.cfg.waves - 1) {

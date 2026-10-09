@@ -728,7 +728,8 @@ export class RunnerGame {
 
     ctx.fillStyle = this.isBoosting ? '#38BDF8' : '#FACC15';
     ctx.font = `bold 20px ${this.config.pixelFont}`;
-    ctx.fillText(this.isBoosting ? '⚡ 85 km/h' : '🚂 45 km/h', W - 90, 58);
+    const currentKmh = Math.round((this.isBoosting ? this.baseSpeed * 1.5 : this.baseSpeed) * 0.42);
+    ctx.fillText(this.isBoosting ? `⚡ ${currentKmh} km/h` : `🚂 ${currentKmh} km/h`, W - 90, 58);
 
     // Progress counter (Left Panel)
     ctx.fillStyle = '#1E232A';

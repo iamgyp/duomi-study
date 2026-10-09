@@ -26,7 +26,7 @@ export default function TypingHubPage() {
   const [gameType, setGameType] = useState<GameType>('archery');
   const [activeTab, setActiveTab] = useState<ActiveTab>('keys');
   const [mode, setMode] = useState<'practice' | 'challenge'>('practice');
-  const [speed, setSpeed] = useState<'slow' | 'normal' | 'fast'>('slow');
+  const [speed, setSpeed] = useState<'slow' | 'normal' | 'fast' | 'extreme'>('slow');
   const [biome, setBiome] = useState<BiomeType>('plains');
   const [pinyinHint, setPinyinHint] = useState<boolean>(true);
   const [progress] = useState<TypingProgress>(() => getTypingProgress());
@@ -289,20 +289,21 @@ export default function TypingHubPage() {
           <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
             ⚡ 怪物速度
           </div>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {[
-              { id: 'slow', label: '慢速 (极缓)' },
-              { id: 'normal', label: '中速 (适中)' },
-              { id: 'fast', label: '快速 (挑战)' },
+              { id: 'slow', label: '慢速 (极缓)', color: 'bg-emerald-600' },
+              { id: 'normal', label: '中速 (适中)', color: 'bg-blue-600' },
+              { id: 'fast', label: '快速 (挑战)', color: 'bg-amber-600' },
+              { id: 'extreme', label: '严苛 (狂暴) 🔥', color: 'bg-rose-600' },
             ].map((s) => (
               <button
                 key={s.id}
                 type="button"
-                onClick={() => setSpeed(s.id as 'slow' | 'normal' | 'fast')}
+                onClick={() => setSpeed(s.id as 'slow' | 'normal' | 'fast' | 'extreme')}
                 className={`p-2 rounded-lg border border-black text-center text-xs font-bold transition-all ${
                   speed === s.id
-                    ? 'bg-blue-600 text-white ring-2 ring-yellow-400 shadow'
-                    : 'bg-gray-700/80 text-gray-300'
+                    ? `${s.color} text-white ring-2 ring-yellow-400 shadow scale-[1.02]`
+                    : 'bg-gray-700/80 text-gray-300 hover:bg-gray-700'
                 }`}
               >
                 {s.label}
