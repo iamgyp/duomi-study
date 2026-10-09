@@ -162,6 +162,20 @@ export default function Home() {
           </div>
         </Link>
 
+        {/* Typing Game Block */}
+        <Link href="/typing" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#6366F1] hover:bg-[#4F46E5] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">⌨️</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.typingTitle')}</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               {t('Home.typingDesc')}
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               {t('Home.typingBtn')} &rarr;
+             </div>
+          </div>
+        </Link>
+
       </div>
 
       {/* Footer Decoration */}

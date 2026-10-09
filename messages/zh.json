@@ -41,6 +41,9 @@
     "dailyChallengeTitle": "每日挑战",
     "dailyChallengeDesc": "每天一道新题，连续打卡。\n保持你的连胜纪录！",
     "dailyChallengeBtn": "今日挑战",
+    "typingTitle": "键盘守卫战",
+    "typingDesc": "Minecraft 塔防打字游戏。\n射击怪物，掌握盲打指法！",
+    "typingBtn": "进入守卫",
     "footer": "Created for Duomi with ❤️ | Version 1.0.0 (Beta)"
   },
   "Math": {
@@ -322,5 +325,48 @@
   "LanguageSwitcher": {
     "chinese": "中文",
     "english": "EN"
+  },
+  "Typing": {
+    "title": "键盘守卫战",
+    "subtitle": "Minecraft 塔防打字练习",
+    "practiceMode": "练习模式",
+    "challengeMode": "挑战模式",
+    "fingers": {
+      "L5": "左手小指",
+      "L4": "左手无名指",
+      "L3": "左手中指",
+      "L2": "左手食指",
+      "R2": "右手食指",
+      "R3": "右手中指",
+      "R4": "右手无名指",
+      "R5": "右手小指",
+      "T": "双手大拇指"
+    },
+    "lessons": {
+      "fj": "食指基准定位 F J",
+      "home": "基准行核心 A S D F J K L ;",
+      "gh": "左右延伸 G H",
+      "top": "上排字母 Q W E R T Y U I O P",
+      "bottom": "下排字母 Z X C V B N M",
+      "all": "全字母综合 A-Z",
+      "digits": "数字键盘 0-9"
+    },
+    "phonics": {
+      "l1": "Level 1: 字母与字母音",
+      "l2": "Level 2: 短元音 CVC",
+      "l3": "Level 3: 长元音 Magic e",
+      "l4": "Level 4: 辅音组合",
+      "l5": "Level 5: 元音组合"
+    },
+    "pinyin": {
+      "initials": "声母练习 (23个)",
+      "finals": "韵母练习 (24个)",
+      "whole": "整体认读音节 (16个)",
+      "g1chars": "一年级上册生字",
+      "g1words": "一年级常用词语",
+      "g1downChars": "一年级下册生字",
+      "g2chars": "二年级上册生字",
+      "g2words": "二年级常用词语"
+    }
   }
 }

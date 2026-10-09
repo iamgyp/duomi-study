@@ -251,6 +251,70 @@ export const ACHIEVEMENTS: Achievement[] = [
     },
     progressMax: 1000,
   },
+  // === Typing Achievements ===
+  {
+    id: 'typing-novice',
+    name: '键位新星',
+    description: '在键盘守卫战中完成一次练习',
+    icon: '⌨️',
+    category: 'milestone',
+    check: () => {
+      if (typeof window === 'undefined') return false;
+      try {
+        const raw = localStorage.getItem('duomi-typing-progress');
+        if (!raw) return false;
+        const p = JSON.parse(raw);
+        return Object.values(p.lessons ?? {}).some((l: unknown) => ((l as { plays?: number }).plays ?? 0) >= 1);
+      } catch {
+        return false;
+      }
+    },
+    progressLabel: () => '完成1次打字训练',
+    progressValue: () => 1,
+    progressMax: 1,
+  },
+  {
+    id: 'ender-dragon-slayer',
+    name: '末影屠龙者',
+    description: '在打字游戏中成功击败第5波末影龙 BOSS',
+    icon: '🐲',
+    category: 'perfect',
+    check: () => {
+      if (typeof window === 'undefined') return false;
+      try {
+        const raw = localStorage.getItem('duomi-typing-progress');
+        if (!raw) return false;
+        const p = JSON.parse(raw);
+        return (p.xp ?? 0) >= 50;
+      } catch {
+        return false;
+      }
+    },
+    progressLabel: () => '击败末影龙BOSS',
+    progressValue: () => 1,
+    progressMax: 1,
+  },
+  {
+    id: 'typing-combo-master',
+    name: '指尖风暴',
+    description: '在键盘守卫战中收获 300 经验并解锁钻石神剑',
+    icon: '💎',
+    category: 'collection',
+    check: () => {
+      if (typeof window === 'undefined') return false;
+      try {
+        const raw = localStorage.getItem('duomi-typing-progress');
+        if (!raw) return false;
+        const p = JSON.parse(raw);
+        return (p.xp ?? 0) >= 300;
+      } catch {
+        return false;
+      }
+    },
+    progressLabel: () => '打字经验达300XP',
+    progressValue: () => 1,
+    progressMax: 1,
+  },
 ];
 
 export function getAchievementsByCategory(category: AchievementCategory): Achievement[] {

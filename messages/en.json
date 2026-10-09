@@ -41,6 +41,9 @@
     "dailyChallengeTitle": "Daily Challenge",
     "dailyChallengeDesc": "A new question daily, keep your streak.\nMaintain your winning streak!",
     "dailyChallengeBtn": "Today's Challenge",
+    "typingTitle": "Keyboard Defender",
+    "typingDesc": "Minecraft tower-defense typing game.\nShoot mobs & master touch typing!",
+    "typingBtn": "Start Defending",
     "footer": "Created for Duomi with ❤️ | Version 1.0.0 (Beta)"
   },
   "Math": {
@@ -322,5 +325,48 @@
   "LanguageSwitcher": {
     "chinese": "中文",
     "english": "EN"
+  },
+  "Typing": {
+    "title": "Keyboard Defender",
+    "subtitle": "Minecraft Tower Defense Typing Practice",
+    "practiceMode": "Practice Mode",
+    "challengeMode": "Challenge Mode",
+    "fingers": {
+      "L5": "Left Pinky",
+      "L4": "Left Ring",
+      "L3": "Left Middle",
+      "L2": "Left Index",
+      "R2": "Right Index",
+      "R3": "Right Middle",
+      "R4": "Right Ring",
+      "R5": "Right Pinky",
+      "T": "Both Thumbs"
+    },
+    "lessons": {
+      "fj": "Home Row Index F J",
+      "home": "Home Row Core A S D F J K L ;",
+      "gh": "Horizontal Stretch G H",
+      "top": "Top Row Q W E R T Y U I O P",
+      "bottom": "Bottom Row Z X C V B N M",
+      "all": "All Letters A-Z",
+      "digits": "Number Keys 0-9"
+    },
+    "phonics": {
+      "l1": "Level 1: The Alphabet",
+      "l2": "Level 2: Short Vowels CVC",
+      "l3": "Level 3: Long Vowels Magic e",
+      "l4": "Level 4: Consonant Blends",
+      "l5": "Level 5: Letter Combinations"
+    },
+    "pinyin": {
+      "initials": "Initials (23)",
+      "finals": "Finals (24)",
+      "whole": "Whole Syllables (16)",
+      "g1chars": "Grade 1 Semester 1 Characters",
+      "g1words": "Grade 1 Common Words",
+      "g1downChars": "Grade 1 Semester 2 Characters",
+      "g2chars": "Grade 2 Semester 1 Characters",
+      "g2words": "Grade 2 Common Words"
+    }
   }
 }
