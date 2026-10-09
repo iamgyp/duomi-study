@@ -52,45 +52,55 @@ export function VirtualKeyboard({
   const fingerInfo = activeFinger ? FINGER_LABELS[activeFinger] : undefined;
 
   return (
-    <div className={`w-full max-w-4xl mx-auto select-none ${className}`}>
-      {/* ── 指法与目标键指示条 ────────────────────────────── */}
-      <div className="mb-3 px-4 py-2.5 bg-gray-900/90 border-2 border-black rounded-lg text-white flex flex-wrap items-center justify-between gap-3 shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
-        <div className="flex items-center gap-3">
-          <span className="text-xs uppercase tracking-wider text-gray-400 font-bold">🎯 当前目标</span>
+    <div className={`w-full mx-auto select-none ${className}`}>
+      {/* ── 指法与目标键指示条 (固定高度与无抖动布局，保证宽度与键盘一致、上下绝对静止) ── */}
+      <div className="w-full mb-3 px-3 sm:px-4 h-14 sm:h-16 bg-gray-900/90 border-2 border-black rounded-lg text-white flex items-center justify-between gap-3 shadow-[4px_4px_0_rgba(0,0,0,0.5)] flex-nowrap overflow-hidden">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+          <span className="text-xs uppercase tracking-wider text-gray-400 font-bold shrink-0 whitespace-nowrap">
+            🎯 当前目标
+          </span>
+
           {hideTargetKey ? (
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center px-3 h-10 bg-rose-950/80 text-rose-300 text-sm font-bold rounded border border-rose-500/80">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="inline-flex items-center justify-center px-3 h-10 sm:h-11 bg-rose-950/80 text-rose-300 text-xs sm:text-sm font-bold rounded border border-rose-500/80 whitespace-nowrap">
                 🧮 观察怪物算式 · 心算后按键盘数字
               </span>
             </div>
           ) : normalizedActive ? (
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-10 h-10 bg-yellow-400 text-black text-2xl font-black rounded border-2 border-yellow-200 shadow-lg animate-pulse">
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <span className="inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-yellow-400 text-black text-2xl font-black rounded border-2 border-yellow-200 shadow-lg animate-pulse shrink-0">
                 {normalizedActive === ' ' ? '␣' : normalizedActive.toUpperCase()}
               </span>
               {fingerInfo && (
-                <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-800 rounded-md border border-gray-700">
+                <div className="flex items-center gap-1.5 px-2.5 sm:px-3 h-8 sm:h-9 bg-gray-800 rounded-md border border-gray-700 shrink-0">
                   <span
-                    className="w-3.5 h-3.5 rounded-full inline-block shadow-sm"
+                    className="w-3.5 h-3.5 rounded-full inline-block shadow-sm shrink-0"
                     style={{ backgroundColor: fingerInfo.color }}
                   />
-                  <span className="font-bold text-sm text-yellow-300">
+                  <span className="font-bold text-xs sm:text-sm text-yellow-300 whitespace-nowrap">
                     {fingerInfo.hand}{fingerInfo.finger}
                   </span>
                 </div>
               )}
               {activeDef?.bump && (
-                <span className="text-xs bg-amber-900/80 text-amber-200 px-2 py-0.5 rounded border border-amber-500 font-medium">
+                <span className="hidden md:inline-flex items-center text-xs bg-amber-900/80 text-amber-200 px-2 h-7 rounded border border-amber-500 font-medium whitespace-nowrap shrink-0">
                   📍 基准定位键 (有小凸起)
                 </span>
               )}
             </div>
           ) : (
-            <span className="text-sm text-gray-400 font-mono">等待怪物出现...</span>
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <span className="inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border-2 border-dashed border-gray-700 bg-gray-800/40 text-gray-500 font-mono text-base font-bold rounded shrink-0">
+                ⌛
+              </span>
+              <span className="text-xs sm:text-sm text-gray-400 font-mono whitespace-nowrap">
+                等待怪物出现...
+              </span>
+            </div>
           )}
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs text-gray-300 font-mono">
+        <div className="hidden sm:flex items-center gap-2 text-xs text-gray-300 font-mono shrink-0">
           <span className="inline-block px-1.5 py-0.5 bg-gray-800 border border-gray-600 rounded text-yellow-300">
             Esc
           </span>
