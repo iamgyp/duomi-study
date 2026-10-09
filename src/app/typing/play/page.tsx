@@ -393,6 +393,7 @@ function TypingPlayContent() {
           lastWrongKey={lastWrongKey}
           onKeyClick={handleVirtualKeyClick}
           showLegend={true}
+          hideTargetKey={category === 'math'}
         />
       </div>
 

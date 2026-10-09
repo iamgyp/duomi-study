@@ -9,6 +9,8 @@ export interface TypingTarget {
   answer: string;
   /** optional small hint shown under display (e.g. pinyin / meaning) */
   hint?: string;
+  /** if true, don't show the letters/answer breakdown preview below (e.g. math mode, let player calculate) */
+  hideAnswerPreview?: boolean;
 }
 
 export interface KeyLesson {

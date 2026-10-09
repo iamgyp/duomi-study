@@ -20,6 +20,8 @@ export interface VirtualKeyboardProps {
   onKeyClick?: (key: string) => void;
   /** Whether to show finger legend below the keyboard (default: true) */
   showLegend?: boolean;
+  /** Whether to hide current target key in the top banner (e.g. math mode, let player calculate without spoiling answer key) */
+  hideTargetKey?: boolean;
   className?: string;
 }
 
@@ -41,6 +43,7 @@ export function VirtualKeyboard({
   lastWrongKey,
   onKeyClick,
   showLegend = true,
+  hideTargetKey = false,
   className = '',
 }: VirtualKeyboardProps) {
   const normalizedActive = activeKey ? activeKey.toLowerCase() : null;
@@ -54,7 +57,13 @@ export function VirtualKeyboard({
       <div className="mb-3 px-4 py-2.5 bg-gray-900/90 border-2 border-black rounded-lg text-white flex flex-wrap items-center justify-between gap-3 shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
         <div className="flex items-center gap-3">
           <span className="text-xs uppercase tracking-wider text-gray-400 font-bold">🎯 当前目标</span>
-          {normalizedActive ? (
+          {hideTargetKey ? (
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center px-3 h-10 bg-rose-950/80 text-rose-300 text-sm font-bold rounded border border-rose-500/80">
+                🧮 观察怪物算式 · 心算后按键盘数字
+              </span>
+            </div>
+          ) : normalizedActive ? (
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-10 h-10 bg-yellow-400 text-black text-2xl font-black rounded border-2 border-yellow-200 shadow-lg animate-pulse">
                 {normalizedActive === ' ' ? '␣' : normalizedActive.toUpperCase()}

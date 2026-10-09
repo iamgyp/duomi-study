@@ -795,7 +795,8 @@ export class TypingGame {
     const boxW = textW + padX * 2;
     const aligned = m.target.display.toLowerCase() === m.target.answer;
     const hasHint = !!m.target.hint;
-    const boxH = size + 16 + (hasHint ? 22 : 0) + (!aligned ? 18 : 0);
+    const showAnswerPreview = !aligned && !m.target.hideAnswerPreview;
+    const boxH = size + 16 + (hasHint ? 22 : 0) + (showAnswerPreview ? 18 : 0);
     const bx = m.x - boxW / 2 + (m.shake > 0 ? Math.sin(m.shake * 80) * 5 : 0);
     const by = top - boxH;
     const locked = m.id === this.lockedId;
@@ -812,7 +813,7 @@ export class TypingGame {
     ctx.textAlign = 'left';
     let cx = bx + padX;
     const cy = by + 7 + size / 2;
-    // answer and display may differ (e.g. Chinese), so only colour per char when they align
+    // answer and display may differ (e.g. Chinese or math), so only colour per char when they align
     chars.forEach((c, i) => {
       let color = '#FFFFFF';
       if (aligned) {
@@ -835,7 +836,7 @@ export class TypingGame {
       ctx.fillStyle = '#FFE082';
       ctx.fillText(m.target.hint, m.x, by + size + 15);
     }
-    if (!aligned) {
+    if (showAnswerPreview) {
       // Draw pinyin letters progress below
       const ans = m.target.answer;
       ctx.font = 'bold 16px monospace';

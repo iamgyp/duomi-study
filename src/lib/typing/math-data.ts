@@ -125,7 +125,7 @@ export function pickMathTarget(lessonId: string, exclude: Set<string>): TypingTa
       return {
         display: expr,
         answer: answerStr,
-        hint: `输入答案数字: ${answerStr}`,
+        hideAnswerPreview: true,
       };
     }
   }
@@ -134,7 +134,7 @@ export function pickMathTarget(lessonId: string, exclude: Set<string>): TypingTa
   return {
     display: fallback.expr,
     answer: String(fallback.ans),
-    hint: `输入答案数字: ${fallback.ans}`,
+    hideAnswerPreview: true,
   };
 }
 
@@ -152,7 +152,7 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
     return {
       display: `${a} + ${b} - ${c} =`,
       answer: String(ans),
-      hint: `末影龙挑战: 连加连减算一算！`,
+      hideAnswerPreview: true,
     };
   } else if (lesson.range <= 20) {
     // 3 numbers: a + b - c
@@ -163,7 +163,7 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
     return {
       display: `${a} + ${b} - ${c} =`,
       answer: String(ans),
-      hint: `末影龙挑战: 算算最终答案！`,
+      hideAnswerPreview: true,
     };
   } else {
     // Within 50 / 100
@@ -173,7 +173,7 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
     return {
       display: `BOSS: ${a} + ${b} =`,
       answer: String(ans),
-      hint: `末影龙终极挑战！`,
+      hideAnswerPreview: true,
     };
   }
 }
