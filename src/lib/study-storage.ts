@@ -143,6 +143,7 @@ export function getStudyStats(): StudyStats {
     math: 0,
     english: 0,
     algebra: 0,
+    cad: 0,
   };
   
   records.forEach(r => {
@@ -263,6 +264,7 @@ export function getSubjectLabel(subject: Subject): string {
     math: '数学',
     english: '英语',
     algebra: '代数',
+    cad: 'CAD蓝图',
   };
   return labels[subject] || subject;
 }
@@ -277,6 +279,7 @@ export function getContentTypeLabel(contentType: string): string {
     'basic-math': '基础数学',
     'algebra': '代数练习',
     'english-word': '英语单词',
+    'cad-drawing': 'CAD蓝图绘制',
   };
   return labels[contentType] || contentType;
 }

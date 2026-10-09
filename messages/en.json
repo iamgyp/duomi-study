@@ -44,6 +44,9 @@
     "typingTitle": "Keyboard Defender",
     "typingDesc": "Minecraft tower-defense typing game.\nShoot mobs & master touch typing!",
     "typingBtn": "Start Defending",
+    "cadTitle": "CAD Blueprint Studio",
+    "cadDesc": "AutoCAD shortcuts practice.\nDraft blueprints like a junior architect!",
+    "cadBtn": "Start Drafting",
     "footer": "Created for Duomi with ❤️ | Version 1.0.0 (Beta)"
   },
   "Math": {

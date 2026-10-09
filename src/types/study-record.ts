@@ -2,14 +2,15 @@
  * 学习记录数据类型定义
  */
 
-export type Subject = 'chinese' | 'math' | 'english' | 'algebra';
+export type Subject = 'chinese' | 'math' | 'english' | 'algebra' | 'cad';
 
 export type ContentType = 
   | 'character'      // 汉字练习
   | 'poem'           // 古诗填空
   | 'basic-math'     // 基础数学
   | 'algebra'        // 代数练习
-  | 'english-word';  // 英语单词
+  | 'english-word'   // 英语单词
+  | 'cad-drawing';   // CAD蓝图练习
 
 export interface StudyRecord {
   id: string;

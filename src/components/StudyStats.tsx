@@ -55,6 +55,7 @@ export function StudyStats() {
     { subject: 'math', label: t('StudyRecordButton.math'), color: '#EF4444' },
     { subject: 'english', label: t('StudyRecordButton.english'), color: '#3B82F6' },
     { subject: 'algebra', label: t('StudyRecordButton.algebra'), color: '#8B5CF6' },
+    { subject: 'cad', label: 'CAD蓝图', color: '#06B6D4' },
   ];
 
   const maxDuration = Math.max(...Object.values(stats.subjectDistribution), 1);
