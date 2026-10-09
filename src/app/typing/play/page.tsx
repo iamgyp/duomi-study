@@ -96,7 +96,7 @@ function TypingPlayContent() {
     }
   } else if (category === 'math') {
     const mathDef = getMathLesson(lessonId);
-    currentTitle = `${mathDef.icon} 口算心算 · ${mathDef.range}以内混合加减法`;
+    currentTitle = `${mathDef.icon} 口算心算 · ${mathDef.title}`;
     const mathIdx = MATH_LESSONS.findIndex((l) => l.id === mathDef.id);
     if (mathIdx >= 0 && mathIdx < MATH_LESSONS.length - 1) {
       nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}`;

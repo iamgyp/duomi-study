@@ -413,7 +413,7 @@ export default function TypingHubPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500 font-bold font-mono">
-                        {pyl.category === 'letters' ? '拼音字母' : pyl.category === 'grade1' ? '一年级' : '二年级'}
+                        {pyl.category === 'letters' ? '拼音字母' : pyl.category === 'grade1' ? '基础字词' : '进阶字词'}
                       </span>
                       <div className="flex gap-1 text-sm">
                         {[1, 2, 3].map((s) => (
@@ -452,7 +452,7 @@ export default function TypingHubPage() {
         </div>
       )}
 
-      {/* ── 内容列表 4: 口算心算 (20/50/100以内混合加减) ──── */}
+      {/* ── 内容列表 4: 口算心算 (加减乘除心算) ──── */}
       {activeTab === 'math' && (
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -468,7 +468,7 @@ export default function TypingHubPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded border border-rose-500 font-bold font-mono">
-                        {ml.range <= 10 ? '启蒙基础' : ml.range <= 20 ? '一年级重点' : ml.range <= 50 ? '进阶强化' : '二年级挑战'}
+                        {ml.categoryLabel}
                       </span>
                       <div className="flex gap-1 text-sm">
                         {[1, 2, 3].map((s) => (
@@ -480,29 +480,20 @@ export default function TypingHubPage() {
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-3xl">{ml.icon}</span>
                       <h3 className="font-bold text-base text-yellow-300">
-                        {ml.range}以内混合加减法
+                        {ml.title}
                       </h3>
                     </div>
                     <p className="text-xs text-gray-300 font-sans mb-3">
-                      {ml.range <= 10
-                        ? '10以内基础一位数加减混合启蒙'
-                        : ml.range <= 20
-                        ? '进位加法与退位减法混合专项，攻克一年级计算难点'
-                        : ml.range <= 50
-                        ? '两位数与一位数/两位数混合加减速算'
-                        : '两位数进退位混合速算，挑战百以内极限手速'}
+                      {ml.description}
                     </p>
 
                     {/* 算式特色徽章 */}
                     <div className="flex flex-wrap gap-1 mb-4">
                       <span className="px-1.5 py-0.5 bg-gray-700 text-rose-200 rounded text-xs font-mono font-bold">
-                        范围 ≤ {ml.range}
-                      </span>
-                      <span className="px-1.5 py-0.5 bg-gray-700 text-yellow-200 rounded text-xs font-mono font-bold">
-                        ➕➖ 加减混合
+                        {ml.badge}
                       </span>
                       <span className="px-1.5 py-0.5 bg-gray-700 text-emerald-200 rounded text-xs font-mono font-bold">
-                        末影龙 BOSS 算式
+                        末影龙 BOSS 连算
                       </span>
                     </div>
                   </div>

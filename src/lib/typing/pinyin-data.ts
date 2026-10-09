@@ -110,7 +110,7 @@ export const PINYIN_LESSONS: PinyinLessonGroup[] = [
   {
     id: 'pinyin-g1-chars',
     titleKey: 'Typing.pinyin.g1chars',
-    title: '一年级上册 · 基础生字',
+    title: '基础启蒙 · 常用生字',
     subtitle: '天地人你我他，日月水火土 (看字打拼音)',
     icon: '🌱',
     category: 'grade1',
@@ -119,7 +119,7 @@ export const PINYIN_LESSONS: PinyinLessonGroup[] = [
   {
     id: 'pinyin-g1-words',
     titleKey: 'Typing.pinyin.g1words',
-    title: '一年级 · 常用词语',
+    title: '生活常用 · 双字词语',
     subtitle: '大小、上下、白天、月亮、天空、小鸟...',
     icon: '📖',
     category: 'grade1',
@@ -128,8 +128,8 @@ export const PINYIN_LESSONS: PinyinLessonGroup[] = [
   {
     id: 'pinyin-g1down-chars',
     titleKey: 'Typing.pinyin.g1downChars',
-    title: '一年级下册 · 进阶生字',
-    subtitle: '春风冬雪青草红花，常用部编版生字',
+    title: '进阶拓展 · 常见生字',
+    subtitle: '春风冬雪青草红花，常用部编生字',
     icon: '🌸',
     category: 'grade1',
     items: GRADE1_DOWN_CHARS.map((c) => ({ text: c })),
@@ -137,7 +137,7 @@ export const PINYIN_LESSONS: PinyinLessonGroup[] = [
   {
     id: 'pinyin-g2-chars',
     titleKey: 'Typing.pinyin.g2chars',
-    title: '二年级上册 · 识字训练',
+    title: '丰富识字 · 进阶生字',
     subtitle: '海洋、眼睛、孩子、变极、图画、圆珠笔',
     icon: '🌊',
     category: 'grade2',
@@ -146,7 +146,7 @@ export const PINYIN_LESSONS: PinyinLessonGroup[] = [
   {
     id: 'pinyin-g2-words',
     titleKey: 'Typing.pinyin.g2words',
-    title: '二年级 · 词语大冲关',
+    title: '词汇大师 · 词语大冲关',
     subtitle: '乡村、儿童、寻找、森林、温暖、美丽、阳光',
     icon: '🏰',
     category: 'grade2',

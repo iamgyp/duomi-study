@@ -365,22 +365,30 @@
       "initials": "Initials (23)",
       "finals": "Finals (24)",
       "whole": "Whole Syllables (16)",
-      "g1chars": "Grade 1 Semester 1 Characters",
-      "g1words": "Grade 1 Common Words",
-      "g1downChars": "Grade 1 Semester 2 Characters",
-      "g2chars": "Grade 2 Semester 1 Characters",
-      "g2words": "Grade 2 Common Words"
+      "g1chars": "Early Enlightenment · Core Characters",
+      "g1words": "Common Words · Everyday Phrases",
+      "g1downChars": "Extended Characters · Nature & Life",
+      "g2chars": "Advanced Characters · Enriched Reading",
+      "g2words": "Master Words · Vocabulary Challenge"
     },
     "math": {
-      "tabTitle": "Mental Math (Mixed Add & Sub)",
-      "mix10": "Mixed Add & Sub within 10",
-      "mix10Desc": "Basic early enlightenment, single-digit mixed operations",
-      "mix20": "Mixed Add & Sub within 20",
-      "mix20Desc": "Grade 1 core foundation, carrying and borrowing",
-      "mix50": "Mixed Add & Sub within 50",
-      "mix50Desc": "Mixed double-digit addition and subtraction",
-      "mix100": "Mixed Add & Sub within 100",
-      "mix100Desc": "Grade 2 core challenge, arithmetic within 100"
+      "tabTitle": "Mental Math (Arithmetic Training)",
+      "mix10": "Add & Sub within 10",
+      "mix10Desc": "Basic early calculation, single-digit mental math",
+      "mix20": "Carrying & Borrowing within 20",
+      "mix20Desc": "Essential carrying and borrowing operations",
+      "mix50": "Double-Digit Add & Sub within 50",
+      "mix50Desc": "Double-digit mixed mental speed challenge",
+      "mix100": "Arithmetic within 100",
+      "mix100Desc": "Ultimate mental calculation showdown within 100",
+      "mul9x9": "Multiplication Table (9×9)",
+      "mul9x9Desc": "Classic 1-9 multiplication times table mental math",
+      "div9x9": "Division within Times Table",
+      "div9x9Desc": "Exact division and quotient calculation",
+      "mulDivMix": "Mixed Multiplication & Division",
+      "mulDivMixDesc": "Switching between multiplication and division",
+      "allMix": "Grand Slam (All 4 Operations)",
+      "allMixDesc": "All 4 basic arithmetic operations combined!"
     }
   }
 }
