@@ -21,6 +21,12 @@ import {
   pickPinyinTarget,
   makePinyinBossTarget,
 } from '@/lib/typing/pinyin-data';
+import {
+  MATH_LESSONS,
+  getMathLesson,
+  pickMathTarget,
+  makeMathBossTarget,
+} from '@/lib/typing/math-data';
 import { speakEnglish, speakChinese, isTtsEnabled, setTtsEnabled } from '@/lib/typing/tts';
 import { TypingGame, type GameConfig, type GameResult } from '@/lib/typing/game-engine';
 import { unlockTypingAudio } from '@/lib/typing/sounds';
@@ -33,14 +39,16 @@ function TypingPlayContent() {
   const searchParams = useSearchParams();
 
   // 模式与类别参数
-  const category = (searchParams.get('category') || 'keys') as 'keys' | 'phonics' | 'pinyin';
+  const category = (searchParams.get('category') || 'keys') as 'keys' | 'phonics' | 'pinyin' | 'math';
   const mode = (searchParams.get('mode') || 'practice') as 'practice' | 'challenge';
   const speed = (searchParams.get('speed') || 'slow') as 'slow' | 'normal' | 'fast';
   const biome = (searchParams.get('biome') || 'plains') as BiomeType;
   const showToneHint = searchParams.get('hint') !== 'off';
 
   // 课程 ID / 分级
-  const lessonId = searchParams.get('lesson') || (category === 'pinyin' ? 'pinyin-g1-chars' : 'fj');
+  const lessonId =
+    searchParams.get('lesson') ||
+    (category === 'pinyin' ? 'pinyin-g1-chars' : category === 'math' ? 'math-mix-20' : 'fj');
   const phonicsLevel = Math.max(1, Math.min(5, Number(searchParams.get('level') || 1))) as 1 | 2 | 3 | 4 | 5;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -86,6 +94,13 @@ function TypingPlayContent() {
     if (pyIdx >= 0 && pyIdx < PINYIN_LESSONS.length - 1) {
       nextUrl = `/typing/play?category=pinyin&lesson=${PINYIN_LESSONS[pyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${showToneHint ? 'on' : 'off'}`;
     }
+  } else if (category === 'math') {
+    const mathDef = getMathLesson(lessonId);
+    currentTitle = `${mathDef.icon} 口算心算 · ${mathDef.range}以内${mathDef.type === 'add' ? '加法' : mathDef.type === 'sub' ? '减法' : '混合加减法'}`;
+    const mathIdx = MATH_LESSONS.findIndex((l) => l.id === mathDef.id);
+    if (mathIdx >= 0 && mathIdx < MATH_LESSONS.length - 1) {
+      nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}`;
+    }
   } else {
     const keyDef = getLesson(lessonId);
     const keyIdx = KEY_LESSONS.findIndex((l) => l.id === keyDef.id);
@@ -129,6 +144,9 @@ function TypingPlayContent() {
     } else if (category === 'pinyin') {
       nextTargetFn = (exclude) => pickPinyinTarget(lessonId, showToneHint, exclude);
       bossTargetFn = () => makePinyinBossTarget(lessonId, showToneHint);
+    } else if (category === 'math') {
+      nextTargetFn = (exclude) => pickMathTarget(lessonId, exclude);
+      bossTargetFn = () => makeMathBossTarget(lessonId);
     } else {
       const keyLesson = getLesson(lessonId);
       nextTargetFn = (exclude) => lessonTarget(pickLessonKey(keyLesson, exclude));
@@ -174,11 +192,16 @@ function TypingPlayContent() {
         }
       },
       onWordDefeated: (target) => {
-        // 单词击破时的语音发音反馈 (TTS)
+        // 单词/口算击破时的语音发音反馈 (TTS)
         if (category === 'phonics') {
           speakEnglish(target.answer);
         } else if (category === 'pinyin') {
           speakChinese(target.display);
+        } else if (category === 'math') {
+          // 朗读完整算式与得数，例如 "8 加 7 等于 15"
+          const cleanDisplay = target.display.replace('=', '').replace('?', '').replace('BOSS:', '').trim();
+          const spoken = `${cleanDisplay} 等于 ${target.answer}`.replace(/\+/g, '加').replace(/-/g, '减');
+          speakChinese(spoken);
         }
       },
       onEnd: (result) => {
@@ -304,7 +327,7 @@ function TypingPlayContent() {
           </span>
 
           {/* TTS 语音朗读开关 */}
-          {(category === 'phonics' || category === 'pinyin') && (
+          {(category === 'phonics' || category === 'pinyin' || category === 'math') && (
             <button
               type="button"
               onClick={toggleTts}

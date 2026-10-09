@@ -12,12 +12,13 @@ import {
 import { getKeyDef, FINGER_COLORS } from '@/lib/typing/keyboard-layout';
 import { PHONICS_LEVELS } from '@/lib/typing/phonics-data';
 import { PINYIN_LESSONS } from '@/lib/typing/pinyin-data';
+import { MATH_LESSONS } from '@/lib/typing/math-data';
 import type { BiomeType } from '@/lib/typing/sprites';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useMounted } from '@/hooks/useMounted';
 
-type ActiveTab = 'keys' | 'phonics' | 'pinyin';
+type ActiveTab = 'keys' | 'phonics' | 'pinyin' | 'math';
 
 export default function TypingHubPage() {
   const mounted = useMounted();
@@ -77,7 +78,7 @@ export default function TypingHubPage() {
             键盘守卫战 · 打字探险
           </h1>
           <p className="text-gray-300 text-sm sm:text-base mt-2 max-w-xl mx-auto font-sans">
-            像史蒂夫一样守卫村庄！掌握 PC 实体键盘盲打、自然拼读与看字打拼音！
+            像史蒂夫一样守卫村庄！掌握 PC 键盘指法、自然拼读、看字打拼音与速算口算！
           </p>
         </div>
       </div>
@@ -105,46 +106,59 @@ export default function TypingHubPage() {
         </div>
       )}
 
-      {/* ── 三大训练模式大标签切换 ──────────────────────────── */}
+      {/* ── 四大训练板块标签切换 ──────────────────────────── */}
       <div className="max-w-6xl mx-auto mb-6">
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 p-1.5 bg-[#252A30] border-3 border-black rounded-xl">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 p-1.5 bg-[#252A30] border-3 border-black rounded-xl">
           <button
             type="button"
             onClick={() => setActiveTab('keys')}
-            className={`py-3 px-2 sm:px-4 rounded-lg font-black text-sm sm:text-base border-2 transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 px-2 sm:px-3 rounded-lg font-black text-xs sm:text-base border-2 transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'keys'
                 ? 'bg-blue-600 text-white border-black shadow-[3px_3px_0_rgba(0,0,0,1)] scale-[1.02]'
                 : 'bg-transparent text-gray-400 border-transparent hover:text-white hover:bg-gray-700/50'
             }`}
           >
             <span>🔤</span>
-            <span>键位训练 (7课)</span>
+            <span>键位训练</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('phonics')}
-            className={`py-3 px-2 sm:px-4 rounded-lg font-black text-sm sm:text-base border-2 transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 px-2 sm:px-3 rounded-lg font-black text-xs sm:text-base border-2 transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'phonics'
                 ? 'bg-amber-600 text-white border-black shadow-[3px_3px_0_rgba(0,0,0,1)] scale-[1.02]'
                 : 'bg-transparent text-gray-400 border-transparent hover:text-white hover:bg-gray-700/50'
             }`}
           >
             <span>📖</span>
-            <span>自然拼读 (L1-5)</span>
+            <span>自然拼读</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('pinyin')}
-            className={`py-3 px-2 sm:px-4 rounded-lg font-black text-sm sm:text-base border-2 transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 px-2 sm:px-3 rounded-lg font-black text-xs sm:text-base border-2 transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'pinyin'
                 ? 'bg-emerald-600 text-white border-black shadow-[3px_3px_0_rgba(0,0,0,1)] scale-[1.02]'
                 : 'bg-transparent text-gray-400 border-transparent hover:text-white hover:bg-gray-700/50'
             }`}
           >
             <span>🇨🇳</span>
-            <span>拼音识字 (一至二年级)</span>
+            <span>拼音识字</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('math')}
+            className={`py-3 px-2 sm:px-3 rounded-lg font-black text-xs sm:text-base border-2 transition-all flex items-center justify-center gap-1.5 ${
+              activeTab === 'math'
+                ? 'bg-rose-600 text-white border-black shadow-[3px_3px_0_rgba(0,0,0,1)] scale-[1.02]'
+                : 'bg-transparent text-gray-400 border-transparent hover:text-white hover:bg-gray-700/50'
+            }`}
+          >
+            <span>🧮</span>
+            <span>口算心算</span>
           </button>
         </div>
       </div>
@@ -430,6 +444,74 @@ export default function TypingHubPage() {
                     className="block w-full py-2.5 px-3 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
                     开始识字练习 🎯
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── 内容列表 4: 口算心算 (20/50/100以内混合加减) ──── */}
+      {activeTab === 'math' && (
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {MATH_LESSONS.map((ml) => {
+              const stat = progress.lessons[ml.id];
+              const stars = stat?.stars ?? 0;
+
+              return (
+                <div
+                  key={ml.id}
+                  className="bg-[#2D3238] border-3 border-black p-4 rounded-xl shadow-[5px_5px_0_rgba(0,0,0,0.7)] flex flex-col justify-between hover:-translate-y-1 hover:border-yellow-400 transition-all"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded border border-rose-500 font-bold font-mono">
+                        {ml.range <= 10 ? '启蒙基础' : ml.range <= 20 ? '一年级重点' : ml.range <= 50 ? '进阶强化' : '二年级挑战'}
+                      </span>
+                      <div className="flex gap-1 text-sm">
+                        {[1, 2, 3].map((s) => (
+                          <span key={s} className={s <= stars ? '' : 'opacity-25 grayscale'}>⭐</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-3xl">{ml.icon}</span>
+                      <h3 className="font-bold text-base text-yellow-300">
+                        {ml.range}以内{ml.type === 'add' ? '加法' : ml.type === 'sub' ? '减法' : '混合加减法'}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-gray-300 font-sans mb-3">
+                      {ml.range <= 10
+                        ? '10以内基础一位数口算启蒙'
+                        : ml.range <= 20
+                        ? '进位加法与退位减法专项，提升心算与数字键击速度'
+                        : ml.range <= 50
+                        ? '两位数与一位数/两位数混合口算'
+                        : '两位数进位加法与退位减法，百以内速度对抗'}
+                    </p>
+
+                    {/* 算式特色徽章 */}
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      <span className="px-1.5 py-0.5 bg-gray-700 text-rose-200 rounded text-xs font-mono font-bold">
+                        范围 ≤ {ml.range}
+                      </span>
+                      <span className="px-1.5 py-0.5 bg-gray-700 text-yellow-200 rounded text-xs font-mono font-bold">
+                        运算: {ml.type === 'add' ? '➕ 纯加法' : ml.type === 'sub' ? '➖ 纯减法' : '➕➖ 混合运算'}
+                      </span>
+                      <span className="px-1.5 py-0.5 bg-gray-700 text-emerald-200 rounded text-xs font-mono font-bold">
+                        末影龙 BOSS 算式
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/typing/play?category=math&lesson=${ml.id}&mode=${mode}&speed=${speed}&biome=${biome}`}
+                    className="block w-full py-2.5 px-3 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
+                  >
+                    开始口算守卫 🧮
                   </Link>
                 </div>
               );

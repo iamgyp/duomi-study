@@ -83,7 +83,7 @@ export function VirtualKeyboard({
 
         <div className="hidden sm:flex items-center gap-2 text-xs text-gray-300 font-mono">
           <span className="inline-block px-1.5 py-0.5 bg-gray-800 border border-gray-600 rounded text-yellow-300">
-            Esc / P
+            Esc
           </span>
           <span>暂停</span>
           <span className="inline-block px-1.5 py-0.5 bg-gray-800 border border-gray-600 rounded text-yellow-300 ml-2">
