@@ -72,7 +72,7 @@ export class RunnerGame {
     this.config = config;
     this.callbacks = callbacks;
     this.hearts = config.practice ? 5 : config.hearts;
-    this.baseSpeed = config.baseSpeed * 3.8;
+    this.baseSpeed = config.baseSpeed * 2.4;
 
     this.dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
     canvas.width = W * this.dpr;
@@ -89,9 +89,9 @@ export class RunnerGame {
     this.nodes = [];
     const nodeTypes: TrackNode['type'][] = ['obstacle', 'switch', 'golden_apple'];
 
-    // First obstacle appears ahead on screen at x = 520, easily visible
-    let currentSpawnX = 520;
-    const spacing = 380; // Distance between upcoming obstacles
+    // Obstacles spawn off on the right, providing ample reaction runway (860px to 225px = 635px runway)
+    let currentSpawnX = 860;
+    const spacing = 480; // Distance between upcoming obstacles
 
     for (let i = 0; i < totalItems; i++) {
       const type =
@@ -273,7 +273,7 @@ export class RunnerGame {
   }
 
   private update(dt: number) {
-    const curSpeed = this.isBoosting ? this.baseSpeed * 1.5 : this.baseSpeed;
+    const curSpeed = this.isBoosting ? this.baseSpeed * 1.35 : this.baseSpeed;
 
     // Cart hop damping
     if (this.cartHopY < 0) this.cartHopY += dt * 30;
@@ -381,11 +381,11 @@ export class RunnerGame {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = '#FDE047';
-      ctx.font = `bold 36px ${this.config.pixelFont}`;
+      ctx.font = 'bold 36px "Microsoft YaHei", "Arial Black", "VT323", sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('游戏暂停 (PAUSED)', W / 2, H / 2 - 10);
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = `bold 18px ${this.config.pixelFont}`;
+      ctx.font = 'bold 18px "Microsoft YaHei", "Arial Black", "VT323", sans-serif';
       ctx.fillText('按 ESC 或 空格 继续', W / 2, H / 2 + 30);
     }
   }
@@ -488,12 +488,13 @@ export class RunnerGame {
   private renderObstacles(ctx: CanvasRenderingContext2D) {
     for (let i = 0; i < this.nodes.length; i++) {
       const node = this.nodes[i];
-      if (node.cleared || node.x < -100 || node.x > W + 100) continue;
+      if (node.cleared || node.x < -120 || node.x > W + 120) continue;
 
       const isCurrent = i === this.currentNodeIdx;
       const x = node.x;
       const y = RAIL_Y - 10;
 
+      ctx.save();
       // Obstacle sprite
       if (node.type === 'obstacle') {
         // Red TNT Block
@@ -543,9 +544,10 @@ export class RunnerGame {
         ctx.arc(x + 4, y - 52, 6, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.restore();
 
       // Typing Billboard
-      this.renderTargetBillboard(ctx, x, y - 76, node.target, node.progress, isCurrent);
+      this.renderTargetBillboard(ctx, x, y - 82, node.target, node.progress, isCurrent);
     }
   }
 
@@ -557,54 +559,118 @@ export class RunnerGame {
     progress: number,
     isCurrent: boolean,
   ) {
+    ctx.save();
+
     const text = target.display;
-    ctx.font = `bold 26px ${this.config.pixelFont}`;
-    const tw = Math.max(88, ctx.measureText(text).width + 36);
-    const th = 48;
+    const hasHint = Boolean(target.hint);
+    const hasProgress = isCurrent && target.answer.length > 1;
+
+    // Pick font size based on text length
+    const fontSize = text.length <= 3 ? 34 : text.length <= 6 ? 30 : 26;
+    const fontStack = '"Microsoft YaHei", "Arial Black", "VT323", sans-serif';
+    ctx.font = `bold ${fontSize}px ${fontStack}`;
+
+    const textMetrics = ctx.measureText(text);
+    const textW = textMetrics.width;
+
+    const tw = Math.max(120, textW + 44);
+    const th = (hasHint && hasProgress) ? 74 : (hasHint || hasProgress) ? 64 : 54;
 
     // Hanging wooden post down to obstacle
     ctx.fillStyle = '#78350F';
-    ctx.fillRect(x - 3, y + th / 2, 6, 28);
+    ctx.fillRect(x - 3, y + th / 2, 6, 26);
 
-    // Billboard box
-    ctx.fillStyle = isCurrent ? '#1E232A' : '#111827';
+    // Glowing aura for current active target
+    if (isCurrent) {
+      ctx.shadowColor = 'rgba(250, 204, 21, 0.85)';
+      ctx.shadowBlur = 12;
+    }
+
+    // Billboard box background
+    ctx.fillStyle = isCurrent ? '#0F172A' : '#1E293B';
     ctx.fillRect(x - tw / 2, y - th / 2, tw, th);
-    ctx.strokeStyle = isCurrent ? '#FACC15' : '#4B5563';
+
+    // Billboard border
+    ctx.strokeStyle = isCurrent ? '#FACC15' : '#475569';
     ctx.lineWidth = isCurrent ? 3.5 : 2;
     ctx.strokeRect(x - tw / 2, y - th / 2, tw, th);
 
-    // Corner rivets
-    ctx.fillStyle = isCurrent ? '#F59E0B' : '#374151';
-    ctx.fillRect(x - tw / 2 + 3, y - th / 2 + 3, 4, 4);
-    ctx.fillRect(x + tw / 2 - 7, y - th / 2 + 3, 4, 4);
-    ctx.fillRect(x - tw / 2 + 3, y + th / 2 - 7, 4, 4);
-    ctx.fillRect(x + tw / 2 - 7, y + th / 2 - 7, 4, 4);
+    // Reset shadow
+    ctx.shadowBlur = 0;
 
-    // Display string
+    // Corner rivets
+    ctx.fillStyle = isCurrent ? '#F59E0B' : '#334155';
+    ctx.fillRect(x - tw / 2 + 4, y - th / 2 + 4, 4, 4);
+    ctx.fillRect(x + tw / 2 - 8, y - th / 2 + 4, 4, 4);
+    ctx.fillRect(x - tw / 2 + 4, y + th / 2 - 8, 4, 4);
+    ctx.fillRect(x + tw / 2 - 8, y + th / 2 - 8, 4, 4);
+
+    // Layout configuration
+    let mainY = y;
+    if (hasHint && hasProgress) {
+      // 3-tier: Hint on top, Main text in middle, Progress at bottom
+      ctx.font = 'bold 12px "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = isCurrent ? '#38BDF8' : '#94A3B8';
+      ctx.fillText(target.hint!, x, y - th / 2 + 14);
+      mainY = y + 2;
+    } else if (hasHint) {
+      // 2-tier: Hint on top, Main text in bottom
+      ctx.font = 'bold 13px "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = isCurrent ? '#38BDF8' : '#94A3B8';
+      ctx.fillText(target.hint!, x, y - th / 2 + 15);
+      mainY = y + 12;
+    } else if (hasProgress) {
+      // 2-tier: Main text on top, Progress at bottom
+      mainY = y - 10;
+    }
+
+    // Main display string (High contrast, bold, crystal clear)
+    ctx.font = `bold ${fontSize}px ${fontStack}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = isCurrent ? '#FFFFFF' : '#9CA3AF';
-    ctx.fillText(text, x, y - (isCurrent && target.answer.length > 1 ? 7 : 0));
+    ctx.fillStyle = isCurrent ? '#FFFFFF' : '#CBD5E1';
+    ctx.shadowColor = '#000000';
+    ctx.shadowBlur = 4;
+    ctx.fillText(text, x, mainY);
+    ctx.shadowBlur = 0;
 
     // Typed progress indicator for multi-letter words (e.g. phonics, words)
-    if (isCurrent && target.answer.length > 1) {
+    if (hasProgress) {
+      const progY = y + th / 2 - 14;
       const ans = target.answer;
       const typed = ans.slice(0, progress);
       const remaining = ans.slice(progress);
 
-      ctx.font = `bold 16px ${this.config.pixelFont}`;
+      ctx.font = 'bold 18px "Arial Black", "Microsoft YaHei", monospace';
       const totalW = ctx.measureText(ans).width;
       let startX = x - totalW / 2;
 
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#4ADE80';
-      ctx.fillText(typed, startX, y + 13);
+      ctx.fillText(typed, startX, progY);
       startX += ctx.measureText(typed).width;
 
       ctx.fillStyle = '#FDE047';
-      ctx.fillText(remaining, startX, y + 13);
+      ctx.fillText(remaining, startX, progY);
     }
+
+    // Active downward arrow indicator for current target
+    if (isCurrent) {
+      ctx.fillStyle = '#FACC15';
+      ctx.beginPath();
+      ctx.moveTo(x - 7, y + th / 2 + 2);
+      ctx.lineTo(x + 7, y + th / 2 + 2);
+      ctx.lineTo(x, y + th / 2 + 10);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    ctx.restore();
   }
 
   private renderMinecart(ctx: CanvasRenderingContext2D, x: number, y: number) {
@@ -712,56 +778,172 @@ export class RunnerGame {
   }
 
   private renderHUD(ctx: CanvasRenderingContext2D) {
+    ctx.save();
     ctx.textBaseline = 'alphabetic';
+
+    const fontStack = '"Microsoft YaHei", "Arial Black", "VT323", sans-serif';
 
     // Speedometer / Distance (Right Panel)
     ctx.fillStyle = '#1E232A';
-    ctx.fillRect(W - 160, 16, 140, 56);
+    ctx.fillRect(W - 160, 16, 140, 68);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 3;
-    ctx.strokeRect(W - 160, 16, 140, 56);
+    ctx.strokeRect(W - 160, 16, 140, 68);
 
     ctx.fillStyle = '#9CA3AF';
-    ctx.font = `bold 12px ${this.config.pixelFont}`;
+    ctx.font = `bold 12px ${fontStack}`;
     ctx.textAlign = 'center';
-    ctx.fillText('狂飙时速', W - 90, 34);
+    ctx.fillText('狂飙时速', W - 90, 36);
 
     ctx.fillStyle = this.isBoosting ? '#38BDF8' : '#FACC15';
-    ctx.font = `bold 20px ${this.config.pixelFont}`;
-    const currentKmh = Math.round((this.isBoosting ? this.baseSpeed * 1.5 : this.baseSpeed) * 0.42);
-    ctx.fillText(this.isBoosting ? `⚡ ${currentKmh} km/h` : `🚂 ${currentKmh} km/h`, W - 90, 58);
+    ctx.font = `bold 22px ${fontStack}`;
+    const currentKmh = Math.round((this.isBoosting ? this.baseSpeed * 1.35 : this.baseSpeed) * 0.45);
+    ctx.fillText(this.isBoosting ? `⚡ ${currentKmh} km/h` : `🚂 ${currentKmh} km/h`, W - 90, 64);
 
     // Progress counter (Left Panel)
     ctx.fillStyle = '#1E232A';
-    ctx.fillRect(20, 16, 140, 56);
-    ctx.strokeRect(20, 16, 140, 56);
+    ctx.fillRect(20, 16, 140, 68);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(20, 16, 140, 68);
 
     ctx.fillStyle = '#9CA3AF';
-    ctx.font = `bold 12px ${this.config.pixelFont}`;
-    ctx.fillText('冲刺进度', 90, 34);
+    ctx.font = `bold 12px ${fontStack}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('冲刺进度', 90, 36);
 
     ctx.fillStyle = '#4ADE80';
-    ctx.font = `bold 20px ${this.config.pixelFont}`;
-    ctx.fillText(`${this.currentNodeIdx} / ${this.nodes.length}`, 90, 58);
+    ctx.font = `bold 22px ${fontStack}`;
+    ctx.fillText(`${this.currentNodeIdx} / ${this.nodes.length}`, 90, 64);
 
-    // Hearts (Top center)
+    // ── Cockpit Focus Target Dashboard (中央静止目标台) ───────────
+    const panelW = 440;
+    const panelH = 76;
+    const panelX = W / 2 - panelW / 2;
+    const panelY = 12;
+
+    const cur = this.nodes[this.currentNodeIdx];
+    const isTargetLocked = Boolean(cur && !cur.cleared);
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+    ctx.fillRect(panelX, panelY, panelW, panelH);
+
+    ctx.strokeStyle = isTargetLocked ? '#FACC15' : '#334155';
+    ctx.lineWidth = isTargetLocked ? 3.5 : 2;
+    if (isTargetLocked) {
+      ctx.shadowColor = 'rgba(250, 204, 21, 0.45)';
+      ctx.shadowBlur = 8;
+    }
+    ctx.strokeRect(panelX, panelY, panelW, panelH);
+    ctx.shadowBlur = 0;
+
+    // Top Sub-Row: Combo & Hearts
     ctx.textAlign = 'left';
-    ctx.font = '22px sans-serif';
-    for (let h = 0; h < 5; h++) {
-      ctx.fillText(h < this.hearts ? '❤️' : '🖤', W / 2 - 65 + h * 26, 36);
+    ctx.font = `bold 13px ${fontStack}`;
+    if (this.combo > 1) {
+      ctx.fillStyle = this.isBoosting ? '#38BDF8' : '#F59E0B';
+      ctx.fillText(this.isBoosting ? `🚀 超速 x${this.combo}！` : `🔥 连击 x${this.combo}`, panelX + 14, panelY + 20);
+    } else {
+      ctx.fillStyle = '#94A3B8';
+      ctx.fillText(isTargetLocked ? '🎯 前方障碍锁定' : '🏁 终点冲刺', panelX + 14, panelY + 20);
     }
 
-    // Boost & Combo Indicator
-    if (this.combo > 2) {
-      ctx.fillStyle = this.isBoosting ? '#38BDF8' : '#F59E0B';
-      ctx.font = `bold 18px ${this.config.pixelFont}`;
-      ctx.textAlign = 'center';
-      ctx.fillText(
-        this.isBoosting ? `🚀 超速狂飙连击 x${this.combo}！` : `🔥 连击 x${this.combo}`,
-        W / 2,
-        64,
-      );
+    // Right: Hearts
+    ctx.textAlign = 'right';
+    ctx.font = '18px sans-serif';
+    let heartsStr = '';
+    for (let h = 0; h < 5; h++) {
+      heartsStr += h < this.hearts ? '❤️' : '🖤';
     }
+    ctx.fillText(heartsStr, panelX + panelW - 14, panelY + 20);
+
+    // Center Target Display (Big, bold, stationary, zero motion blur)
+    if (isTargetLocked && cur) {
+      const tgt = cur.target;
+      const text = tgt.display;
+      const hasHint = Boolean(tgt.hint);
+      const isMulti = tgt.answer.length > 1;
+
+      ctx.textAlign = 'center';
+
+      // Draw Main Target Word
+      const targetFontSize = text.length <= 3 ? 34 : text.length <= 6 ? 30 : 26;
+      ctx.font = `bold ${targetFontSize}px ${fontStack}`;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#000000';
+      ctx.shadowBlur = 6;
+      const targetCenterY = (hasHint || isMulti) ? panelY + 46 : panelY + 52;
+      ctx.fillText(text, W / 2, targetCenterY);
+      ctx.shadowBlur = 0;
+
+      // Draw Hint and Typed Progress
+      if (hasHint && isMulti) {
+        ctx.font = `bold 13px ${fontStack}`;
+        ctx.fillStyle = '#38BDF8';
+        ctx.fillText(tgt.hint!, W / 2, panelY + 20);
+
+        const ans = tgt.answer;
+        const typed = ans.slice(0, cur.progress);
+        const nextChar = ans[cur.progress] || '';
+        const remaining = ans.slice(cur.progress + 1);
+
+        ctx.font = 'bold 16px "Arial Black", "Microsoft YaHei", monospace';
+        const totalW = ctx.measureText(ans).width;
+        let startX = W / 2 - totalW / 2;
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#4ADE80';
+        ctx.fillText(typed, startX, panelY + 66);
+        startX += ctx.measureText(typed).width;
+
+        ctx.fillStyle = '#FDE047';
+        ctx.fillText(nextChar, startX, panelY + 66);
+        startX += ctx.measureText(nextChar).width;
+
+        ctx.fillStyle = '#64748B';
+        ctx.fillText(remaining, startX, panelY + 66);
+      } else if (hasHint) {
+        ctx.font = `bold 14px ${fontStack}`;
+        ctx.fillStyle = '#FDE047';
+        ctx.fillText(tgt.hint!, W / 2, panelY + 66);
+      } else if (isMulti) {
+        const ans = tgt.answer;
+        const typed = ans.slice(0, cur.progress);
+        const nextChar = ans[cur.progress] || '';
+        const remaining = ans.slice(cur.progress + 1);
+
+        ctx.font = 'bold 18px "Arial Black", "Microsoft YaHei", monospace';
+        const totalW = ctx.measureText(ans).width;
+        let startX = W / 2 - totalW / 2;
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#4ADE80';
+        ctx.fillText(typed, startX, panelY + 66);
+        startX += ctx.measureText(typed).width;
+
+        ctx.fillStyle = '#FDE047';
+        ctx.fillText(nextChar, startX, panelY + 66);
+        startX += ctx.measureText(nextChar).width;
+
+        ctx.fillStyle = '#64748B';
+        ctx.fillText(remaining, startX, panelY + 66);
+      }
+
+      // Distance Gauge bar at the bottom of panel
+      const dist = Math.max(0, cur.x - (CART_X + 45));
+      const totalRunway = 635;
+      const distRatio = Math.max(0, Math.min(1, dist / totalRunway));
+      const barW = (panelW - 8) * distRatio;
+      ctx.fillStyle = distRatio > 0.4 ? '#4ADE80' : distRatio > 0.2 ? '#FACC15' : '#EF4444';
+      ctx.fillRect(panelX + 4, panelY + panelH - 4, barW, 3);
+    } else {
+      ctx.textAlign = 'center';
+      ctx.font = `bold 24px ${fontStack}`;
+      ctx.fillStyle = '#FACC15';
+      ctx.fillText('🌟 全力冲刺，直达终点！', W / 2, panelY + 48);
+    }
+
+    ctx.restore();
   }
 
   private loop = (time: number) => {

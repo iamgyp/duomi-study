@@ -530,6 +530,11 @@ export class MinerGame {
     ctx.font = `bold 12px ${this.config.pixelFont}`;
     ctx.textAlign = 'left';
     ctx.fillText(`${block.oreType.toUpperCase()} | 深度 ${block.depthMeter}m`, x + 16, y + 20);
+    if (block.target.hint) {
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#38BDF8';
+      ctx.fillText(block.target.hint, x + w - 16, y + 20);
+    }
 
     // Central typing target text
     const displayStr = block.target.display;

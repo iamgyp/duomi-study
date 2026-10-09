@@ -212,7 +212,7 @@ function TypingPlayContent() {
       hearts: 5,
       baseSpeed,
       biome,
-      pixelFont: 'var(--font-pixel), "VT323", "SimHei", "Microsoft YaHei", monospace',
+      pixelFont: '"VT323", "Arial Black", "Microsoft YaHei", "SimHei", sans-serif',
       labels: {
         wave: (w, total) => `第 ${w} / ${total} 波`,
         bossWave: '⚠️ 末影龙 BOSS 进攻！',
