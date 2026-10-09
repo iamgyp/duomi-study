@@ -155,7 +155,7 @@ function TypingPlayContent() {
         bossWave: '⚠️ 末影龙 BOSS 进攻！',
         combo: (n) => `🔥 连击 x${n}`,
         paused: '游戏暂停',
-        pausedHint: '按 ESC 或 P 键继续',
+        pausedHint: '按 ESC 或 空格 键继续',
         go: '开始！',
         victory: '守卫成功！',
         defeat: '村庄失守！',
@@ -215,7 +215,9 @@ function TypingPlayContent() {
       }
 
       // 快捷键: 暂停 / 继续
-      if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
+      // 注意：游戏进行中只用 Escape 暂停，不能用 P 键，否则遇到包含字母 p/P 的单词或拼音时会误触发暂停！
+      // 游戏处于暂停状态时，按 Escape、P 或 空格 均可恢复继续。
+      if (e.key === 'Escape' || (isPaused && (e.key === 'p' || e.key === 'P' || e.key === ' '))) {
         if (!gameResult) {
           e.preventDefault();
           const game = gameRef.current;
@@ -228,8 +230,8 @@ function TypingPlayContent() {
         return;
       }
 
-      // 快捷键: 重置关卡
-      if ((e.key === 'r' || e.key === 'R') && (isPaused || gameResult)) {
+      // 快捷键: 重置关卡（仅在暂停状态或结算弹窗展示时生效，避免游戏进行中误判，但也可以保留仅在已暂停时生效）
+      if ((e.key === 'r' || e.key === 'R') && isPaused) {
         e.preventDefault();
         handleRestartRef.current();
         return;
@@ -320,7 +322,7 @@ function TypingPlayContent() {
             onClick={togglePause}
             className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-xs font-bold border border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5"
           >
-            {isPaused ? '▶️ 继续 (P)' : '⏸️ 暂停 (P)'}
+            {isPaused ? '▶️ 继续 (ESC)' : '⏸️ 暂停 (ESC)'}
           </button>
 
           {/* 重新开始按钮 */}
