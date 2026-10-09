@@ -115,59 +115,61 @@ export default function CadHubPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#111419] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] text-white p-4 sm:p-8 font-[var(--font-pixel)] select-none">
+    <main className="min-h-screen bg-[#111419] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] text-white p-3 sm:p-6 font-[var(--font-pixel)] select-none">
       {/* ── 顶部导航栏 ──────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <Link
             href="/"
-            className="px-4 py-2 bg-[#374151] hover:bg-[#4B5563] text-white font-bold border-2 border-black rounded-xl shadow-[3px_3px_0_rgba(0,0,0,1)] active:translate-y-0.5 flex items-center gap-2 text-sm sm:text-base transition-all"
+            className="px-3.5 py-1.5 bg-[#374151] hover:bg-[#4B5563] text-white font-bold border-2 border-black rounded-xl shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 flex items-center gap-1.5 text-xs sm:text-sm transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>返回主页</span>
           </Link>
 
-          <div className="flex items-center gap-2 bg-[#1E232A] border-2 border-[#2F3744] px-3 py-1.5 rounded-xl text-xs sm:text-sm">
+          <div className="flex items-center gap-2 bg-[#1E232A] border-2 border-[#2F3744] px-3 py-1 rounded-xl text-xs">
             <span className="text-cyan-400 font-bold">🏗️ 蓝图竣工:</span>
             <span className="text-yellow-300 font-black">
               {progress.completedMissions.length} / {CAD_MISSIONS.length}
             </span>
             <span className="text-gray-600">|</span>
-            <span className="text-emerald-400 font-bold">🌟 总命令执行:</span>
+            <span className="text-emerald-400 font-bold">🌟 总执行:</span>
             <span className="text-white font-black">{progress.totalBuilds} 次</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={handleDownloadPdf}
             disabled={isPdfGenerating}
-            className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold border-2 border-black rounded-xl shadow-[2px_2px_0_rgba(0,0,0,1)] text-xs sm:text-sm flex items-center gap-1.5 transition-all active:translate-y-0.5"
+            className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold border-2 border-black rounded-xl shadow-[2px_2px_0_rgba(0,0,0,1)] text-xs flex items-center gap-1.5 transition-all active:translate-y-0.5"
           >
-            <Printer className="w-4 h-4" />
-            <span>{isPdfGenerating ? '生成中...' : '打印速查手卡 (PDF)'}</span>
+            <Printer className="w-3.5 h-3.5" />
+            <span>{isPdfGenerating ? '生成中...' : '打印4页手册 (PDF)'}</span>
           </button>
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>
       </div>
 
-      {/* ── 头部标题栏 ──────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto text-center mb-6">
-        <div className="inline-block p-4 sm:p-6 bg-[#1A202C] border-4 border-[#2D3748] rounded-2xl shadow-[6px_6px_0_rgba(0,0,0,0.8)]">
-          <div className="text-4xl sm:text-5xl mb-2">📐 🏛️ 🚀</div>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-cyan-300 tracking-wide drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
-            AutoCAD 蓝图工坊 · 小小建筑师
-          </h1>
-          <p className="text-gray-300 text-xs sm:text-base mt-2 max-w-2xl mx-auto font-sans leading-relaxed">
-            专为一年级小朋友量身打造！掌握「快捷键简写 + 拍空格」核心肌肉记忆，像真正工程师一样绘制图纸！
+      {/* ── 头部标题栏 (紧凑型) ─────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto text-center mb-3">
+        <div className="inline-block px-4 py-2 sm:px-6 sm:py-2.5 bg-[#1A202C] border-3 border-[#2D3748] rounded-2xl shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-xl sm:text-2xl">📐 🏛️ 🚀</span>
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-black text-cyan-300 tracking-wide drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
+              AutoCAD 蓝图工坊 · 小小建筑师
+            </h1>
+          </div>
+          <p className="text-gray-300 text-[11px] sm:text-xs mt-0.5 max-w-xl mx-auto font-sans">
+            专为一年级小朋友打造！掌握「快捷键简写 + 拍空格」核心习惯，像工程师一样绘图！
           </p>
         </div>
       </div>
 
       {/* ── 功能选项卡 (Tabs) ─────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto mb-6 flex justify-center">
-        <div className="bg-[#1C212A] p-1.5 rounded-2xl border-2 border-[#2E3744] flex items-center gap-2 shadow-[3px_3px_0_rgba(0,0,0,0.5)]">
+      <div className="max-w-7xl mx-auto mb-4 flex justify-center">
+        <div className="bg-[#1C212A] p-1 rounded-2xl border-2 border-[#2E3744] flex items-center gap-1.5 shadow-[2px_2px_0_rgba(0,0,0,0.5)]">
           <button
             onClick={() => setActiveTab('missions')}
             className={`px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
