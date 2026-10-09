@@ -47,6 +47,9 @@
     "cadTitle": "CAD 蓝图工坊",
     "cadDesc": "AutoCAD 快捷键实战练习。\n像小小建筑师一样画图纸！",
     "cadBtn": "开工建造",
+    "memoryTitle": "记忆神殿",
+    "memoryDesc": "音符节奏、末影翻牌、探险日志。\n全方位锻炼专注力与高阶思维！",
+    "memoryBtn": "步入神殿",
     "footer": "Created for Duomi with ❤️ | Version 1.0.0 (Beta)"
   },
   "Math": {
@@ -390,5 +393,13 @@
       "allMix": "四则运算大满贯",
       "allMixDesc": "加减乘除四则运算全面混合，成为神算守卫者！"
     }
+  },
+  "Memory": {
+    "title": "记忆神殿",
+    "subtitle": "感官时序专注 · 空间双向联想 · 高迁移情景重构与逻辑推理",
+    "hub": "神殿大厅",
+    "notesTitle": "音符盒秘境",
+    "cardsTitle": "末影宝藏",
+    "explorerTitle": "探险家日志"
   }
 }

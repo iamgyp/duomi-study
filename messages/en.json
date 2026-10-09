@@ -47,6 +47,9 @@
     "cadTitle": "CAD Blueprint Studio",
     "cadDesc": "AutoCAD shortcuts practice.\nDraft blueprints like a junior architect!",
     "cadBtn": "Start Drafting",
+    "memoryTitle": "Memory Temple",
+    "memoryDesc": "Note block Simon, Ender cards & Explorer logs.\nEmpower focus & high-transfer reasoning!",
+    "memoryBtn": "Enter Temple",
     "footer": "Created for Duomi with ❤️ | Version 1.0.0 (Beta)"
   },
   "Math": {
@@ -390,5 +393,13 @@
       "allMix": "Grand Slam (All 4 Operations)",
       "allMixDesc": "All 4 basic arithmetic operations combined!"
     }
+  },
+  "Memory": {
+    "title": "Memory Temple",
+    "subtitle": "Sensory Sequence Focus · Spatial Association · High-Transfer Scenario Reconstruction",
+    "hub": "Temple Hub",
+    "notesTitle": "Note Block Realm",
+    "cardsTitle": "Ender Treasures",
+    "explorerTitle": "Explorer's Log"
   }
 }

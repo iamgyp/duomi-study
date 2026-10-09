@@ -190,6 +190,20 @@ export default function Home() {
           </div>
         </Link>
 
+        {/* Memory Temple Block */}
+        <Link href="/memory" className="group">
+          <div className="mc-card h-full p-4 sm:p-6 bg-[#8B5CF6] hover:bg-[#7C3AED] transition-transform hover:-translate-y-2 relative overflow-hidden">
+             <div className="absolute top-2 right-2 text-3xl sm:text-4xl opacity-50 rotate-12">🏛️</div>
+             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 drop-shadow-md">{t('Home.memoryTitle')}</h2>
+             <p className="text-white/90 text-base sm:text-lg leading-relaxed font-sans whitespace-pre-line">
+               {t('Home.memoryDesc')}
+             </p>
+             <div className="mt-4 sm:mt-6 inline-block bg-black/20 px-3 sm:px-4 py-2 sm:py-2 text-sm sm:text-base text-white font-bold border-2 border-white/50 group-hover:bg-black/30">
+               {t('Home.memoryBtn')} &rarr;
+             </div>
+          </div>
+        </Link>
+
       </div>
 
       {/* Footer Decoration */}
