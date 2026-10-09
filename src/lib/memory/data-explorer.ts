@@ -29,9 +29,11 @@ export interface ExplorerQuestion {
   cognitionTag: string;
 }
 
+export type ExplorerChapterId = 'forest' | 'village' | 'detective' | 'ocean' | 'mine' | 'snow';
+
 export interface ExplorerLesson {
   id: string;
-  chapterId: 'forest' | 'village' | 'detective';
+  chapterId: ExplorerChapterId;
   chapterTitle: string;
   title: string;
   icon: string;
@@ -54,10 +56,13 @@ export interface ExplorerLesson {
   questions: ExplorerQuestion[];
 }
 
-export const EXPLORER_CHAPTERS = [
+export const EXPLORER_CHAPTERS: { id: ExplorerChapterId; title: string; desc: string }[] = [
   { id: 'forest', title: '🌲 森林探险日志', desc: '方位、路线与先后时序推理' },
   { id: 'village', title: '🍎 村庄物资管理员', desc: '数量增减、买卖换算与分类归纳' },
   { id: 'detective', title: '🐉 守卫传奇小侦探', desc: '因果逻辑、细节求证与反事实假设' },
+  { id: 'ocean', title: '🌊 海洋寻宝奇遇', desc: '水下航行、生态保护与因果链条' },
+  { id: 'mine', title: '⛏️ 地下矿洞工坊', desc: '矿车运输、配方消耗与数量核算' },
+  { id: 'snow', title: '❄️ 冰雪极地救援', desc: '严寒极地、方向辨识与爱心互助' },
 ];
 
 export const EXPLORER_LESSONS: ExplorerLesson[] = [
@@ -431,6 +436,380 @@ export const EXPLORER_LESSONS: ExplorerLesson[] = [
         correctIndex: 1,
         explanation: '文中写到：“最后，药水变成了漂亮的明黄色”。',
         cognitionTag: '属性特征记忆',
+      },
+    ],
+  },
+
+  // ── 篇章四：海洋寻宝 ──────────────────────────────────────────
+  {
+    id: 'ocean-dolphin-treasure',
+    chapterId: 'ocean',
+    chapterTitle: '🌊 海洋寻宝奇遇',
+    title: '海豚领航寻宝记',
+    icon: '🐬',
+    themeColor: '#0284C7',
+    description: '跟随聪明粉色海豚探秘海底沉船，摊开晒干珍贵藏宝图',
+    badge: '因果与目的',
+    story: {
+      title: '海豚带路的小探险',
+      text: '下午，亚历克斯划着【1艘橡木小船】出海。一只【粉色海豚】在前面欢快带路。她在沉船里发现了【1张湿透的藏宝图】，又在珊瑚礁采了【3朵海晶花】。太阳落山前，她开心地把藏宝图摊在【甲板上晒干】。',
+      pinyin: 'xià wǔ, yà lì kè sī huá zhe yī sōu xiàng mù xiǎo chuán chū hǎi. yī zhī fěn sè hǎi tún zài qián miàn huān kuài dài lù. tā zài chén chuán lǐ fā xiàn le yī zhāng shī tòu de cáng bǎo tú, yòu zài shān hú jiāo cǎi le sān duǒ hǎi jīng huā. tài yáng luò shān qián, tā kāi xīn de bǎ cáng bǎo tú tān zài jiǎ bǎn shàng shài gān.',
+      focusWords: ['1艘橡木小船', '粉色海豚', '1张湿透的藏宝图', '3朵海晶花', '甲板上晒干'],
+      bgGradient: 'from-sky-900/60 to-blue-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '划着橡木小船开心地出海', icon: '⛵' },
+      { id: 't2', order: 2, text: '粉色海豚在波浪前面欢快领航', icon: '🐬' },
+      { id: 't3', order: 3, text: '沉船里找到湿透的藏宝图', icon: '🗺️' },
+      { id: 't4', order: 4, text: '日落前将藏宝图摊在甲板晒干', icon: '☀️' },
+    ],
+    categoryTask: {
+      bucketAName: '🐬 大海里的生物与植物',
+      bucketBName: '⛵ 探险家的船只与工具',
+      items: [
+        { id: 'c1', name: '粉色海豚', icon: '🐬', correctBucketId: 'A' },
+        { id: 'c2', name: '海晶花', icon: '🌸', correctBucketId: 'A' },
+        { id: 'c3', name: '橡木小船', icon: '⛵', correctBucketId: 'B' },
+        { id: 'c4', name: '藏宝图', icon: '🗺️', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'causal',
+        question: '亚历克斯为什么要把藏宝图摊在甲板上？',
+        options: ['为了给海豚看', '因为藏宝图湿透了需要晒干', '为了当风筝飞'],
+        correctIndex: 1,
+        explanation: '文中明确交代藏宝图是“湿透的”，必须摊开晒干保护图纸。',
+        cognitionTag: '目的因果推导',
+      },
+      {
+        id: 'q2',
+        type: 'detail',
+        question: '亚历克斯在珊瑚礁一共采了几朵美丽的海晶花？',
+        options: ['1 朵', '2 朵', '3 朵'],
+        correctIndex: 2,
+        explanation: '文中写到：“又在珊瑚礁采了 3 朵海晶花”。',
+        cognitionTag: '数量细节捕捉',
+      },
+      {
+        id: 'q3',
+        type: 'detail',
+        question: '摊开晒干藏宝图是在什么时候发生的？',
+        options: ['清晨刚出发时', '太阳落山之前', '深更半夜月亮升起时'],
+        correctIndex: 1,
+        explanation: '故事末尾提到：“太阳落山前，她开心地把藏宝图摊在甲板上晒干”。',
+        cognitionTag: '时间线索感知',
+      },
+    ],
+  },
+  {
+    id: 'ocean-sea-turtle',
+    chapterId: 'ocean',
+    chapterTitle: '🌊 海洋寻宝奇遇',
+    title: '小海龟的沙滩破壳日',
+    icon: '🐢',
+    themeColor: '#0D9488',
+    description: '守护沙滩上的海龟蛋，计算先后破壳游向深海的海龟数量',
+    badge: '连续减法运算',
+    story: {
+      title: '新生命的诞生',
+      text: '温暖的早晨，沙滩上整齐排列着【6只海龟蛋】。中午，阳光照耀下有【2只小海龟】率先破壳。它们吃了【1片嫩海草】补充体力，爬进了大海。傍晚退潮时，又有【3只小海龟】破壳游向了深海。',
+      pinyin: 'wēn nuǎn de zǎo chén, shā tān shàng zhěng qí pái liè zhe liù zhī hǎi guī dàn. zhōng wǔ, yáng guāng zhào yào xià yǒu liǎng zhī xiǎo hǎi guī shuài xiān pò ké. tā men chī le yī piàn nèn hǎi cǎo bǔ chōng tǐ lì, pá jìn le dà hǎi. bàng wǎn tuì cháo shí, yòu yǒu sān zhī xiǎo hǎi guī pò ké yóu xiàng le shēn hǎi.',
+      focusWords: ['6只海龟蛋', '2只率先破壳', '1片嫩海草', '又有3只破壳游向深海'],
+      bgGradient: 'from-cyan-900/60 to-teal-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '早晨沙滩整齐排列着6只海龟蛋', icon: '🥚' },
+      { id: 't2', order: 2, text: '中午有2只小海龟率先破壳而出', icon: '🐣' },
+      { id: 't3', order: 3, text: '吃嫩海草补充体力，爬进大海', icon: '🌿' },
+      { id: 't4', order: 4, text: '傍晚又有3只小海龟游向深海', icon: '🌊' },
+    ],
+    categoryTask: {
+      bucketAName: '🥚 尚未孵化的海龟蛋',
+      bucketBName: '🐢 破壳游出的小海龟',
+      items: [
+        { id: 'c1', name: '沙滩海龟蛋', icon: '🥚', correctBucketId: 'A' },
+        { id: 'c2', name: '中午破壳海龟', icon: '🐢', correctBucketId: 'B' },
+        { id: 'c3', name: '傍晚破壳海龟', icon: '🐢', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'math',
+        question: '原本有 6 只蛋，中午破壳 2 只，傍晚破壳 3 只，沙滩上还剩几只蛋没破壳？',
+        options: ['1 只', '2 只', '3 只'],
+        correctIndex: 0,
+        explanation: '连续减法运算：6 - 2 - 3 = 1 只海龟蛋。',
+        cognitionTag: '两步减法应用题',
+      },
+      {
+        id: 'q2',
+        type: 'detail',
+        question: '中午率先破壳的小海龟吃了什么食物来补充体力？',
+        options: ['小鱼干', '嫩海草', '红苹果'],
+        correctIndex: 1,
+        explanation: '文中明确提到：“它们吃了 1 片嫩海草补充体力”。',
+        cognitionTag: '情境细节求证',
+      },
+      {
+        id: 'q3',
+        type: 'causal',
+        question: '哪一批小海龟是先破壳出发去大海的？',
+        options: ['中午破壳的 2 只', '傍晚破壳的 3 只', '同时破壳出发'],
+        correctIndex: 0,
+        explanation: '中午时间早于傍晚，所以中午的 2 只小海龟先破壳。',
+        cognitionTag: '时序先后推导',
+      },
+    ],
+  },
+
+  // ── 篇章五：地下矿洞 ──────────────────────────────────────────
+  {
+    id: 'mine-redstone-cart',
+    chapterId: 'mine',
+    chapterTitle: '⛏️ 地下矿洞工坊',
+    title: '红石矿坑的小矿车',
+    icon: '🛒',
+    themeColor: '#DC2626',
+    description: '铁轨运输矿石，理清装载、照明与漏斗卸货全流程',
+    badge: '工序流程时序',
+    story: {
+      title: '矿车飞驰记',
+      text: '开工铃响了，史蒂夫把【1辆空矿车】推上动力铁轨。小车向前飞驰，在弯道处装上了【4块红石】。进入漆黑隧道后，史蒂夫插上了【1支红石火把】照亮前方。矿车冲出隧道，把红石全都倒进了【收集漏斗】里。',
+      pinyin: 'kāi gōng líng xiǎng le, shǐ dì fū bǎ yī liàng kōng kuàng chē tuī shàng dòng lì tiě guǐ. xiǎo chē xiàng qián fēi chí, zài wān dào chù zhuāng shàng le sì kuài hóng shí. jìn rù qī hēi suì dào hòu, shǐ dì fū chā shàng le yī zhī hóng shí huǒ bǎ zhào liàng qián fāng. kuàng chē chōng chū suì dào, bǎ hóng shí quán dōu dào jìn le shōu jí lòu dǒu lǐ.',
+      focusWords: ['1辆空矿车', '4块红石', '1支红石火把', '收集漏斗'],
+      bgGradient: 'from-red-950/70 to-neutral-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '把空矿车稳稳推上动力铁轨', icon: '🛒' },
+      { id: 't2', order: 2, text: '在弯道装上了4块发光红石', icon: '🔴' },
+      { id: 't3', order: 3, text: '漆黑隧道插上红石火把照路', icon: '🕯️' },
+      { id: 't4', order: 4, text: '矿车冲出，红石倒入收集漏斗', icon: '📥' },
+    ],
+    categoryTask: {
+      bucketAName: '🛒 铁轨运输设备',
+      bucketBName: '🔴 采集的矿石材料',
+      items: [
+        { id: 'c1', name: '空矿车', icon: '🛒', correctBucketId: 'A' },
+        { id: 'c2', name: '收集漏斗', icon: '📥', correctBucketId: 'A' },
+        { id: 'c3', name: '红石矿石', icon: '🔴', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'causal',
+        question: '为什么史蒂夫要在隧道里插上火把？',
+        options: ['为了把矿车加热', '因为隧道漆黑，需要照亮道路', '为了叫醒沉睡的史蒂夫'],
+        correctIndex: 1,
+        explanation: '隧道环境黑暗，插火把是为了驱散黑暗、提供照明。',
+        cognitionTag: '因果逻辑推理',
+      },
+      {
+        id: 'q2',
+        type: 'detail',
+        question: '小矿车上一共装载了多少块红石矿？',
+        options: ['2 块', '4 块', '6 块'],
+        correctIndex: 1,
+        explanation: '文中明确提到：“在弯道处装上了 4 块红石”。',
+        cognitionTag: '数量细节捕捉',
+      },
+      {
+        id: 'q3',
+        type: 'detail',
+        question: '红石矿石最后被倒进了什么容器里？',
+        options: ['倒进了熔炉里', '倒进了岩浆里', '倒进了收集漏斗里'],
+        correctIndex: 2,
+        explanation: '故事末尾提到：“把红石全都倒进了收集漏斗里”。',
+        cognitionTag: '终点目标记忆',
+      },
+    ],
+  },
+  {
+    id: 'mine-baker-wheat',
+    chapterId: 'mine',
+    chapterTitle: '⛏️ 地下矿洞工坊',
+    title: '熔炉烘焙师的面包日',
+    icon: '🥖',
+    themeColor: '#B45309',
+    description: '收获金黄小麦，计算合成制作消耗与粮仓库存结余',
+    badge: '配方消耗与结余',
+    story: {
+      title: '香喷喷的面包',
+      text: '地下农场里收获了【9捆金黄小麦】。史蒂夫用其中【3捆小麦】在工作台上做出了【1个香喷喷的面包】。接着，他在熔炉里放入【2块木炭】加热烘烤。最后，他把剩下的小麦整齐码进了【农场粮仓】。',
+      pinyin: 'dì xià nóng chǎng lǐ shōu huò le jiǔ kǔn jīn huáng xiǎo mài. shǐ dì fū yòng qí zhōng sān kǔn xiǎo mài zài gōng zuò tái shàng zuò chū le yī gè xiāng pēn pēn de miàn bāo. jiē zhe, tā zài róng lú lǐ fàng rù liǎng kuài mù tàn jiā rè hōng kǎo. zuì hòu, tā bǎ shèng xià de xiǎo mài zhěng qí mǎ jìn le nóng chǎng liáng cāng.',
+      focusWords: ['9捆金黄小麦', '3捆小麦做面包', '2块木炭', '农场粮仓'],
+      bgGradient: 'from-amber-950/70 to-stone-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '地下农场收获了9捆金黄小麦', icon: '🌾' },
+      { id: 't2', order: 2, text: '工作台用3捆小麦做出了面包', icon: '🍞' },
+      { id: 't3', order: 3, text: '熔炉放入2块木炭加热烘烤', icon: '🔥' },
+      { id: 't4', order: 4, text: '把剩下的小麦整齐码进粮仓', icon: '🏠' },
+    ],
+    categoryTask: {
+      bucketAName: '🌾 农场收获的食物材料',
+      bucketBName: '🔥 烹饪工具与燃料',
+      items: [
+        { id: 'c1', name: '金黄小麦', icon: '🌾', correctBucketId: 'A' },
+        { id: 'c2', name: '香喷喷面包', icon: '🍞', correctBucketId: 'A' },
+        { id: 'c3', name: '木炭燃料', icon: '🪵', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'math',
+        question: '原来有 9 捆小麦，做面包用掉 3 捆，最后码入粮仓的小麦还剩几捆？',
+        options: ['3 捆', '5 捆', '6 捆'],
+        correctIndex: 2,
+        explanation: '应用题减法运算：9 - 3 = 6 捆小麦。',
+        cognitionTag: '数量结余计算',
+      },
+      {
+        id: 'q2',
+        type: 'detail',
+        question: '制作面包时，史蒂夫是在哪个地方合成做出来的？',
+        options: ['在工作台上', '在铁轨上', '在箱子上方'],
+        correctIndex: 0,
+        explanation: '文中写到：“在工作台上做出了 1 个香喷喷的面包”。',
+        cognitionTag: '工具有效使用',
+      },
+      {
+        id: 'q3',
+        type: 'causal',
+        question: '如果史蒂夫手里只有 2 捆小麦，他能做出这个面包吗？',
+        options: ['能做出', '不能做出，配方需要3捆', '可以做两个'],
+        correctIndex: 1,
+        explanation: '配方明确需要 3 捆小麦，2 捆数量不够。',
+        cognitionTag: '条件满足推理',
+      },
+    ],
+  },
+
+  // ── 篇章六：冰雪救援 ──────────────────────────────────────────
+  {
+    id: 'snow-polar-bear',
+    chapterId: 'snow',
+    chapterTitle: '❄️ 冰雪极地救援',
+    title: '迷路的小白熊回家记',
+    icon: '🐻‍❄️',
+    themeColor: '#0284C7',
+    description: '狂风呼啸的雪原上，凭借北极星指引与沿途线索找到妈妈',
+    badge: '方向识别与毅力',
+    story: {
+      title: '温暖的拥抱',
+      text: '狂风呼啸的雪原上，一只【小白熊】和妈妈走散了。它抬头看着【闪亮的北极星】，坚定地朝北边走去。路上，它在冰洞里捞到了【1条大马哈鱼】充饥，小心绕开了【锋利的冰刺】。天亮时，它终于在【温暖雪屋的篝火旁】抱住了熊妈妈。',
+      pinyin: 'kuáng fēng hū xiào de xuě yuán shàng, yī zhī xiǎo bái xióng hé mā ma zǒu sàn le. tā tái tóu kàn zhe shǎn liàng de běi jí xīng, jiān dìng de cháo běi biān zǒu qù. lù shang, tā zài bīng dòng lǐ lāo dào le yī tiáo dà mǎ hā yú chōng jī, xiǎo xīn rào kāi le fēng lì de bīng cì. tiān liàng shí, tā zhōng yú zài wēn nuǎn xuě wū de gōu huǒ páng bào zhù le xióng mā ma.',
+      focusWords: ['小白熊', '闪亮的北极星', '朝北边走去', '1条大马哈鱼', '温暖雪屋的篝火旁'],
+      bgGradient: 'from-sky-950/70 to-indigo-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '小白熊不小心与熊妈妈走散了', icon: '❄️' },
+      { id: 't2', order: 2, text: '看着北极星，坚定朝北方前进', icon: '⭐' },
+      { id: 't3', order: 3, text: '冰洞捞鱼充饥，绕开锋利冰刺', icon: '🐟' },
+      { id: 't4', order: 4, text: '天亮时在雪屋篝火旁抱住妈妈', icon: '🔥' },
+    ],
+    categoryTask: {
+      bucketAName: '🧭 辨识方向的自然线索',
+      bucketBName: '🐟 充饥与庇护的事物',
+      items: [
+        { id: 'c1', name: '闪亮北极星', icon: '⭐', correctBucketId: 'A' },
+        { id: 'c2', name: '大马哈鱼', icon: '🐟', correctBucketId: 'B' },
+        { id: 'c3', name: '雪屋篝火', icon: '🔥', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'detail',
+        question: '小白熊看着北极星，是朝着哪个方向前进的？',
+        options: ['东边', '南边', '北边'],
+        correctIndex: 2,
+        explanation: '文中明确提到：“坚定地朝北边走去”。',
+        cognitionTag: '空间方向感知',
+      },
+      {
+        id: 'q2',
+        type: 'causal',
+        question: '小白熊为什么要小心绕开地上的冰刺？',
+        options: ['为了玩捉迷藏', '因为冰刺很锋利，避免受伤', '因为冰刺很好吃'],
+        correctIndex: 1,
+        explanation: '冰刺锋利危险，绕开是为了保护自己不被扎伤。',
+        cognitionTag: '安全因果意识',
+      },
+      {
+        id: 'q3',
+        type: 'detail',
+        question: '小白熊在雪屋篝火旁找到熊妈妈，是在什么时候？',
+        options: ['天亮的时候', '正午大太阳时', '大狂风半夜'],
+        correctIndex: 0,
+        explanation: '故事末尾提到：“天亮时，它终于在温暖雪屋的篝火旁抱住了熊妈妈”。',
+        cognitionTag: '时间细节回溯',
+      },
+    ],
+  },
+  {
+    id: 'snow-snowman-hat',
+    chapterId: 'snow',
+    chapterTitle: '❄️ 冰雪极地救援',
+    title: '雪傀儡的南瓜头礼帽',
+    icon: '⛄',
+    themeColor: '#6366F1',
+    description: '堆叠雪块创造雪傀儡，投掷雪球欢呼并守护村民麦田',
+    badge: '创造时序与使命',
+    story: {
+      title: '雪傀儡诞生记',
+      text: '冬天来了，小朋友们在院子里堆雪人。他们先滚好了【2个大雪球】叠成身体，接着戴上了【1个雕刻南瓜头】做礼帽。唰的一下，【雪傀儡】活过来了！它向空中投掷了【4颗雪球】欢快打招呼，开始尽职守护【村民的小麦田】。',
+      pinyin: 'dōng tiān lái le, xiǎo péng yǒu men zài yuàn zi lǐ duī xuě rén. tā men xiān gǔn hǎo le liǎng gè dà xuě qiú dié chéng shēn tǐ, jiē zhe dài shàng le yī gè diāo kè nán guā tóu zuò lǐ mào. shuā de yī xià, xuě kuǐ lěi huó guò lái le! tā xiàng kōng zhōng tóu zhì le sì kē xuě qiú huān kuài dǎ zhāo hu, kāi shǐ jìn zhí shǒu hù cūn mín de xiǎo mài tián.',
+      focusWords: ['2个大雪球', '1个雕刻南瓜头', '雪傀儡活过来了', '投掷4颗雪球', '村民的小麦田'],
+      bgGradient: 'from-indigo-950/70 to-slate-950/90',
+    },
+    timelineEvents: [
+      { id: 't1', order: 1, text: '滚好2个大雪球，叠成高大身体', icon: '⛄' },
+      { id: 't2', order: 2, text: '戴上1个雕刻南瓜头当滑稽礼帽', icon: '🎃' },
+      { id: 't3', order: 3, text: '雪傀儡苏醒，向空中投掷雪球', icon: '❄️' },
+      { id: 't4', order: 4, text: '开始尽职守护村民的小麦田', icon: '🌾' },
+    ],
+    categoryTask: {
+      bucketAName: '⛄ 创造雪人的制作材料',
+      bucketBName: '🌾 诞生后的动作与使命',
+      items: [
+        { id: 'c1', name: '2个大雪球', icon: '⛄', correctBucketId: 'A' },
+        { id: 'c2', name: '雕刻南瓜头', icon: '🎃', correctBucketId: 'A' },
+        { id: 'c3', name: '投掷4颗雪球', icon: '❄️', correctBucketId: 'B' },
+        { id: 'c4', name: '守护小麦田', icon: '🌾', correctBucketId: 'B' },
+      ],
+    },
+    questions: [
+      {
+        id: 'q1',
+        type: 'causal',
+        question: '在制作雪傀儡时，小朋友是先滚雪球还是先戴南瓜头？',
+        options: ['先滚好大雪球', '先戴上南瓜头', '两个同时放'],
+        correctIndex: 0,
+        explanation: '制造工序：先滚好 2 个大雪球叠好身体，最后扣上南瓜头激活。',
+        cognitionTag: '先后工序时序',
+      },
+      {
+        id: 'q2',
+        type: 'detail',
+        question: '雪傀儡苏醒后，向空中投掷了多少颗雪球表示友好打招呼？',
+        options: ['2 颗', '4 颗', '6 颗'],
+        correctIndex: 1,
+        explanation: '文中明确提到：“向空中投掷了 4 颗雪球欢快打招呼”。',
+        cognitionTag: '数量细节捕捉',
+      },
+      {
+        id: 'q3',
+        type: 'detail',
+        question: '雪傀儡诞生的最终使命是帮助村民守护什么？',
+        options: ['守护南瓜地', '守护村民的小麦田', '守护雪人滑梯'],
+        correctIndex: 1,
+        explanation: '文中末尾写到：“开始尽职守护村民的小麦田”。',
+        cognitionTag: '责任目标认知',
       },
     ],
   },

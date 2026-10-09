@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   EXPLORER_LESSONS,
+  EXPLORER_CHAPTERS,
+  type ExplorerChapterId,
   type ExplorerLesson,
   type ExplorerTimelineEvent,
   getExplorerLesson,
@@ -661,9 +663,15 @@ function ExplorerLessonView({ lesson, onNextLesson, onRestart }: LessonViewProps
 
 export function ExplorerLogGame() {
   const [currentLessonId, setCurrentLessonId] = useState<string>('forest-steve-morning');
+  const [selectedChapter, setSelectedChapter] = useState<ExplorerChapterId | 'all'>('all');
   const [lessonNonce, setLessonNonce] = useState(0);
 
   const lesson = getExplorerLesson(currentLessonId);
+
+  const filteredLessons =
+    selectedChapter === 'all'
+      ? EXPLORER_LESSONS
+      : EXPLORER_LESSONS.filter((l) => l.chapterId === selectedChapter);
 
   const handleNextLesson = () => {
     const curIdx = EXPLORER_LESSONS.findIndex((l) => l.id === lesson.id);
@@ -706,10 +714,38 @@ export function ExplorerLogGame() {
           </Link>
         </div>
 
-        {/* 关卡与篇章快速切换 */}
+        {/* 篇章分类筛选 Pill */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none mb-2 border-b border-white/10">
+          <button
+            type="button"
+            onClick={() => setSelectedChapter('all')}
+            className={`px-2.5 py-1 rounded text-xs font-bold whitespace-nowrap transition-all ${
+              selectedChapter === 'all'
+                ? 'bg-amber-500 text-black shadow-sm font-black'
+                : 'bg-black/30 text-gray-300 hover:bg-black/50'
+            }`}
+          >
+            全部日志 ({EXPLORER_LESSONS.length})
+          </button>
+          {EXPLORER_CHAPTERS.map((ch) => (
+            <button
+              key={ch.id}
+              type="button"
+              onClick={() => setSelectedChapter(ch.id)}
+              className={`px-2.5 py-1 rounded text-xs font-bold whitespace-nowrap transition-all ${
+                selectedChapter === ch.id
+                  ? 'bg-amber-600 text-white shadow-sm font-black'
+                  : 'bg-black/30 text-gray-300 hover:bg-black/50'
+              }`}
+            >
+              {ch.title.split(' ')[0]} {ch.title.split(' ')[1]}
+            </button>
+          ))}
+        </div>
+
+        {/* 关卡快速切换列表 */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-xs text-yellow-300 font-bold whitespace-nowrap">📜 选择日志：</span>
-          {EXPLORER_LESSONS.map((l) => (
+          {filteredLessons.map((l) => (
             <button
               key={l.id}
               onClick={() => {
