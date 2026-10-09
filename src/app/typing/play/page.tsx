@@ -203,8 +203,11 @@ function TypingPlayContent() {
     }
 
     const config: GameConfig = {
-      waves: 5,
-      mobsPerWave: mode === 'practice' ? [4, 5, 6, 6, 1] : [5, 7, 9, 10, 1],
+      waves: 10,
+      mobsPerWave:
+        mode === 'practice'
+          ? [8, 8, 10, 10, 12, 12, 14, 14, 16, 1]
+          : [10, 12, 14, 16, 18, 18, 20, 20, 22, 1],
       practice: mode === 'practice',
       hearts: 5,
       baseSpeed,
@@ -223,7 +226,7 @@ function TypingPlayContent() {
       },
       nextTarget: nextTargetFn,
       bossTarget: bossTargetFn,
-      bossHp: mode === 'practice' ? 4 : 5,
+      bossHp: mode === 'practice' ? 5 : 7,
     };
 
     const callbacks = {

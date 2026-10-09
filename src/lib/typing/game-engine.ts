@@ -351,7 +351,8 @@ export class TypingGame {
   }
 
   private waveSpeed() {
-    return this.cfg.baseSpeed * (1 + this.wave * 0.12);
+    const waveProgress = this.wave / Math.max(1, this.cfg.waves - 1);
+    return this.cfg.baseSpeed * (1 + waveProgress * 0.55);
   }
 
   private spawnMob(boss = false) {
@@ -397,7 +398,7 @@ export class TypingGame {
   }
 
   private maxAlive() {
-    return 3 + Math.floor(this.wave / 2);
+    return Math.min(8, 4 + Math.floor(this.wave / 2));
   }
 
   // ── Combat ─────────────────────────────────────────────────────────────
@@ -595,7 +596,8 @@ export class TypingGame {
           this.spawnMob();
           this.toSpawn--;
           const speedRatio = Math.min(1.8, Math.max(0.65, 45 / this.cfg.baseSpeed));
-          this.spawnTimer = Math.max(0.9, (3.2 - this.wave * 0.3) * speedRatio);
+          const waveProgress = this.wave / Math.max(1, this.cfg.waves - 1);
+          this.spawnTimer = Math.max(0.7, (2.6 - waveProgress * 1.3) * speedRatio);
         }
         if (this.toSpawn === 0 && !this.bossPending && this.mobs.length === 0 && this.arrows.length === 0) {
           if (this.wave >= this.cfg.waves - 1) {

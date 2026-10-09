@@ -339,8 +339,9 @@ export class MinerGame {
 
     // Challenge lava movement
     if (!this.config.practice && this.running && !this.paused) {
-      // Lava advances down toward Steve (at y = 140), scaled by baseSpeed
-      const lavaSpeed = (this.config.baseSpeed * 0.45) * (1 + this.currentBlockIdx * 0.04);
+      // Lava advances down toward Steve (at y = 140), scaled by baseSpeed and descent progress
+      const progressRatio = this.currentBlockIdx / Math.max(1, this.blocks.length - 1);
+      const lavaSpeed = (this.config.baseSpeed * 0.35) * (1 + progressRatio * 0.7);
       this.lavaY += dt * lavaSpeed;
       if (this.lavaY >= 140) {
         // Burned by lava!
