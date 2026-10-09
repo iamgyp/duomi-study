@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Trophy, Clock, Target, Hash } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Clock, Target, Hash } from 'lucide-react';
 import Link from 'next/link';
 import { getAllLeaderboards, LeaderboardEntry, clearLeaderboard } from '@/lib/leaderboard';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useMounted } from '@/hooks/useMounted';
 
 const SUBJECT_EMOJIS: Record<string, string> = {
   math: '🧮 数学',
@@ -59,14 +60,9 @@ function ScoreRow({ entry, rank, t }: { entry: LeaderboardEntry; rank: number; t
 }
 
 export default function LeaderboardPage() {
-  const [leaderboards, setLeaderboards] = useState<Record<string, LeaderboardEntry[]>>({});
-  const [mounted, setMounted] = useState(false);
+  const [leaderboards, setLeaderboards] = useState<Record<string, LeaderboardEntry[]>>(() => getAllLeaderboards());
+  const mounted = useMounted();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setMounted(true);
-    setLeaderboards(getAllLeaderboards());
-  }, []);
 
   const handleClear = (subject: string) => {
     if (confirm(`确定要清空该项目的排行榜吗？`)) {

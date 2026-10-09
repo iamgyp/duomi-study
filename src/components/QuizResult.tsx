@@ -4,12 +4,32 @@ import { ArrowLeft, RefreshCw, Printer } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
 
+export interface BaseWrongAnswer {
+  questionIndex?: number;
+  questionText?: string;
+  userAnswer?: string;
+  correctAnswer?: string;
+  lineText?: string;
+  charIndex?: number;
+  poemTitle?: string;
+  dynasty?: string;
+  author?: string;
+  lines?: Array<{
+    text: string;
+    wrongChars: Array<{
+      charIndex: number;
+      userAnswer: string;
+      correctAnswer: string;
+    }>;
+  }>;
+}
+
 interface QuizResultProps {
   subject: string;
   totalQuestions: number;
   correctCount: number;
   elapsedSeconds: number;
-  wrongAnswers: any[];
+  wrongAnswers: BaseWrongAnswer[];
   onRetry: () => void;
   onExportPdf?: () => void;
 }
@@ -58,17 +78,19 @@ export function QuizResult({
             <div className="space-y-4 max-h-80 overflow-y-auto">
               {wrongAnswers.map((wa, i) => (
                 <div key={i} className="bg-red-50 border-2 border-red-200 rounded p-3">
-                  <div className="font-bold text-sm text-[#333] mb-2">
-                    {wa.questionText}
-                  </div>
+                  {wa.questionText && (
+                    <div className="font-bold text-sm text-[#333] mb-2">
+                      {wa.questionText}
+                    </div>
+                  )}
                   {'lineText' in wa && wa.lineText ? (
                     <div className="text-xl sm:text-2xl font-serif text-center py-2 text-[#333]" style={{ fontFamily: '"KaiTi", "楷体", serif' }}>
                       {(wa.lineText as string).split('').map((char, ci) => {
-                        if (ci === (wa as any).charIndex) {
+                        if (ci === wa.charIndex) {
                           return (
                             <span key={ci}>
                               <span className="line-through text-red-400 mr-1">{char}</span>
-                              <span className="text-green-600 font-bold mx-1">→ {(wa as any).correctAnswer}</span>
+                              <span className="text-green-600 font-bold mx-1">→ {wa.correctAnswer}</span>
                             </span>
                           );
                         }
@@ -78,10 +100,10 @@ export function QuizResult({
                   ) : 'poemTitle' in wa ? (
                     <>
                       <div className="text-xs text-gray-500 mb-2">
-                        {(wa as any).dynasty} {(wa as any).author}
+                        {wa.dynasty} {wa.author}
                       </div>
                       <div className="space-y-1">
-                        {(wa as any).lines.map((line: { text: string; wrongChars: { charIndex: number; userAnswer: string; correctAnswer: string }[] }, li: number) => (
+                        {wa.lines?.map((line, li: number) => (
                           <div key={li} className="text-lg sm:text-xl font-serif text-center text-[#333]" style={{ fontFamily: '"KaiTi", "楷体", serif' }}>
                             {line.text.split('').map((char: string, ci: number) => {
                               const wrongChar = line.wrongChars.find((wc: { charIndex: number }) => wc.charIndex === ci);

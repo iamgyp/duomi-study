@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { AchievementCard } from '@/components/AchievementCard';
@@ -22,20 +22,18 @@ function getCategoryTabKey(cat: AchievementCategory): string {
 
 export default function AchievementsPage() {
   const [activeTab, setActiveTab] = useState<AchievementCategory | 'all'>('all');
-  const [stats, setStats] = useState<AggregatedStats | null>(null);
-  const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
-  const [unlockedMap, setUnlockedMap] = useState<Record<string, { achievementId: string; unlockedAt: string }>>({});
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    setStats(getStats());
+  const [stats] = useState<AggregatedStats | null>(() => getStats());
+  const [unlockedAchievements] = useState<Set<string>>(() => {
     const unlocked = getUnlockedAchievements();
-    const ids = new Set(unlocked.map(u => u.achievementId));
-    setUnlockedAchievements(ids);
+    return new Set(unlocked.map(u => u.achievementId));
+  });
+  const [unlockedMap] = useState<Record<string, { achievementId: string; unlockedAt: string }>>(() => {
+    const unlocked = getUnlockedAchievements();
     const map: Record<string, { achievementId: string; unlockedAt: string }> = {};
     unlocked.forEach(u => { map[u.achievementId] = { achievementId: u.achievementId, unlockedAt: u.unlockedAt }; });
-    setUnlockedMap(map);
-  }, []);
+    return map;
+  });
+  const { t } = useTranslation();
 
   if (!stats) {
     return (

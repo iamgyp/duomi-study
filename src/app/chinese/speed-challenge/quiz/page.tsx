@@ -1,11 +1,11 @@
-﻿'use client';
+'use client';
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ChineseSpeedQuizConfig } from '@/lib/chinese-speed-generator';
-import { useChineseSpeedQuiz } from '@/hooks/useChineseSpeedQuiz';
+import { useChineseSpeedQuiz, ChineseSpeedQuizAnswer } from '@/hooks/useChineseSpeedQuiz';
 import { saveQuizSession } from '@/lib/quiz-engine';
 import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useAchievements } from '@/hooks/useAchievements';
@@ -31,8 +31,8 @@ export default function ChineseSpeedChallengeQuizPage() {
 
 function ChineseSpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
-  const [finished, setFinished] = useState(false);
   const [started, setStarted] = useState(false);
+  const hasHandledTimeUp = useRef(false);
 
   const config: ChineseSpeedQuizConfig = {
     timeLimitSeconds: (parseInt(searchParams.get('timeLimit') || '60', 10) as 30 | 60 | 120) || defaultConfig.timeLimitSeconds,
@@ -43,9 +43,12 @@ function ChineseSpeedChallengeQuizContent() {
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
   const { play } = useSoundEffects();
 
+  // Derive finished from state (not ref) so React Compiler can track it
+  const finished = quiz.state === 'timeUp';
+
   useEffect(() => {
-    if (quiz.state === 'timeUp' && !finished) {
-      setFinished(true);
+    if (quiz.state === 'timeUp' && !hasHandledTimeUp.current) {
+      hasHandledTimeUp.current = true;
 
       const accuracy = quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0;
       const qpm = config.timeLimitSeconds > 0 ? (quiz.correctCount / config.timeLimitSeconds) * 60 : 0;
@@ -73,7 +76,7 @@ function ChineseSpeedChallengeQuizContent() {
 
       checkAndUnlock();
     }
-  }, [quiz.state, finished, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, checkAndUnlock]);
+  }, [quiz.state, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, play, checkAndUnlock]);
 
   // Play correct/incorrect sounds based on feedback
   useEffect(() => {
@@ -90,25 +93,19 @@ function ChineseSpeedChallengeQuizContent() {
 
   const handleRetry = () => {
     quiz.reset();
-    setFinished(false);
+    hasHandledTimeUp.current = false;
     setStarted(false);
   };
 
   if (finished) {
     const wrongAnswers = quiz.answers.filter((a) => !a.correct);
-    const speedWrongAnswers = wrongAnswers.map(a => ({
-      questionIndex: a.questionIndex,
-      question: a.question,
-      selectedOption: a.selectedOption,
-      correct: false,
-    }));
     return (
       <>
         <ChineseSpeedResult
           correctCount={quiz.correctCount}
           attemptedCount={quiz.attemptedCount}
           timeLimitSeconds={config.timeLimitSeconds}
-          wrongAnswers={speedWrongAnswers}
+          wrongAnswers={wrongAnswers}
           onRetry={handleRetry}
         />
         {pendingUnlocks.length > 0 && (
@@ -217,7 +214,7 @@ function ChineseSpeedResult({
   correctCount: number;
   attemptedCount: number;
   timeLimitSeconds: number;
-  wrongAnswers: any[];
+  wrongAnswers: ChineseSpeedQuizAnswer[];
   onRetry: () => void;
 }) {
   const { t } = useTranslation();

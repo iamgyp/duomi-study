@@ -199,7 +199,7 @@ export const PoemPdfDocument = ({
 
         {/* Poems Grid (2 columns) */}
         <View style={styles.poemsGrid}>
-          {exercises.map((exercise, index) => (
+          {exercises.map((exercise) => (
             <View key={exercise.id} style={styles.poemContainer} wrap={false}>
               <Text style={styles.poemTitle}>{exercise.poem.title}</Text>
               <Text style={styles.poemAuthor}>

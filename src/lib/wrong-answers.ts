@@ -1,4 +1,4 @@
-import { getAllQuizSessions, QuizSubject, QuizAnswer } from './quiz-engine';
+import { getAllQuizSessions, QuizSubject } from './quiz-engine';
 
 export type WrongAnswerItem = {
   sessionId: string;

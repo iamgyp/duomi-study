@@ -33,7 +33,7 @@ export default function SpeedChallengeQuizPage() {
 function SpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [finished, setFinished] = useState(false);
+  const hasHandledTimeUp = useRef(false);
   const [started, setStarted] = useState(false);
 
   const config: SpeedQuizConfig = {
@@ -45,6 +45,8 @@ function SpeedChallengeQuizContent() {
   const quiz = useSpeedQuiz(config);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
   const { play } = useSoundEffects();
+
+  const finished = quiz.state === 'timeUp';
 
   // Play correct/incorrect sounds based on feedback
   useEffect(() => {
@@ -64,8 +66,8 @@ function SpeedChallengeQuizContent() {
 
   // Save session and check achievements when time's up
   useEffect(() => {
-    if (quiz.state === 'timeUp' && !finished) {
-      setFinished(true);
+    if (quiz.state === 'timeUp' && !hasHandledTimeUp.current) {
+      hasHandledTimeUp.current = true;
 
       const accuracy = quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0;
       const qpm = config.timeLimitSeconds > 0 ? (quiz.correctCount / config.timeLimitSeconds) * 60 : 0;
@@ -93,7 +95,7 @@ function SpeedChallengeQuizContent() {
 
       checkAndUnlock();
     }
-  }, [quiz.state, finished, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, checkAndUnlock]);
+  }, [quiz.state, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, play, checkAndUnlock]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -104,7 +106,7 @@ function SpeedChallengeQuizContent() {
 
   const handleRetry = () => {
     quiz.reset();
-    setFinished(false);
+    hasHandledTimeUp.current = false;
     setStarted(false);
   };
 

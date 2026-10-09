@@ -7,7 +7,6 @@ import {
   generateDailyChallenge,
   getTodaySeed,
   getDailyResult,
-  getAllDailyResults,
   saveDailyResult,
   getDailyStreak,
 } from '@/lib/daily-challenge';
@@ -57,12 +56,29 @@ export default function DailyChallengePage() {
     return () => clearInterval(timer);
   }, [timerRunning, timeRemaining]);
 
+  const handleSubmitResults = useCallback(() => {
+    let correctCount = 0;
+    challenge.questions.forEach((q, i) => {
+      const userAnswer = answersRef.current.get(i);
+      if (userAnswer === q.options[q.correctIndex]) {
+        correctCount++;
+      }
+    });
+    const timeUsed = challenge.timeLimitSeconds - timeRemainingRef.current;
+    const accuracy = challenge.questions.length > 0 ? correctCount / challenge.questions.length : 0;
+
+    saveDailyResult({ date: getTodaySeed(), correctCount, totalQuestions: challenge.questions.length, accuracy, timeUsed });
+    setResults({ correctCount, timeUsed });
+    if (correctCount > 0) play('complete');
+    setCompleted(true);
+  }, [challenge, play]);
+
   useEffect(() => {
     if (timeRemaining === 0 && started && !finished) {
       setFinished(true);
       handleSubmitResults();
     }
-  }, [timeRemaining, started, finished]);
+  }, [timeRemaining, started, finished, handleSubmitResults]);
 
   const handleAnswer = useCallback((opt: string) => {
     setAnswers((prev) => new Map(prev).set(currentQuestion, opt));
@@ -75,28 +91,10 @@ export default function DailyChallengePage() {
         setCurrentQuestion((prev) => prev + 1);
       } else {
         // All questions answered
-        const timeUsed = challenge.timeLimitSeconds - timeRemaining;
         setTimeRemaining(0);
       }
     }, 600);
-  }, [currentQuestion, challenge, timeRemaining, play]);
-
-  const handleSubmitResults = () => {
-    let correctCount = 0;
-    challenge.questions.forEach((q, i) => {
-      const userAnswer = answers.get(i);
-      if (userAnswer === q.options[q.correctIndex]) {
-        correctCount++;
-      }
-    });
-    const timeUsed = challenge.timeLimitSeconds - timeRemaining;
-    const accuracy = challenge.questions.length > 0 ? correctCount / challenge.questions.length : 0;
-
-    saveDailyResult({ date: getTodaySeed(), correctCount, totalQuestions: challenge.questions.length, accuracy, timeUsed });
-    setResults({ correctCount, timeUsed });
-    if (correctCount > 0) play('complete');
-    setCompleted(true);
-  };
+  }, [currentQuestion, challenge, play]);
 
   const handleRetry = () => {
     setStarted(false);

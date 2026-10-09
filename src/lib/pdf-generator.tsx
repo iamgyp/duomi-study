@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Document, Page, Text, View, StyleSheet, Svg, Line, Path, Image, Font } from '@react-pdf/renderer';
 import { MathQuestion } from './math-generator';
 import { AlgebraQuestion, McItem, getItemDisplayName, getCurrencySymbol } from './algebra-generator';
@@ -500,11 +501,6 @@ const algebraStyles = StyleSheet.create({
   },
 });
 
-// Emoji Text Component (fallback for emoji rendering)
-const EmojiText = ({ emoji, size = 14 }: { emoji: string; size?: number }) => (
-  <Text style={{ fontSize: size, fontFamily: 'Helvetica' }}>{emoji}</Text>
-);
-
 // Item icon path helper - uses absolute path for PDF generation
 const getItemIconPath = (iconFilename: string) => {
   // For PDF generation, we need absolute paths or data URLs
@@ -516,7 +512,6 @@ const getItemIconPath = (iconFilename: string) => {
 export const AlgebraPdfDocument = ({
   questions,
   itemSets,
-  title = 'Algebra Challenge',
   difficulty = 2,
   language = 'zh',
 }: {

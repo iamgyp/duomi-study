@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, Printer, RefreshCw, Settings2 } from 'lucide-react';
 import Link from 'next/link';
 import { generateMathQuestions, MathConfig, MathQuestion } from '@/lib/math-generator';
@@ -23,20 +23,12 @@ export default function MathPage() {
 
   const [questions, setQuestions] = useState<MathQuestion[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [previewPage, setPreviewPage] = useState(1);
   const [practiceMode, setPracticeMode] = useState(false);
   const [withAnswers, setWithAnswers] = useState(false);
   const questionsPerPage = 20;
   const totalPages = Math.max(1, Math.ceil(questions.length / questionsPerPage));
   const currentQuestions = questions.slice((previewPage - 1) * questionsPerPage, previewPage * questionsPerPage);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const handleGenerate = () => {
     const newQuestions = generateMathQuestions(config);
@@ -141,7 +133,7 @@ export default function MathPage() {
               <select 
                 className="w-full border-2 border-black bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 font-mono"
                 value={config.operation}
-                onChange={(e) => setConfig({ ...config, operation: e.target.value as any })}
+                onChange={(e) => setConfig({ ...config, operation: e.target.value as MathConfig['operation'] })}
               >
                 <option value="add">{t('Math.operationAdd')}</option>
                 <option value="sub">{t('Math.operationSub')}</option>

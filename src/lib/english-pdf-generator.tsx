@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, Font, Svg, Line, Path } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Svg, Line, Path } from '@react-pdf/renderer';
 
 // Register standard fonts
 // We need a font that looks handwritten or rounded for kids.
@@ -164,13 +164,10 @@ interface EnglishPdfProps {
   title?: string;
 }
 
-export const EnglishPdfDocument = ({ text, config, title = 'English Writing' }: EnglishPdfProps) => {
+export const EnglishPdfDocument = ({ text, config }: EnglishPdfProps) => {
   // Split text into words.
   const words = text.split(/\s+/).filter(w => w.length > 0);
-  
-  // Rows: 10 per page roughly
-  const rowsPerPage = 10;
-  
+
   // Manual text splitting for "Sentence" mode?
   // For now just list words one by one.
 

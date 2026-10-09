@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 export interface QuizAnswerRecord {
   questionIndex: number;
@@ -9,7 +9,14 @@ export function useQuiz(totalQuestions: number) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Map<number, string>>(new Map());
   const [isComplete, setIsComplete] = useState(false);
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number | null>(null);
+
+  // Initialize start time on mount
+  useEffect(() => {
+    if (startTimeRef.current === null) {
+      startTimeRef.current = Date.now();
+    }
+  }, []);
 
   const goToQuestion = useCallback((index: number) => {
     if (index >= 0 && index < totalQuestions) {
@@ -52,6 +59,7 @@ export function useQuiz(totalQuestions: number) {
   }, []);
 
   const getElapsedSeconds = useCallback(() => {
+    if (startTimeRef.current === null) return 0;
     return Math.round((Date.now() - startTimeRef.current) / 1000);
   }, []);
 

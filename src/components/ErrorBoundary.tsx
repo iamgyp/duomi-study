@@ -1,6 +1,7 @@
 'use client';
 
 import { Component, ReactNode } from 'react';
+import Link from 'next/link';
 
 interface Props {
   children: ReactNode;
@@ -45,12 +46,12 @@ export class ErrorBoundary extends Component<Props, State> {
             >
               ??
             </button>
-            <a
+            <Link
               href="/"
               className="mc-btn bg-white text-black px-6 py-3 ml-2"
             >
               ????
-            </a>
+            </Link>
           </div>
         </div>
       );

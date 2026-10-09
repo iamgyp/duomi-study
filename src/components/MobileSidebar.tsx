@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Settings2 } from 'lucide-react';
 
 interface MobileSidebarProps {
   children: React.ReactNode;

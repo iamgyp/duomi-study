@@ -11,7 +11,7 @@ type SoundType =
 
 const AudioContextClass =
   typeof window !== 'undefined'
-    ? window.AudioContext || (window as any).webkitAudioContext
+    ? window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext
     : null;
 
 function createAudioContext(): AudioContext | null {
@@ -76,7 +76,6 @@ function playNoise(ctx: AudioContext, duration: number, gainValue = 0.05, delay 
 
 export function useSoundEffects() {
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const pendingRef = useRef<Array<() => void>>([]);
 
   const getCtx = useCallback(() => {
     if (!audioCtxRef.current) {

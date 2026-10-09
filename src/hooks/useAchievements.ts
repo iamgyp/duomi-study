@@ -1,16 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { evaluateAchievements, getUnlockedAchievements, UnlockedAchievement, getUnlockedCount } from '@/lib/achievement-engine';
 import { invalidateCache } from '@/lib/stats-aggregator';
 
 export function useAchievements() {
-  const [unlocked, setUnlocked] = useState<UnlockedAchievement[]>([]);
+  const [unlocked, setUnlocked] = useState<UnlockedAchievement[]>(() => getUnlockedAchievements());
   const [pendingUnlocks, setPendingUnlocks] = useState<UnlockedAchievement[]>([]);
-  const [unlockedCount, setUnlockedCount] = useState(0);
-
-  useEffect(() => {
-    setUnlocked(getUnlockedAchievements());
-    setUnlockedCount(getUnlockedCount());
-  }, []);
+  const [unlockedCount, setUnlockedCount] = useState(() => getUnlockedCount());
 
   const checkAndUnlock = useCallback(() => {
     invalidateCache();

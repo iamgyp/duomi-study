@@ -1,4 +1,4 @@
-import { Poem, PoemLine, getRandomPoem, getPoemsByDifficulty } from './poem-data';
+import { Poem, getPoemsByDifficulty } from './poem-data';
 
 export interface PoemExercise {
   id: string;

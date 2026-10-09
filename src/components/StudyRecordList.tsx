@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Trash2, Download, Upload, AlertCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { StudyRecord } from '@/types/study-record';
@@ -12,24 +12,20 @@ import {
   formatDuration,
   getSubjectLabel,
   getContentTypeLabel,
+  clearAllRecords,
 } from '@/lib/study-storage';
 import { exportAsJson, exportAsCsv } from '@/lib/data-export';
-import { getAllQuizSessions } from '@/lib/quiz-engine';
+import { useMounted } from '@/hooks/useMounted';
 
 export function StudyRecordList() {
   const { t } = useTranslation();
-  const [records, setRecords] = useState<StudyRecord[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [records, setRecords] = useState<StudyRecord[]>(() => getRecentRecords(100));
+  const mounted = useMounted();
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState('');
   const [importResult, setImportResult] = useState<{ success: boolean; message: string } | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    loadRecords();
-  }, []);
 
   const loadRecords = () => {
     setRecords(getRecentRecords(100));
@@ -90,7 +86,6 @@ export function StudyRecordList() {
 
   const handleClearAll = () => {
     if (confirm(t('StudyRecordList.clearConfirmMessage'))) {
-      const { clearAllRecords } = require('@/lib/study-storage');
       clearAllRecords();
       loadRecords();
       setShowClearConfirm(false);

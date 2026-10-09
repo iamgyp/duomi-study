@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useMemo, useCallback, Suspense } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -42,14 +42,14 @@ function AlgebraQuizContent() {
   const [config] = useState<AlgebraConfig>(defaultConfig);
   const [started, setStarted] = useState(false);
 
-  const { questions, itemSets } = useMemo(
+  const { questions } = useMemo(
     () => generateAlgebraQuizQuestions(config),
     [config],
   );
 
   const { play } = useSoundEffects();
   const quiz = useQuiz(questions.length);
-  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
+  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: Array<{ questionIndex?: number; questionText: string; userAnswer: string; correctAnswer: string }> } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
 
   const handleAnswer = useCallback((opt: string) => {
@@ -67,7 +67,7 @@ function AlgebraQuizContent() {
 
   const handleSubmit = () => {
     let correctCount = 0;
-    const wrongAnswers: any[] = [];
+    const wrongAnswers: Array<{ questionIndex?: number; questionText: string; userAnswer: string; correctAnswer: string }> = [];
 
     questions.forEach((q, i) => {
       const userAnswer = quiz.answers.get(i) || '';
@@ -175,7 +175,7 @@ function AlgebraQuizContent() {
           {/* 当前题物品价格表 */}
           {currentQ.items.length > 0 && (
             <div className="mb-6 flex justify-center gap-6 flex-wrap">
-              {currentQ.items.map(({ item, quantity }, idx) => (
+              {currentQ.items.map(({ item }, idx) => (
                 <div key={idx} className="flex items-center gap-2 bg-[#F5F5DC] border-2 border-black px-4 py-2 rounded-sm">
                   <span className="text-2xl">{item.emoji}</span>
                   <span className="text-sm text-gray-500">=</span>

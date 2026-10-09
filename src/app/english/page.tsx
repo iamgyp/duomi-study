@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowLeft, Printer, RefreshCw, Settings2 } from 'lucide-react';
+import { ArrowLeft, Printer } from 'lucide-react';
 import Link from 'next/link';
 import { pdf } from '@react-pdf/renderer';
 import { EnglishPdfDocument } from '@/lib/english-pdf-generator';

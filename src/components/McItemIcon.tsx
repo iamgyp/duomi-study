@@ -1,6 +1,7 @@
 import { McItem, getItemDisplayName, getCurrencySymbol } from '@/lib/algebra-generator';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import Image from 'next/image';
 
 interface McItemIconProps {
   item: McItem;
@@ -30,7 +31,7 @@ export function McItemIcon({
 
   return (
     <div className={twMerge(clsx('flex items-center gap-2', className))}>
-      <img
+      <Image
         src={`/items/${item.icon}`}
         alt={displayName}
         className={twMerge(clsx(sizeClasses[size], 'object-contain'))}
@@ -72,7 +73,7 @@ export function ItemPriceList({ items, language = 'zh' }: ItemPriceListProps) {
             key={item.id}
             className="flex items-center gap-1 bg-white px-2 py-1 rounded border border-gray-200 shadow-sm"
           >
-            <img
+            <Image
               src={`/items/${item.icon}`}
               alt={displayName}
               className="w-6 h-6 object-contain"

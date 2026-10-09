@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { Palette, X } from 'lucide-react';
-import { Theme, THEMES, getCurrentThemeId, setThemeId, getTheme, applyTheme, ThemeId } from '@/lib/themes';
+import { Theme, THEMES, getCurrentThemeId, setThemeId, getTheme, applyTheme } from '@/lib/themes';
 
 export function ThemeSwitcher() {
-  const [currentTheme, setCurrentTheme] = useState<Theme>(() => getTheme());
+  const [currentTheme, setCurrentTheme] = useState<Theme>(() => getTheme(getCurrentThemeId()));
   const [showPanel, setShowPanel] = useState(false);
 
   useEffect(() => {
-    const theme = getTheme(getCurrentThemeId());
-    setCurrentTheme(theme);
-    applyTheme(theme);
-  }, []);
+    applyTheme(currentTheme);
+  }, [currentTheme]);
 
   const handleSelect = (theme: Theme) => {
     setThemeId(theme.id);

@@ -26,6 +26,7 @@ export function getTodayString(): string {
  * 获取所有学习记录
  */
 export function getAllRecords(): StudyRecord[] {
+  if (typeof window === 'undefined') return [];
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) return [];

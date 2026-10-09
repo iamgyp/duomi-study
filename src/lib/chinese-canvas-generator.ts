@@ -1,7 +1,6 @@
 export const generateChineseImage = async (
   chars: { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean; isBlank?: boolean }[],
-  config: { gridType: string; showPinyin: boolean; mode: string; color: string },
-  title: string = 'Chinese Writing'
+  config: { gridType: string; showPinyin: boolean; mode: string; color: string }
 ): Promise<string> => {
   // 1. Create Canvas (A4 @ 300dpi: 2480 x 3508)
   const canvas = document.createElement('canvas');

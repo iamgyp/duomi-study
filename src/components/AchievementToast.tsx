@@ -34,12 +34,12 @@ export function AchievementToast({ unlocks, onDismiss }: AchievementToastProps) 
     }, 4000);
 
     return () => clearTimeout(showTimer);
-  }, [currentIndex, unlocks.length, onDismiss]);
+  }, [currentIndex, unlocks.length, onDismiss, play]);
 
   // Play achievement sound on first mount
   useEffect(() => {
     play('achievement');
-  }, []);
+  }, [play]);
 
   const handleShare = () => {
     if (!achievement) return;

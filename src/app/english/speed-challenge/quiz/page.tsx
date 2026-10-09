@@ -1,12 +1,12 @@
-﻿'use client';
+'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { EnglishSpeedQuizConfig } from '@/lib/english-speed-generator';
-import { useEnglishSpeedQuiz } from '@/hooks/useEnglishSpeedQuiz';
+import { useEnglishSpeedQuiz, EnglishSpeedQuizAnswer } from '@/hooks/useEnglishSpeedQuiz';
 import { saveQuizSession } from '@/lib/quiz-engine';
 import { updateDifficultyProgression } from '@/lib/difficulty-progression';
 import { useAchievements } from '@/hooks/useAchievements';
@@ -31,8 +31,8 @@ export default function EnglishSpeedChallengeQuizPage() {
 
 function EnglishSpeedChallengeQuizContent() {
   const searchParams = useSearchParams();
-  const [finished, setFinished] = useState(false);
   const [started, setStarted] = useState(false);
+  const hasHandledTimeUp = useRef(false);
 
   const config: EnglishSpeedQuizConfig = {
     timeLimitSeconds: (parseInt(searchParams.get('timeLimit') || '60', 10) as 30 | 60 | 120) || defaultConfig.timeLimitSeconds,
@@ -43,9 +43,11 @@ function EnglishSpeedChallengeQuizContent() {
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
   const { play } = useSoundEffects();
 
+  const finished = quiz.state === 'timeUp';
+
   useEffect(() => {
-    if (quiz.state === 'timeUp' && !finished) {
-      setFinished(true);
+    if (quiz.state === 'timeUp' && !hasHandledTimeUp.current) {
+      hasHandledTimeUp.current = true;
 
       const accuracy = quiz.attemptedCount > 0 ? quiz.correctCount / quiz.attemptedCount : 0;
       const qpm = config.timeLimitSeconds > 0 ? (quiz.correctCount / config.timeLimitSeconds) * 60 : 0;
@@ -72,7 +74,7 @@ function EnglishSpeedChallengeQuizContent() {
       if (quiz.correctCount > 0) play('complete');
       checkAndUnlock();
     }
-  }, [quiz.state, finished, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, checkAndUnlock]);
+  }, [quiz.state, quiz.answers, quiz.attemptedCount, quiz.correctCount, config.timeLimitSeconds, play, checkAndUnlock]);
 
   // Play correct/incorrect sounds based on feedback
   useEffect(() => {
@@ -89,7 +91,7 @@ function EnglishSpeedChallengeQuizContent() {
 
   const handleRetry = () => {
     quiz.reset();
-    setFinished(false);
+    hasHandledTimeUp.current = false;
     setStarted(false);
   };
 
@@ -185,7 +187,7 @@ function EnglishSpeedResult({
   correctCount, attemptedCount, timeLimitSeconds, wrongAnswers, onRetry,
 }: {
   correctCount: number; attemptedCount: number; timeLimitSeconds: number;
-  wrongAnswers: any[]; onRetry: () => void;
+  wrongAnswers: EnglishSpeedQuizAnswer[]; onRetry: () => void;
 }) {
   const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100) : 0;
   const questionsPerMinute = timeLimitSeconds > 0 ? ((correctCount / timeLimitSeconds) * 60).toFixed(1) : '0.0';

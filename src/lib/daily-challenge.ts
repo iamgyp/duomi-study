@@ -150,7 +150,7 @@ export function getDailyStreak(): number {
   if (dates.length === 0) return 0;
 
   let streak = 0;
-  let expected = new Date();
+  const expected = new Date();
 
   // Check if today has a result, if not start from yesterday
   if (!results[getTodaySeed()]) {

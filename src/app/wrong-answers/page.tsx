@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslation } from '@/hooks/useTranslation';
-import { getWrongAnswers, SUBJECT_LABELS, SUBJECT_ROUTES, WrongAnswerGroup, WrongAnswerItem } from '@/lib/wrong-answers';
+import { getWrongAnswers, SUBJECT_LABELS, SUBJECT_ROUTES, WrongAnswerItem } from '@/lib/wrong-answers';
 
 const ALL_SUBJECTS = ['all', 'math', 'algebra', 'chinese-poem', 'english'] as const;
 type FilterSubject = typeof ALL_SUBJECTS[number];
@@ -76,12 +76,7 @@ export default function WrongAnswersPage() {
   const totalWrong = allGroups.reduce((sum, g) => sum + g.items.length, 0);
   const [filter, setFilter] = useState<FilterSubject>('all');
 
-  const filtered = useMemo(() => {
-    if (filter === 'all') return allGroups;
-    return allGroups.filter(g => g.subject === filter);
-  }, [allGroups, filter]);
-
-  const filteredCount = filtered.reduce((sum, g) => sum + g.items.length, 0);
+  const filtered = filter === 'all' ? allGroups : allGroups.filter(g => g.subject === filter);
 
   const handleRedo = (subject: keyof typeof SUBJECT_ROUTES) => {
     router.push(SUBJECT_ROUTES[subject]);

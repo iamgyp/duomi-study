@@ -1,6 +1,6 @@
-import { getAllQuizSessions, QuizSubject } from './quiz-engine';
+import { getAllQuizSessions } from './quiz-engine';
 import { getAllRecords } from './study-storage';
-import { getStats, rebuildStats } from './stats-aggregator';
+import { getStats } from './stats-aggregator';
 
 export type ExportFormat = 'json' | 'csv';
 

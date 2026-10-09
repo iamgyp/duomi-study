@@ -162,7 +162,7 @@ interface ChinesePdfProps {
   title?: string;
 }
 
-export const ChinesePdfDocument = ({ chars, config, title = 'Chinese Writing' }: ChinesePdfProps) => {
+export const ChinesePdfDocument = ({ chars, config }: ChinesePdfProps) => {
   // Split chars into rows by isNewLine marker
   type CharItem = { char: string; pinyin: string; isNewLine?: boolean; isSpace?: boolean; isBlank?: boolean };
   const rows: CharItem[][] = [[]];

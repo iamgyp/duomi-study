@@ -1,20 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Clock, Calendar, Flame, BookOpen } from 'lucide-react';
 import { StudyStats as StudyStatsType, Subject } from '@/types/study-record';
 import { getStudyStats, formatDuration } from '@/lib/study-storage';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useMounted } from '@/hooks/useMounted';
 
 export function StudyStats() {
-  const [stats, setStats] = useState<StudyStatsType | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [stats] = useState<StudyStatsType | null>(() => getStudyStats());
+  const mounted = useMounted();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setMounted(true);
-    setStats(getStudyStats());
-  }, []);
 
   if (!mounted || !stats) {
     return (

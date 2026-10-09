@@ -4,8 +4,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 import { Globe } from 'lucide-react';
 
-type Locale = 'zh' | 'en';
-
 export function LanguageSwitcher() {
   const { locale, switchLocale, t } = useTranslation();
   const { play } = useSoundEffects();

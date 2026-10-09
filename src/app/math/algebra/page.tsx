@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Printer, RefreshCw, Settings2, ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Printer, RefreshCw, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import { generateAlgebraQuestions, AlgebraConfig, AlgebraQuestion, McItem, getDifficultyLabel } from '@/lib/algebra-generator';
-import { McItemIcon, ItemPriceList } from '@/components/McItemIcon';
+import Image from 'next/image';
+import { generateAlgebraQuestions, AlgebraConfig, AlgebraQuestion, McItem } from '@/lib/algebra-generator';
+import { ItemPriceList } from '@/components/McItemIcon';
 import { pdf } from '@react-pdf/renderer';
 import { AlgebraPdfDocument } from '@/lib/pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -291,7 +292,7 @@ export default function AlgebraPage() {
                                 <div className="flex-1 flex items-center gap-1 sm:gap-2 text-base sm:text-lg font-mono flex-wrap">
                                   {q.items.map((itemData, idx) => (
                                     <span key={itemData.item.id} className="flex items-center gap-1">
-                                      <img
+                                      <Image
                                         src={`/items/${itemData.item.icon}`}
                                         alt={itemData.item.name}
                                         className="w-5 h-5 sm:w-6 sm:h-6 object-contain inline-block"

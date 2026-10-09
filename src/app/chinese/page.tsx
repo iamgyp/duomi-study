@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Printer, RefreshCw, Settings2, PenTool } from 'lucide-react';
+import { ArrowLeft, Printer, RefreshCw, PenTool } from 'lucide-react';
 import Link from 'next/link';
 import cnchar from 'cnchar';
 import 'cnchar-order';
 import 'cnchar-trad';
 import { generateChineseImage } from '@/lib/chinese-canvas-generator';
-import { generatePoemExercises, PoemConfig, getPoemDifficultyLabel } from '@/lib/poem-generator';
+import { generatePoemExercises, PoemConfig, PoemExercise, getPoemDifficultyLabel } from '@/lib/poem-generator';
 import { pdf } from '@react-pdf/renderer';
 import { PoemPdfDocument } from '@/lib/poem-pdf-generator';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -27,7 +27,7 @@ export default function ChinesePage() {
     mode: 'trace' as 'trace' | 'normal',
     color: '#999999',
   });
-  const [chars, setChars] = useState<any[]>([]);
+  const [chars, setChars] = useState<{ char: string; pinyin: string; isBlank?: boolean; isSpace?: boolean; isNewLine?: boolean }[]>([]);
   
   // Poem mode state
   const [poemConfig, setPoemConfig] = useState<PoemConfig>({
@@ -36,7 +36,7 @@ export default function ChinesePage() {
     showAnswers: false,
     showPinyin: false,
   });
-  const [poemExercises, setPoemExercises] = useState<any[]>([]);
+  const [poemExercises, setPoemExercises] = useState<PoemExercise[]>([]);
 
   // 切换难度时清空结果
   const updatePoemConfig = (updates: Partial<PoemConfig>) => {
@@ -53,7 +53,7 @@ export default function ChinesePage() {
   useEffect(() => {
     const COLS = 8; // 每行固定 8 个田字格
     const inputChars = text.split('');
-    const newChars: any[] = [];
+    const newChars: { char: string; pinyin: string; isBlank?: boolean; isSpace?: boolean; isNewLine?: boolean }[] = [];
     let currentRowLength = 0;
 
     for (const char of inputChars) {
@@ -72,10 +72,11 @@ export default function ChinesePage() {
         currentRowLength++;
       } else {
         // 正常汉字
-        const pinyin = (cnchar as any).spell(char, 'tone');
+        const spellResult = (cnchar as unknown as { spell: (c: string, m: string) => string | string[] }).spell(char, 'tone');
+        const pinyin = (Array.isArray(spellResult) ? spellResult[0] : spellResult) || '';
         newChars.push({
           char,
-          pinyin: Array.isArray(pinyin) ? pinyin[0] : pinyin
+          pinyin,
         });
         currentRowLength++;
       }
@@ -417,8 +418,8 @@ export default function ChinesePage() {
                 // 支持换行符和空格：换行符创建新行，空格/空白自动填充田字格
                 <div className="flex flex-col gap-y-4 sm:gap-y-6 content-start">
                   {(() => {
-                    const rows: any[][] = [[]];
-                    chars.forEach((c, i) => {
+                    const rows: { char: string; pinyin?: string; isBlank?: boolean; isSpace?: boolean; isNewLine?: boolean }[][] = [[]];
+                    chars.forEach((c) => {
                       if (c.isNewLine) {
                         rows.push([]);
                       } else {
@@ -471,14 +472,14 @@ export default function ChinesePage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      {poemExercises.map((exercise, idx) => (
+                      {poemExercises.map((exercise) => (
                         <div key={exercise.id} className="border-2 border-purple-300 rounded-lg p-3 sm:p-4 bg-purple-50">
                           <h3 className="text-base sm:text-lg font-bold text-center text-purple-900 mb-1">{exercise.poem.title}</h3>
                           <p className="text-xs text-center text-gray-600 mb-3">
                             【{exercise.poem.dynasty}】{exercise.poem.author}
                           </p>
                           <div className="space-y-1 sm:space-y-2">
-                            {exercise.poem.lines.map((line: any, lineIdx: number) => (
+                            {exercise.poem.lines.map((line, lineIdx: number) => (
                               <div key={lineIdx} className="text-center text-sm sm:text-lg font-serif leading-relaxed">
                                 {line.text.split('').map((char: string, charIdx: number) => {
                                   const isBlank = line.blanks.includes(charIdx);

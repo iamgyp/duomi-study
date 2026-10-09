@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getDailyStudyData, formatDuration } from '@/lib/study-storage';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useMounted } from '@/hooks/useMounted';
 
 interface StudyChartProps {
   days?: number;
@@ -10,14 +11,9 @@ interface StudyChartProps {
 
 export function StudyChart({ days = 7 }: StudyChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [data, setData] = useState<{ date: string; duration: number }[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [data] = useState<{ date: string; duration: number }[]>(() => getDailyStudyData(days));
+  const mounted = useMounted();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setMounted(true);
-    setData(getDailyStudyData(days));
-  }, [days]);
 
   useEffect(() => {
     if (!canvasRef.current || data.length === 0) return;

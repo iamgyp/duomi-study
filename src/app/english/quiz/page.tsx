@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -27,12 +27,12 @@ export default function EnglishQuizPage() {
 
   const { play } = useSoundEffects();
   const quiz = useQuiz(questions.length);
-  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: any[] } | null>(null);
+  const [results, setResults] = useState<{ correctCount: number; wrongAnswers: Array<{ questionIndex?: number; questionText: string; userAnswer: string; correctAnswer: string }> } | null>(null);
   const { pendingUnlocks, checkAndUnlock, dismissPending } = useAchievements();
 
   const handleSubmit = () => {
     let correctCount = 0;
-    const wrongAnswers: any[] = [];
+    const wrongAnswers: Array<{ questionIndex?: number; questionText: string; userAnswer: string; correctAnswer: string }> = [];
 
     questions.forEach((q, i) => {
       const userAnswer = quiz.answers.get(i) || '';

@@ -1,6 +1,6 @@
 import { generateMathQuestions, MathConfig, MathQuestion } from './math-generator';
 import { generateAlgebraQuestions, AlgebraConfig, AlgebraQuestion, McItem } from './algebra-generator';
-import { generatePoemExercises, PoemConfig, PoemExercise } from './poem-generator';
+import { generatePoemExercises, PoemConfig } from './poem-generator';
 import { Poem, PoemLine } from './poem-data';
 
 // ── Subject union ────────────────────────────────────────────────────────────
@@ -348,7 +348,7 @@ export function saveQuizSession(session: Omit<QuizSession, 'id'>): QuizSession {
   try {
     const existing = getAllQuizSessions();
     // Add question context to answers if not already present
-    const enrichedAnswers = fullSession.answers.map((a, idx) => ({
+    const enrichedAnswers = fullSession.answers.map((a) => ({
       ...a,
       questionText: a.questionText,
       correctAnswer: a.correctAnswer,

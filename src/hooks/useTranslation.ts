@@ -4,24 +4,15 @@ import { useEffect, useState, useCallback } from 'react';
 
 type Locale = 'zh' | 'en';
 
-function getNestedValue(obj: Record<string, any>, path: string): any {
-  return path.split('.').reduce((acc, key) => acc?.[key], obj);
+function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+  return path.split('.').reduce((acc: unknown, key: string) => (acc as Record<string, unknown> | undefined)?.[key], obj);
 }
 
 export function useTranslation() {
   const [locale, setLocale] = useState<Locale>('zh');
-  const [messages, setMessages] = useState<Record<string, any> | null>(null);
+  const [messages, setMessages] = useState<Record<string, unknown> | null>(null);
   const [mounted, setMounted] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const savedLocale = (localStorage.getItem('NEXT_LOCALE') as Locale) || 'zh';
-    loadMessages(savedLocale);
-  }, [refreshKey]);
 
   const loadMessages = useCallback((loc: Locale) => {
     setLocale(loc);
@@ -32,6 +23,15 @@ export function useTranslation() {
         setMessages(mod.default);
       }));
   }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const savedLocale = (localStorage.getItem('NEXT_LOCALE') as Locale) || 'zh';
+    loadMessages(savedLocale);
+  }, [refreshKey, loadMessages]);
 
   const t = useCallback((key: string, params?: Record<string, string | number>): string => {
     if (!messages) return key;

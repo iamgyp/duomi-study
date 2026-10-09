@@ -101,7 +101,7 @@ function MathQuizContent() {
         setTimeout(() => nextQ(), 400);
       }
     }
-  }, [quiz, practiceMode, questionFeedback, showHintFor, questions]);
+  }, [quiz, practiceMode, questionFeedback, showHintFor, questions, play]);
 
   const toggleHint = useCallback(() => {
     const qi = quiz.currentQuestion;
