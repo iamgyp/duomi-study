@@ -193,16 +193,11 @@ function TypingPlayContent() {
         }
       },
       onWordDefeated: (target) => {
-        // 单词/口算击破时的语音发音反馈 (TTS)
+        // 单词击破时的语音发音反馈 (TTS)：仅在自然拼读与拼音识字模式播放发音
         if (category === 'phonics') {
           speakEnglish(target.answer);
         } else if (category === 'pinyin') {
           speakChinese(target.display);
-        } else if (category === 'math') {
-          // 朗读完整算式与得数，例如 "8 加 7 等于 15"
-          const cleanDisplay = target.display.replace('=', '').replace('?', '').replace('BOSS:', '').trim();
-          const spoken = `${cleanDisplay} 等于 ${target.answer}`.replace(/\+/g, '加').replace(/-/g, '减');
-          speakChinese(spoken);
         }
       },
       onEnd: (result) => {
@@ -327,8 +322,8 @@ function TypingPlayContent() {
             {mode === 'practice' ? '🌱 练习模式 (无限心·怪物等待)' : '⚔️ 挑战模式'}
           </span>
 
-          {/* TTS 语音朗读开关 */}
-          {(category === 'phonics' || category === 'pinyin' || category === 'math') && (
+          {/* TTS 语音朗读开关 (仅自然拼读与拼音需要朗读) */}
+          {(category === 'phonics' || category === 'pinyin') && (
             <button
               type="button"
               onClick={toggleTts}
