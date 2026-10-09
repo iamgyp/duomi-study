@@ -33,6 +33,15 @@ import { TypingGame, type GameConfig, type GameResult } from '@/lib/typing/game-
 import { MinerGame } from '@/lib/typing/miner-engine';
 import { RunnerGame } from '@/lib/typing/runner-engine';
 import { unlockTypingAudio } from '@/lib/typing/sounds';
+import {
+  startBGM,
+  stopBGM,
+  pauseBGM,
+  resumeBGM,
+  isBgmEnabled,
+  setBgmEnabled,
+  duckBGMForTts,
+} from '@/lib/typing/bgm';
 import type { BiomeType } from '@/lib/typing/sprites';
 import { VirtualKeyboard } from '@/components/typing/VirtualKeyboard';
 import { TypingResultModal } from '@/components/typing/TypingResultModal';
@@ -73,6 +82,7 @@ function TypingPlayContent() {
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
   const [imeWarning, setImeWarning] = useState(false);
   const [ttsOn, setTtsOn] = useState(() => isTtsEnabled());
+  const [bgmOn, setBgmOn] = useState(() => isBgmEnabled());
   const [gameNonce, setGameNonce] = useState(0);
 
   // 速度计算 (引入严苛极端级别，大幅提升节奏与手速考验)
@@ -136,6 +146,7 @@ function TypingPlayContent() {
 
   // 重置并重启游戏
   const handleRestart = () => {
+    stopBGM();
     setGameResult(null);
     setIsPaused(false);
     setActiveKey(null);
@@ -152,6 +163,13 @@ function TypingPlayContent() {
     const next = !ttsOn;
     setTtsOn(next);
     setTtsEnabled(next);
+  };
+
+  // 切换 BGM 背景音乐开关
+  const toggleBgm = () => {
+    const next = !bgmOn;
+    setBgmOn(next);
+    setBgmEnabled(next);
   };
 
   // 初始化并管理游戏引擎生命周期
@@ -217,14 +235,17 @@ function TypingPlayContent() {
         }
       },
       onWordDefeated: (target: TypingTarget) => {
-        // 单词击破时的语音发音反馈 (TTS)：仅在自然拼读与拼音识字模式播放发音
+        // 单词击破时的语音发音反馈 (TTS)：仅在自然拼读与拼音识字模式播放发音，并短暂压低 BGM 音量突出朗读
         if (category === 'phonics') {
+          duckBGMForTts(1.2);
           speakEnglish(target.answer);
         } else if (category === 'pinyin') {
+          duckBGMForTts(1.2);
           speakChinese(target.display);
         }
       },
       onEnd: (result: GameResult) => {
+        stopBGM();
         const stars = mode === 'practice'
           ? result.accuracy >= 0.8 ? 3 : result.accuracy >= 0.6 ? 2 : 1
           : result.victory ? (result.accuracy >= 0.95 ? 3 : 2) : 1;
@@ -250,8 +271,10 @@ function TypingPlayContent() {
 
     gameRef.current = game;
     game.start();
+    startBGM(gameType);
 
     return () => {
+      stopBGM();
       game.destroy();
       gameRef.current = null;
     };
@@ -277,6 +300,11 @@ function TypingPlayContent() {
             const nextPause = !game.isPaused();
             game.setPaused(nextPause);
             setIsPaused(nextPause);
+            if (nextPause) {
+              pauseBGM();
+            } else {
+              resumeBGM();
+            }
           }
         }
         return;
@@ -290,6 +318,10 @@ function TypingPlayContent() {
       }
 
       if (gameResult || isPaused) return;
+
+      if (bgmOn) {
+        startBGM(gameType);
+      }
 
       if (e.key === ' ' || e.key === 'Tab') {
         e.preventDefault();
@@ -306,11 +338,14 @@ function TypingPlayContent() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameResult, isPaused]);
+  }, [gameResult, isPaused, bgmOn, gameType]);
 
   const handleVirtualKeyClick = (key: string) => {
     if (gameResult || isPaused) return;
     unlockTypingAudio();
+    if (bgmOn) {
+      startBGM(gameType);
+    }
     const rawKey = key.toLowerCase();
     setPressedKey(rawKey);
     setTimeout(() => setPressedKey(null), 120);
@@ -322,6 +357,11 @@ function TypingPlayContent() {
     const next = !gameRef.current.isPaused();
     gameRef.current.setPaused(next);
     setIsPaused(next);
+    if (next) {
+      pauseBGM();
+    } else {
+      resumeBGM();
+    }
   };
 
   return (
@@ -388,6 +428,17 @@ function TypingPlayContent() {
               {ttsOn ? '🔊 朗读开' : '🔈 朗读关'}
             </button>
           )}
+
+          {/* BGM 背景音乐开关 */}
+          <button
+            type="button"
+            onClick={toggleBgm}
+            className={`px-2.5 py-1 text-xs font-bold border border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 ${
+              bgmOn ? 'bg-purple-600 text-white shadow-sm' : 'bg-gray-700 text-gray-300'
+            }`}
+          >
+            {bgmOn ? '🎵 音乐开' : '🔇 音乐关'}
+          </button>
 
           {/* 暂停按钮 */}
           <button
