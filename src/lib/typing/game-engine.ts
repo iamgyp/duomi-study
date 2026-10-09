@@ -32,6 +32,8 @@ export interface GameLabels {
 export interface GameConfig {
   nextTarget: (exclude: Set<string>) => TypingTarget;
   bossTarget: () => TypingTarget;
+  /** Number of rounds/words required to defeat the Ender Dragon Boss (default: 4) */
+  bossHp?: number;
   waves: number;
   /** number of normal mobs per wave (index = wave) */
   mobsPerWave: number[];
@@ -86,6 +88,8 @@ interface Mob {
   atWall: boolean;
   attackT: number;
   hopT: number;
+  bossHp?: number;
+  bossMaxHp?: number;
 }
 
 interface Arrow {
@@ -119,6 +123,8 @@ interface FloatText {
   size: number;
   life: number;
   maxLife: number;
+  font?: string;
+  outline?: string;
 }
 
 interface Orb {
@@ -272,19 +278,30 @@ export class TypingGame {
     this.correct++;
     this.combo++;
     this.maxCombo = Math.max(this.maxCombo, this.combo);
-    const final = mob.progress >= mob.target.answer.length;
-    if (final) {
-      mob.dying = true;
-      this.lockedId = null;
+    const wordCompleted = mob.progress >= mob.target.answer.length;
+    let final = false;
+
+    if (wordCompleted) {
+      if (mob.kind === 'boss' && mob.bossHp && mob.bossHp > 1) {
+        // Boss word completed, but boss still has more HP rounds left!
+        final = false;
+      } else {
+        mob.dying = true;
+        this.lockedId = null;
+        final = true;
+      }
     }
+
     this.fireArrow(mob, final);
     this.sfx('shoot', Math.min(10, Math.floor(this.combo / 5)));
-    if (this.combo > 0 && this.combo % 10 === 0) {
+    if (this.combo > 0 && this.combo % 5 === 0) {
       this.sfx('combo');
+      const hot = this.combo >= 20 ? '#FF1744' : this.combo >= 10 ? '#FF9100' : '#FFD600';
       this.texts.push({
-        x: W / 2, y: 150, text: this.cfg.labels.combo(this.combo),
-        color: '#FFD54F', size: 48, life: 1.2, maxLife: 1.2,
+        x: W / 2, y: 140, text: this.cfg.labels.combo(this.combo),
+        color: hot, size: 52, life: 1.25, maxLife: 1.25, outline: '#000000',
       });
+      this.shake(6, 0.2);
     }
     this.cb.onKeyResult?.(key, true);
   }
@@ -355,6 +372,7 @@ export class TypingGame {
     const y = boss ? LANES[1] : (freeLanes.length ? freeLanes : LANES)[Math.floor(Math.random() * (freeLanes.length || LANES.length))];
 
     const speed = this.waveSpeed() * (boss ? 0.55 : kind === 'tnt' ? 1.15 : 0.9 + Math.random() * 0.2);
+    const bossMaxHp = boss ? (this.cfg.bossHp ?? 4) : undefined;
     this.mobs.push({
       id: this.nextId++,
       kind,
@@ -373,6 +391,8 @@ export class TypingGame {
       atWall: false,
       attackT: 0,
       hopT: Math.random() * Math.PI,
+      bossHp: bossMaxHp,
+      bossMaxHp,
     });
   }
 
@@ -435,6 +455,28 @@ export class TypingGame {
       x: c.x, y: c.y - 30, text: `+${gained}`, color: '#FFEB3B',
       size: big ? 44 : 30, life: 0.9, maxLife: 0.9,
     });
+
+    // 视觉反馈：连续击中/击败时，在敌人上方弹出直观的 Combo 动态连击标识与华丽彩光
+    if (this.combo >= 2) {
+      const comboColor =
+        this.combo >= 20 ? '#FF1744' :
+        this.combo >= 10 ? '#FF9100' :
+        this.combo >= 5 ? '#FFD600' : '#00E676';
+      const comboSize = this.combo >= 20 ? 38 : this.combo >= 10 ? 32 : this.combo >= 5 ? 26 : 22;
+      this.texts.push({
+        x: c.x,
+        y: c.y - 65,
+        text: `⚡ COMBO x${this.combo}!`,
+        color: comboColor,
+        size: comboSize,
+        life: 0.95,
+        maxLife: 0.95,
+        outline: '#000000',
+      });
+      // 产生对应连击阶梯的华丽光点粒子
+      this.burst(c.x, c.y, [comboColor, '#FFFFFF'], Math.min(24, 6 + Math.floor(this.combo / 2)), 240);
+    }
+
     for (let i = 0; i < (big ? 12 : 3); i++) {
       this.orbs.push({ x: c.x, y: c.y, vx: (Math.random() - 0.5) * 300, vy: -150 - Math.random() * 200, t: 0 });
     }
@@ -442,6 +484,8 @@ export class TypingGame {
       this.shake(big ? 16 : 12, 0.5);
       this.sfx('explode');
     } else {
+      // 随着连击数增加，轻微屏幕微震增强打击爽快感
+      if (this.combo >= 5) this.shake(Math.min(8, 2 + Math.floor(this.combo / 5)), 0.15);
       this.sfx('hit');
     }
     this.mobs = this.mobs.filter((x) => x !== m);
@@ -600,9 +644,36 @@ export class TypingGame {
         if (a.final) {
           this.killMob(mob);
         } else {
-          mob.flash = 0.12;
-          if (!mob.atWall) mob.x += 6;
-          this.burst(a.x, a.y, ['#FFFFFF', '#FFE082'], 6, 140);
+          mob.flash = 0.16;
+          if (!mob.atWall) mob.x += mob.kind === 'boss' ? 12 : 6;
+          this.burst(a.x, a.y, ['#FFFFFF', '#FFE082'], mob.kind === 'boss' ? 14 : 6, mob.kind === 'boss' ? 220 : 140);
+
+          // Check if this hit completed a boss word stage
+          if (mob.kind === 'boss' && mob.progress >= mob.target.answer.length && mob.bossHp && mob.bossHp > 1) {
+            mob.bossHp--;
+            const remaining = mob.bossHp;
+            const maxHp = mob.bossMaxHp || remaining;
+            const completedTarget = mob.target;
+            mob.target = this.cfg.bossTarget();
+            mob.progress = 0;
+            mob.shake = 0.35;
+            this.shake(8, 0.25);
+            this.sfx('hit');
+            const c = this.mobCenter(mob);
+            this.burst(c.x, c.y, ['#D946EF', '#FF5252', '#FFEB3B'], 26, 340);
+            this.texts.push({
+              x: c.x,
+              y: c.y - 45,
+              text: `💥 BOSS 剩余生命: ${remaining}/${maxHp}`,
+              color: '#FF5252',
+              size: 26,
+              life: 1.1,
+              maxLife: 1.1,
+              outline: '#000000',
+            });
+            this.cb.onWordDefeated?.(completedTarget);
+            this.emitNextKey();
+          }
         }
       }
     }
@@ -726,7 +797,7 @@ export class TypingGame {
     for (const t of this.texts) {
       const a = Math.min(1, t.life / (t.maxLife * 0.5));
       const pop = 1 + Math.max(0, (t.life - t.maxLife + 0.15) / 0.15) * 0.4;
-      this.text(t.text, t.x, t.y, t.size * pop, t.color, a);
+      this.text(t.text, t.x, t.y, t.size * pop, t.color, a, t.font, t.outline);
     }
     ctx.restore();
 
@@ -772,12 +843,24 @@ export class TypingGame {
     ctx.globalAlpha = 1;
 
     if (m.kind === 'boss' && !m.dying) {
-      // health bar = remaining keys
-      const ratio = 1 - m.progress / m.target.answer.length;
+      // health bar = remaining rounds & word progress
+      const maxHp = m.bossMaxHp || 1;
+      const curHp = m.bossHp ?? 1;
+      const wordRemain = Math.max(0, 1 - m.progress / Math.max(1, m.target.answer.length));
+      const totalRatio = Math.max(0, Math.min(1, (curHp - 1 + wordRemain) / maxHp));
+
       ctx.fillStyle = '#000';
-      ctx.fillRect(m.x - 50, y - 18, 100, 10);
-      ctx.fillStyle = '#E53935';
-      ctx.fillRect(m.x - 48, y - 16, 96 * ratio, 6);
+      ctx.fillRect(m.x - 55, y - 22, 110, 12);
+      ctx.fillStyle = '#4A044E';
+      ctx.fillRect(m.x - 53, y - 20, 106, 8);
+      ctx.fillStyle = '#D946EF';
+      ctx.fillRect(m.x - 53, y - 20, 106 * totalRatio, 8);
+
+      // HP pip notches
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      for (let s = 1; s < maxHp; s++) {
+        ctx.fillRect(m.x - 53 + (106 / maxHp) * s, y - 20, 2, 8);
+      }
     }
   }
 
@@ -890,14 +973,20 @@ export class TypingGame {
     ctx.restore();
   }
 
-  private text(str: string, x: number, y: number, size: number, color: string, alpha = 1, font?: string) {
+  private text(str: string, x: number, y: number, size: number, color: string, alpha = 1, font?: string, outline?: string) {
     const ctx = this.ctx;
     ctx.globalAlpha = alpha;
     ctx.font = `${size}px ${font ?? this.cfg.pixelFont}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(0,0,0,0.8)';
-    ctx.fillText(str, x + 3, y + 3);
+    if (outline) {
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = Math.max(3, Math.floor(size / 8));
+      ctx.strokeText(str, x, y);
+    } else {
+      ctx.fillStyle = 'rgba(0,0,0,0.8)';
+      ctx.fillText(str, x + 3, y + 3);
+    }
     ctx.fillStyle = color;
     ctx.fillText(str, x, y);
     ctx.globalAlpha = 1;
@@ -939,23 +1028,30 @@ export class TypingGame {
     // Ender Dragon Boss Bar
     const boss = this.mobs.find((m) => m.kind === 'boss' && !m.dying);
     if (boss) {
-      const barW = 320;
-      const barH = 12;
+      const barW = 340;
+      const barH = 14;
       const bx = W / 2 - barW / 2;
       const by = 56;
-      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.fillStyle = 'rgba(0,0,0,0.85)';
       ctx.fillRect(bx - 3, by - 3, barW + 6, barH + 6);
       ctx.fillStyle = '#4A044E';
       ctx.fillRect(bx, by, barW, barH);
-      const ratio = Math.max(0, 1 - boss.progress / boss.target.answer.length);
+
+      const maxHp = boss.bossMaxHp || 1;
+      const curHp = boss.bossHp ?? 1;
+      // Overall progress: (curHp - 1 + (1 - progress/len)) / maxHp
+      const wordRemain = Math.max(0, 1 - boss.progress / Math.max(1, boss.target.answer.length));
+      const totalRatio = Math.max(0, Math.min(1, (curHp - 1 + wordRemain) / maxHp));
+
       ctx.fillStyle = '#D946EF';
-      ctx.fillRect(bx, by, barW * ratio, barH);
-      // notch divisions
-      ctx.fillStyle = 'rgba(0,0,0,0.4)';
-      for (let s = 1; s < 5; s++) {
-        ctx.fillRect(bx + (barW / 5) * s, by, 2, barH);
+      ctx.fillRect(bx, by, barW * totalRatio, barH);
+
+      // Notches per HP round
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      for (let s = 1; s < maxHp; s++) {
+        ctx.fillRect(bx + (barW / maxHp) * s, by, 2, barH);
       }
-      this.text('🐲 末影龙 BOSS', W / 2, by - 12, 18, '#F5D0FE');
+      this.text(`🐲 末影龙 BOSS (生命: ${curHp}/${maxHp})`, W / 2, by - 12, 18, '#F5D0FE');
     }
   }
 

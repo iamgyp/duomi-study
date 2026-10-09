@@ -181,6 +181,7 @@ function TypingPlayContent() {
       },
       nextTarget: nextTargetFn,
       bossTarget: bossTargetFn,
+      bossHp: mode === 'practice' ? 4 : 5,
     };
 
     const game = new TypingGame(canvasRef.current, config, {
