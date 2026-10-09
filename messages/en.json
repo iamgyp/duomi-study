@@ -369,29 +369,15 @@
       "g2words": "Grade 2 Common Words"
     },
     "math": {
-      "tabTitle": "Mental Math (Within 20/50/100)",
-      "add10": "Addition within 10",
-      "add10Desc": "Basic addition enlightenment",
-      "sub10": "Subtraction within 10",
-      "sub10Desc": "Basic subtraction enlightenment",
+      "tabTitle": "Mental Math (Mixed Add & Sub)",
+      "mix10": "Mixed Add & Sub within 10",
+      "mix10Desc": "Basic early enlightenment, single-digit mixed operations",
       "mix20": "Mixed Add & Sub within 20",
       "mix20Desc": "Grade 1 core foundation, carrying and borrowing",
-      "add20": "Addition within 20",
-      "add20Desc": "Carrying addition practice",
-      "sub20": "Subtraction within 20",
-      "sub20Desc": "Borrowing subtraction practice",
       "mix50": "Mixed Add & Sub within 50",
       "mix50Desc": "Mixed double-digit addition and subtraction",
-      "add50": "Addition within 50",
-      "add50Desc": "Double-digit addition practice",
-      "sub50": "Subtraction within 50",
-      "sub50Desc": "Double-digit subtraction practice",
       "mix100": "Mixed Add & Sub within 100",
-      "mix100Desc": "Grade 2 core challenge, arithmetic within 100",
-      "add100": "Addition within 100",
-      "add100Desc": "Double-digit carrying addition challenge",
-      "sub100": "Subtraction within 100",
-      "sub100Desc": "Double-digit borrowing subtraction challenge"
+      "mix100Desc": "Grade 2 core challenge, arithmetic within 100"
     }
   }
 }

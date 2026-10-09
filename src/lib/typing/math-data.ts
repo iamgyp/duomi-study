@@ -1,27 +1,21 @@
 /**
  * Math problem generators for Keyboard Defender typing game.
  *
- * Designed for Grade 1-2 students:
- * - 20以内加减法 (Within 20: add/sub/mix)
- * - 50以内加减法 (Within 50: add/sub/mix)
- * - 100以内加减法 (Within 100: add/sub/mix)
+ * Focuses purely on Mixed Addition and Subtraction (混合加减法):
+ * - 10以内混合加减法 (Within 10: mixed addition & subtraction)
+ * - 20以内混合加减法 (Within 20: mixed addition & subtraction, Grade 1 focus)
+ * - 50以内混合加减法 (Within 50: mixed addition & subtraction)
+ * - 100以内混合加减法 (Within 100: mixed addition & subtraction, Grade 2 focus)
  *
- * The player sees the equation (e.g. "8 + 7 = ?") and types the numerical answer (e.g. "15").
+ * The player sees the equation (e.g. "8 + 7 =") and types the numerical answer (e.g. "15").
  */
 
 import type { TypingTarget } from './lessons';
 
 export type MathLessonId =
-  | 'math-add-10'
-  | 'math-sub-10'
+  | 'math-mix-10'
   | 'math-mix-20'
-  | 'math-add-20'
-  | 'math-sub-20'
-  | 'math-add-50'
-  | 'math-sub-50'
   | 'math-mix-50'
-  | 'math-add-100'
-  | 'math-sub-100'
   | 'math-mix-100';
 
 export interface MathLessonDef {
@@ -30,25 +24,15 @@ export interface MathLessonDef {
   icon: string;
   descriptionKey: string;
   range: number;
-  type: 'add' | 'sub' | 'mix';
 }
 
 export const MATH_LESSONS: MathLessonDef[] = [
   {
-    id: 'math-add-10',
-    titleKey: 'Typing.math.add10',
-    icon: '➕',
-    descriptionKey: 'Typing.math.add10Desc',
+    id: 'math-mix-10',
+    titleKey: 'Typing.math.mix10',
+    icon: '🌱',
+    descriptionKey: 'Typing.math.mix10Desc',
     range: 10,
-    type: 'add',
-  },
-  {
-    id: 'math-sub-10',
-    titleKey: 'Typing.math.sub10',
-    icon: '➖',
-    descriptionKey: 'Typing.math.sub10Desc',
-    range: 10,
-    type: 'sub',
   },
   {
     id: 'math-mix-20',
@@ -56,23 +40,6 @@ export const MATH_LESSONS: MathLessonDef[] = [
     icon: '🧮',
     descriptionKey: 'Typing.math.mix20Desc',
     range: 20,
-    type: 'mix',
-  },
-  {
-    id: 'math-add-20',
-    titleKey: 'Typing.math.add20',
-    icon: '➕',
-    descriptionKey: 'Typing.math.add20Desc',
-    range: 20,
-    type: 'add',
-  },
-  {
-    id: 'math-sub-20',
-    titleKey: 'Typing.math.sub20',
-    icon: '➖',
-    descriptionKey: 'Typing.math.sub20Desc',
-    range: 20,
-    type: 'sub',
   },
   {
     id: 'math-mix-50',
@@ -80,23 +47,6 @@ export const MATH_LESSONS: MathLessonDef[] = [
     icon: '⚡',
     descriptionKey: 'Typing.math.mix50Desc',
     range: 50,
-    type: 'mix',
-  },
-  {
-    id: 'math-add-50',
-    titleKey: 'Typing.math.add50',
-    icon: '➕',
-    descriptionKey: 'Typing.math.add50Desc',
-    range: 50,
-    type: 'add',
-  },
-  {
-    id: 'math-sub-50',
-    titleKey: 'Typing.math.sub50',
-    icon: '➖',
-    descriptionKey: 'Typing.math.sub50Desc',
-    range: 50,
-    type: 'sub',
   },
   {
     id: 'math-mix-100',
@@ -104,28 +54,11 @@ export const MATH_LESSONS: MathLessonDef[] = [
     icon: '👑',
     descriptionKey: 'Typing.math.mix100Desc',
     range: 100,
-    type: 'mix',
-  },
-  {
-    id: 'math-add-100',
-    titleKey: 'Typing.math.add100',
-    icon: '➕',
-    descriptionKey: 'Typing.math.add100Desc',
-    range: 100,
-    type: 'add',
-  },
-  {
-    id: 'math-sub-100',
-    titleKey: 'Typing.math.sub100',
-    icon: '➖',
-    descriptionKey: 'Typing.math.sub100Desc',
-    range: 100,
-    type: 'sub',
   },
 ];
 
 export function getMathLesson(id: string | null): MathLessonDef {
-  return MATH_LESSONS.find((l) => l.id === id) ?? MATH_LESSONS[2]; // default to 20以内混合
+  return MATH_LESSONS.find((l) => l.id === id) ?? MATH_LESSONS[1]; // default to 20以内混合
 }
 
 /**
@@ -136,12 +69,12 @@ function randInt(min: number, max: number): number {
 }
 
 /**
- * Generates an equation based on range and operator type.
+ * Generates a mixed addition/subtraction equation based on numeric range.
  */
-function generateEquation(range: number, type: 'add' | 'sub' | 'mix'): { expr: string; ans: number } {
-  const op = type === 'mix' ? (Math.random() < 0.5 ? '+' : '-') : type === 'add' ? '+' : '-';
+function generateMixedEquation(range: number): { expr: string; ans: number } {
+  const isAdd = Math.random() < 0.5;
 
-  if (op === '+') {
+  if (isAdd) {
     let a: number;
     let b: number;
     if (range <= 10) {
@@ -186,7 +119,7 @@ export function pickMathTarget(lessonId: string, exclude: Set<string>): TypingTa
 
   // Attempt up to 20 times to pick an equation whose answer isn't in exclude
   for (let attempt = 0; attempt < 20; attempt++) {
-    const { expr, ans } = generateEquation(lesson.range, lesson.type);
+    const { expr, ans } = generateMixedEquation(lesson.range);
     const answerStr = String(ans);
     if (!exclude.has(answerStr)) {
       return {
@@ -197,7 +130,7 @@ export function pickMathTarget(lessonId: string, exclude: Set<string>): TypingTa
     }
   }
 
-  const fallback = generateEquation(lesson.range, lesson.type);
+  const fallback = generateMixedEquation(lesson.range);
   return {
     display: fallback.expr,
     answer: String(fallback.ans),
@@ -211,8 +144,18 @@ export function pickMathTarget(lessonId: string, exclude: Set<string>): TypingTa
 export function makeMathBossTarget(lessonId: string): TypingTarget {
   const lesson = getMathLesson(lessonId);
 
-  if (lesson.range <= 20) {
-    // 3 numbers: a + b - c or a - b + c
+  if (lesson.range <= 10) {
+    const a = randInt(4, 7);
+    const b = randInt(1, 3);
+    const c = randInt(1, 2);
+    const ans = a + b - c;
+    return {
+      display: `${a} + ${b} - ${c} =`,
+      answer: String(ans),
+      hint: `末影龙挑战: 连加连减算一算！`,
+    };
+  } else if (lesson.range <= 20) {
+    // 3 numbers: a + b - c
     const a = randInt(8, 15);
     const b = randInt(2, 5);
     const c = randInt(1, 5);

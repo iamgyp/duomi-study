@@ -480,17 +480,17 @@ export default function TypingHubPage() {
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-3xl">{ml.icon}</span>
                       <h3 className="font-bold text-base text-yellow-300">
-                        {ml.range}以内{ml.type === 'add' ? '加法' : ml.type === 'sub' ? '减法' : '混合加减法'}
+                        {ml.range}以内混合加减法
                       </h3>
                     </div>
                     <p className="text-xs text-gray-300 font-sans mb-3">
                       {ml.range <= 10
-                        ? '10以内基础一位数口算启蒙'
+                        ? '10以内基础一位数加减混合启蒙'
                         : ml.range <= 20
-                        ? '进位加法与退位减法专项，提升心算与数字键击速度'
+                        ? '进位加法与退位减法混合专项，攻克一年级计算难点'
                         : ml.range <= 50
-                        ? '两位数与一位数/两位数混合口算'
-                        : '两位数进位加法与退位减法，百以内速度对抗'}
+                        ? '两位数与一位数/两位数混合加减速算'
+                        : '两位数进退位混合速算，挑战百以内极限手速'}
                     </p>
 
                     {/* 算式特色徽章 */}
@@ -499,7 +499,7 @@ export default function TypingHubPage() {
                         范围 ≤ {ml.range}
                       </span>
                       <span className="px-1.5 py-0.5 bg-gray-700 text-yellow-200 rounded text-xs font-mono font-bold">
-                        运算: {ml.type === 'add' ? '➕ 纯加法' : ml.type === 'sub' ? '➖ 纯减法' : '➕➖ 混合运算'}
+                        ➕➖ 加减混合
                       </span>
                       <span className="px-1.5 py-0.5 bg-gray-700 text-emerald-200 rounded text-xs font-mono font-bold">
                         末影龙 BOSS 算式
