@@ -48,7 +48,20 @@ export function CadMissionSelector({
                   {m.icon}
                 </span>
                 <div>
-                  <h4 className="text-base sm:text-lg font-black text-white">{m.title}</h4>
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="text-base sm:text-lg font-black text-white">{m.title}</h4>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded font-sans font-bold ${
+                        m.difficulty === 1
+                          ? 'bg-emerald-900/80 text-emerald-300 border border-emerald-600/50'
+                          : m.difficulty === 2
+                          ? 'bg-blue-900/80 text-blue-300 border border-blue-600/50'
+                          : 'bg-purple-900/80 text-purple-300 border border-purple-600/50'
+                      }`}
+                    >
+                      {m.difficulty === 1 ? '入门' : m.difficulty === 2 ? '进阶' : '挑战'}
+                    </span>
+                  </div>
                   <span className="text-[11px] text-gray-400 font-mono block">{m.subtitle}</span>
                 </div>
               </div>

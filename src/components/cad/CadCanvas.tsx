@@ -153,6 +153,41 @@ export function CadCanvas({
           />
         );
       }
+      case 'ellipse': {
+        const { cx, cy, rx, ry } = el.props as { cx: number; cy: number; rx: number; ry: number };
+        return (
+          <ellipse
+            key={key}
+            cx={cx}
+            cy={cy}
+            rx={rx}
+            ry={ry}
+            fill="none"
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            strokeDasharray={strokeDasharray}
+            opacity={opacity}
+            className={className}
+          />
+        );
+      }
+      case 'path': {
+        const { d } = el.props as { d: string };
+        return (
+          <path
+            key={key}
+            d={d}
+            fill="none"
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            strokeDasharray={strokeDasharray}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity={opacity}
+            className={className}
+          />
+        );
+      }
       default:
         return null;
     }

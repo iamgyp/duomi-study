@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Printer, Volume2, Download, Hammer, Layers, Compass } from 'lucide-react';
+import { ArrowLeft, Printer, Volume2, Download, Hammer, Layers, Compass, Zap } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useMounted } from '@/hooks/useMounted';
@@ -22,11 +22,12 @@ import { CadCommandLine } from '@/components/cad/CadCommandLine';
 import { CadStepGuide } from '@/components/cad/CadStepGuide';
 import { CadMissionSelector } from '@/components/cad/CadMissionSelector';
 import { CadSandbox } from '@/components/cad/CadSandbox';
+import { CadSpeedQuiz } from '@/components/cad/CadSpeedQuiz';
 import { CadVictoryModal } from '@/components/cad/CadVictoryModal';
 import { CadCheatSheetPdfDocument } from '@/lib/cad/cad-pdf-generator';
 import { pdf } from '@react-pdf/renderer';
 
-type CadTab = 'missions' | 'sandbox' | 'cheatsheet';
+type CadTab = 'missions' | 'quiz' | 'sandbox' | 'cheatsheet';
 
 export default function CadHubPage() {
   const mounted = useMounted();
@@ -176,7 +177,19 @@ export default function CadHubPage() {
             }`}
           >
             <Hammer className="w-4 h-4" />
-            <span>🏗️ 蓝图建造关卡</span>
+            <span>🏗️ 蓝图建造关卡 (10关)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('quiz')}
+            className={`px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
+              activeTab === 'quiz'
+                ? 'bg-cyan-500 text-black shadow'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            <span>⚡ 闪电速认闯关</span>
           </button>
 
           <button
@@ -200,7 +213,7 @@ export default function CadHubPage() {
             }`}
           >
             <Layers className="w-4 h-4" />
-            <span>🖨️ 桌面速查与单词卡</span>
+            <span>🖨️ 桌面速查与手册 (PDF)</span>
           </button>
         </div>
       </div>
@@ -251,24 +264,31 @@ export default function CadHubPage() {
           </div>
         )}
 
-        {/* ── TAB 2: 自由演练沙盒 ───────────────────────────── */}
+        {/* ── TAB 2: ⚡ 闪电速认闯关 ────────────────────────── */}
+        {activeTab === 'quiz' && (
+          <div className="max-w-4xl mx-auto">
+            <CadSpeedQuiz />
+          </div>
+        )}
+
+        {/* ── TAB 3: 自由演练沙盒 ───────────────────────────── */}
         {activeTab === 'sandbox' && (
           <div className="max-w-4xl mx-auto">
             <CadSandbox />
           </div>
         )}
 
-        {/* ── TAB 3: 桌面速查卡与单词卡 ─────────────────────── */}
+        {/* ── TAB 4: 桌面速查卡与单词卡 ─────────────────────── */}
         {activeTab === 'cheatsheet' && (
           <div className="space-y-6">
             {/* 顶部下载 Banner */}
             <div className="bg-gradient-to-r from-blue-900/60 to-cyan-900/60 border-2 border-cyan-500/60 p-4 sm:p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg sm:text-xl font-bold text-cyan-300">
-                  📄 一年级专属 AutoCAD 快捷键桌面卡片 (PDF)
+                  📄 一年级专属 AutoCAD 快捷键 4 页打印手册 (PDF)
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-300 font-sans mt-1">
-                  包含 12 个高频基础快捷键 + 趣味记忆口诀 + 离线连线练习题。建议打印出来贴在电脑屏幕旁！
+                  包含 20 大核心实战快捷键桌面速查卡 + 两套趣味连线闯关纸 + 大字母指法涂色卡。建议打印贴在屏幕旁！
                 </p>
               </div>
 

@@ -217,7 +217,7 @@ export function CadCommandLine({
       {/* ── 底部高频快捷键触控胶囊 (一年级触控与视觉辅助) ──────── */}
       <div className="px-3 py-2 bg-[#141820] border-t border-[#252D38] flex flex-wrap items-center gap-1.5 text-xs">
         <span className="text-gray-500 text-[11px] mr-1">快捷点选:</span>
-        {(['REC', 'L', 'C', 'CO', 'TR', 'RO', 'O', 'PL', 'E'] as const).map((key) => {
+        {(['REC', 'L', 'C', 'CO', 'TR', 'RO', 'MI', 'O', 'PL', 'A', 'EL', 'F', 'SC', 'H', 'DLI', 'E'] as const).map((key) => {
           const isTarget = expectedCommand?.toUpperCase() === key;
           return (
             <button
