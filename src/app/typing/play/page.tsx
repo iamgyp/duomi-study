@@ -9,6 +9,7 @@ import {
   pickLessonKey,
   lessonTarget,
   recordLessonResult,
+  type TypingTarget,
 } from '@/lib/typing/lessons';
 import {
   getPhonicsLevel,
@@ -29,10 +30,20 @@ import {
 } from '@/lib/typing/math-data';
 import { speakEnglish, speakChinese, isTtsEnabled, setTtsEnabled } from '@/lib/typing/tts';
 import { TypingGame, type GameConfig, type GameResult } from '@/lib/typing/game-engine';
+import { MinerGame } from '@/lib/typing/miner-engine';
+import { RunnerGame } from '@/lib/typing/runner-engine';
 import { unlockTypingAudio } from '@/lib/typing/sounds';
 import type { BiomeType } from '@/lib/typing/sprites';
 import { VirtualKeyboard } from '@/components/typing/VirtualKeyboard';
 import { TypingResultModal } from '@/components/typing/TypingResultModal';
+
+interface IPlayGameInstance {
+  start(): void;
+  destroy(): void;
+  handleKey(key: string): void;
+  setPaused(paused: boolean): void;
+  isPaused(): boolean;
+}
 
 function TypingPlayContent() {
   const router = useRouter();
@@ -43,6 +54,7 @@ function TypingPlayContent() {
   const mode = (searchParams.get('mode') || 'practice') as 'practice' | 'challenge';
   const speed = (searchParams.get('speed') || 'slow') as 'slow' | 'normal' | 'fast';
   const biome = (searchParams.get('biome') || 'plains') as BiomeType;
+  const gameType = (searchParams.get('gameType') || 'archery') as 'archery' | 'miner' | 'runner';
   const showToneHint = searchParams.get('hint') !== 'off';
 
   // 课程 ID / 分级
@@ -52,7 +64,7 @@ function TypingPlayContent() {
   const phonicsLevel = Math.max(1, Math.min(5, Number(searchParams.get('level') || 1))) as 1 | 2 | 3 | 4 | 5;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const gameRef = useRef<TypingGame | null>(null);
+  const gameRef = useRef<IPlayGameInstance | null>(null);
 
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [pressedKey, setPressedKey] = useState<string | null>(null);
@@ -78,37 +90,45 @@ function TypingPlayContent() {
       : 55;
 
   // 标题与下一关路由计算
-  let currentTitle = '';
+  let lessonTitle = '';
   let nextUrl: string | null = null;
 
   if (category === 'phonics') {
     const pDef = getPhonicsLevel(phonicsLevel);
-    currentTitle = `${pDef.icon} 自然拼读 ${pDef.title}`;
+    lessonTitle = `${pDef.icon} 自然拼读 ${pDef.title}`;
     if (phonicsLevel < 5) {
-      nextUrl = `/typing/play?category=phonics&level=${phonicsLevel + 1}&mode=${mode}&speed=${speed}&biome=${biome}`;
+      nextUrl = `/typing/play?category=phonics&level=${phonicsLevel + 1}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
     }
   } else if (category === 'pinyin') {
     const pyDef = getPinyinLesson(lessonId);
-    currentTitle = `${pyDef.icon} 拼音识字 · ${pyDef.title}`;
+    lessonTitle = `${pyDef.icon} 拼音识字 · ${pyDef.title}`;
     const pyIdx = PINYIN_LESSONS.findIndex((l) => l.id === pyDef.id);
     if (pyIdx >= 0 && pyIdx < PINYIN_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=pinyin&lesson=${PINYIN_LESSONS[pyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${showToneHint ? 'on' : 'off'}`;
+      nextUrl = `/typing/play?category=pinyin&lesson=${PINYIN_LESSONS[pyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${showToneHint ? 'on' : 'off'}&gameType=${gameType}`;
     }
   } else if (category === 'math') {
     const mathDef = getMathLesson(lessonId);
-    currentTitle = `${mathDef.icon} 口算心算 · ${mathDef.title}`;
+    lessonTitle = `${mathDef.icon} 口算心算 · ${mathDef.title}`;
     const mathIdx = MATH_LESSONS.findIndex((l) => l.id === mathDef.id);
     if (mathIdx >= 0 && mathIdx < MATH_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}`;
+      nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
     }
   } else {
     const keyDef = getLesson(lessonId);
     const keyIdx = KEY_LESSONS.findIndex((l) => l.id === keyDef.id);
-    currentTitle = `第 ${keyIdx + 1} 课：${keyDef.keys.map((k) => k.toUpperCase()).join(' ')}`;
+    lessonTitle = `第 ${keyIdx + 1} 课：${keyDef.keys.map((k) => k.toUpperCase()).join(' ')}`;
     if (keyIdx >= 0 && keyIdx < KEY_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=keys&lesson=${KEY_LESSONS[keyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}`;
+      nextUrl = `/typing/play?category=keys&lesson=${KEY_LESSONS[keyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
     }
   }
+
+  const gameTypePrefix =
+    gameType === 'miner'
+      ? '⛏️ 深潜矿工 · '
+      : gameType === 'runner'
+      ? '🚂 矿车狂飙 · '
+      : '🏹 城墙弓手 · ';
+  const currentTitle = `${gameTypePrefix}${lessonTitle}`;
 
   // 重置并重启游戏
   const handleRestart = () => {
@@ -184,15 +204,15 @@ function TypingPlayContent() {
       bossHp: mode === 'practice' ? 4 : 5,
     };
 
-    const game = new TypingGame(canvasRef.current, config, {
-      onNextKey: (k) => setActiveKey(k),
-      onKeyResult: (k, ok) => {
+    const callbacks = {
+      onNextKey: (k: string | null) => setActiveKey(k),
+      onKeyResult: (k: string, ok: boolean) => {
         if (!ok) {
           setLastWrongKey(k);
           setTimeout(() => setLastWrongKey(null), 400);
         }
       },
-      onWordDefeated: (target) => {
+      onWordDefeated: (target: TypingTarget) => {
         // 单词击破时的语音发音反馈 (TTS)：仅在自然拼读与拼音识字模式播放发音
         if (category === 'phonics') {
           speakEnglish(target.answer);
@@ -200,7 +220,7 @@ function TypingPlayContent() {
           speakChinese(target.display);
         }
       },
-      onEnd: (result) => {
+      onEnd: (result: GameResult) => {
         const stars = mode === 'practice'
           ? result.accuracy >= 0.8 ? 3 : result.accuracy >= 0.6 ? 2 : 1
           : result.victory ? (result.accuracy >= 0.95 ? 3 : 2) : 1;
@@ -213,7 +233,16 @@ function TypingPlayContent() {
         });
         setGameResult(result);
       },
-    });
+    };
+
+    let game: IPlayGameInstance;
+    if (gameType === 'miner') {
+      game = new MinerGame(canvasRef.current, config, callbacks);
+    } else if (gameType === 'runner') {
+      game = new RunnerGame(canvasRef.current, config, callbacks);
+    } else {
+      game = new TypingGame(canvasRef.current, config, callbacks);
+    }
 
     gameRef.current = game;
     game.start();
@@ -222,7 +251,7 @@ function TypingPlayContent() {
       game.destroy();
       gameRef.current = null;
     };
-  }, [category, lessonId, phonicsLevel, mode, baseSpeed, biome, showToneHint, gameNonce]);
+  }, [category, lessonId, phonicsLevel, mode, baseSpeed, biome, showToneHint, gameType, gameNonce]);
 
   // 全局键盘监听（PC 核心交互）
   useEffect(() => {

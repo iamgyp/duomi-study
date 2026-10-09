@@ -15,7 +15,13 @@ export type TypingSfx =
   | 'defeat'
   | 'countdown'
   | 'go'
-  | 'boss';
+  | 'boss'
+  | 'mine'
+  | 'diamond'
+  | 'railClick'
+  | 'railSwitch'
+  | 'boost'
+  | 'coin';
 
 let ctx: AudioContext | null = null;
 
@@ -144,6 +150,36 @@ export function playTypingSfx(sfx: TypingSfx, comboLevel = 0) {
       break;
     case 'defeat':
       [392, 370, 349, 330].forEach((f, i) => tone(c, f, 0.35, 'triangle', 0.1, i * 0.3));
+      break;
+    case 'mine':
+      // Pickaxe metal clink + rock crumble
+      tone(c, 1200 + comboLevel * 30, 0.05, 'triangle', 0.09, 0, 800);
+      noise(c, 0.14, 0.18, 0.01, 'lowpass', 1100);
+      break;
+    case 'diamond':
+      // Diamond sparkle chime
+      [1047, 1319, 1568, 2093].forEach((f, i) =>
+        tone(c, f, 0.22, 'sine', 0.08, i * 0.06),
+      );
+      break;
+    case 'railClick':
+      // Rhythmic track wheel click
+      noise(c, 0.03, 0.04, 0, 'bandpass', 1800);
+      break;
+    case 'railSwitch':
+      // Track switch lever mechanical clack
+      tone(c, 440, 0.06, 'square', 0.08, 0, 220);
+      tone(c, 660, 0.07, 'triangle', 0.07, 0.04);
+      break;
+    case 'boost':
+      // Rocket speed boost whoosh
+      tone(c, 220, 0.4, 'sawtooth', 0.08, 0, 880);
+      noise(c, 0.35, 0.12, 0, 'highpass', 1200);
+      break;
+    case 'coin':
+      // Gold apple / emerald pickup chime
+      tone(c, 988, 0.09, 'sine', 0.1, 0);
+      tone(c, 1319, 0.2, 'sine', 0.12, 0.07);
       break;
   }
 }

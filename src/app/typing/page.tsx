@@ -19,9 +19,11 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useMounted } from '@/hooks/useMounted';
 
 type ActiveTab = 'keys' | 'phonics' | 'pinyin' | 'math';
+type GameType = 'archery' | 'miner' | 'runner';
 
 export default function TypingHubPage() {
   const mounted = useMounted();
+  const [gameType, setGameType] = useState<GameType>('archery');
   const [activeTab, setActiveTab] = useState<ActiveTab>('keys');
   const [mode, setMode] = useState<'practice' | 'challenge'>('practice');
   const [speed, setSpeed] = useState<'slow' | 'normal' | 'fast'>('slow');
@@ -160,6 +162,91 @@ export default function TypingHubPage() {
             <span>🧮</span>
             <span>口算心算</span>
           </button>
+        </div>
+      </div>
+
+      {/* ── 游戏玩法形式选择（城墙弓手 / 深潜矿工 / 矿车狂飙） ──── */}
+      <div className="max-w-6xl mx-auto mb-6">
+        <div className="bg-[#252A30] border-3 border-black p-3 sm:p-4 rounded-2xl shadow-[5px_5px_0_rgba(0,0,0,0.7)]">
+          <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🎮</span>
+              <span className="text-sm sm:text-base font-black text-yellow-300">
+                选择游戏玩法形式：
+              </span>
+            </div>
+            <span className="text-xs text-gray-400 font-sans hidden sm:inline">
+              全部知识题库无缝通用，换个姿势打字！
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* 玩法 1: 城墙弓手 */}
+            <button
+              type="button"
+              onClick={() => setGameType('archery')}
+              className={`p-3 rounded-xl border-3 text-left transition-all flex items-start gap-3 ${
+                gameType === 'archery'
+                  ? 'bg-blue-900/60 border-blue-400 shadow-[3px_3px_0_rgba(59,130,246,0.6)] scale-[1.02]'
+                  : 'bg-[#1E232A] border-black text-gray-300 hover:bg-[#2D333D]'
+              }`}
+            >
+              <span className="text-3xl">🏹</span>
+              <div>
+                <div className="font-black text-sm text-white flex items-center gap-1.5">
+                  <span>城墙弓手</span>
+                  <span className="px-1.5 py-0.2 bg-blue-500/30 text-blue-300 text-[10px] rounded border border-blue-400/50">经典塔防</span>
+                </div>
+                <div className="text-xs text-gray-300 font-sans mt-1 leading-relaxed">
+                  在城墙上拉弓射箭阻击推进的僵尸与末影龙 BOSS
+                </div>
+              </div>
+            </button>
+
+            {/* 玩法 2: 深潜矿工 */}
+            <button
+              type="button"
+              onClick={() => setGameType('miner')}
+              className={`p-3 rounded-xl border-3 text-left transition-all flex items-start gap-3 ${
+                gameType === 'miner'
+                  ? 'bg-amber-900/60 border-amber-400 shadow-[3px_3px_0_rgba(245,158,11,0.6)] scale-[1.02]'
+                  : 'bg-[#1E232A] border-black text-gray-300 hover:bg-[#2D333D]'
+              }`}
+            >
+              <span className="text-3xl">⛏️</span>
+              <div>
+                <div className="font-black text-sm text-white flex items-center gap-1.5">
+                  <span>深潜矿工</span>
+                  <span className="px-1.5 py-0.2 bg-amber-500/30 text-amber-300 text-[10px] rounded border border-amber-400/50">垂直下挖</span>
+                </div>
+                <div className="text-xs text-gray-300 font-sans mt-1 leading-relaxed">
+                  挥镐碎石下潜到 -64m 基岩层，一路开采璀璨钻石
+                </div>
+              </div>
+            </button>
+
+            {/* 玩法 3: 矿车狂飙 */}
+            <button
+              type="button"
+              onClick={() => setGameType('runner')}
+              className={`p-3 rounded-xl border-3 text-left transition-all flex items-start gap-3 ${
+                gameType === 'runner'
+                  ? 'bg-purple-900/60 border-purple-400 shadow-[3px_3px_0_rgba(168,85,247,0.6)] scale-[1.02]'
+                  : 'bg-[#1E232A] border-black text-gray-300 hover:bg-[#2D333D]'
+              }`}
+            >
+              <span className="text-3xl">🚂</span>
+              <div>
+                <div className="font-black text-sm text-white flex items-center gap-1.5">
+                  <span>矿车狂飙</span>
+                  <span className="px-1.5 py-0.2 bg-purple-500/30 text-purple-300 text-[10px] rounded border border-purple-400/50">飞跃跑酷</span>
+                </div>
+                <div className="text-xs text-gray-300 font-sans mt-1 leading-relaxed">
+                  铁轨飞驰撞碎路障，触发变轨吃金苹果与超速连击
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -327,10 +414,16 @@ export default function TypingHubPage() {
                     </div>
                   </div>
                   <Link
-                    href={`/typing/play?category=keys&lesson=${lesson.id}&mode=${mode}&speed=${speed}&biome=${biome}`}
+                    href={`/typing/play?category=keys&lesson=${lesson.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
                     className="block w-full py-2.5 px-3 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
-                    {mode === 'practice' ? '进入练习 🚀' : '开始挑战 ⚔️'}
+                    {mode === 'practice'
+                      ? gameType === 'miner'
+                        ? '开始深潜挖掘 ⛏️'
+                        : gameType === 'runner'
+                        ? '开动矿车狂飙 🚂'
+                        : '进入练习 🚀'
+                      : '开始挑战 ⚔️'}
                   </Link>
                 </div>
               );
@@ -385,10 +478,14 @@ export default function TypingHubPage() {
                   </div>
 
                   <Link
-                    href={`/typing/play?category=phonics&level=${pl.level}&mode=${mode}&speed=${speed}&biome=${biome}`}
+                    href={`/typing/play?category=phonics&level=${pl.level}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
                     className="block w-full py-2.5 px-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
-                    进入拼读冒险 🏹
+                    {gameType === 'miner'
+                      ? '深潜拼读采矿 ⛏️'
+                      : gameType === 'runner'
+                      ? '拼读矿车狂飙 🚂'
+                      : '进入拼读冒险 🏹'}
                   </Link>
                 </div>
               );
@@ -440,10 +537,14 @@ export default function TypingHubPage() {
                   </div>
 
                   <Link
-                    href={`/typing/play?category=pinyin&lesson=${pyl.id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${pinyinHint ? 'on' : 'off'}`}
+                    href={`/typing/play?category=pinyin&lesson=${pyl.id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${pinyinHint ? 'on' : 'off'}&gameType=${gameType}`}
                     className="block w-full py-2.5 px-3 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
-                    开始识字练习 🎯
+                    {gameType === 'miner'
+                      ? '拼音凿石采矿 ⛏️'
+                      : gameType === 'runner'
+                      ? '识字矿车飞驰 🚂'
+                      : '开始识字练习 🎯'}
                   </Link>
                 </div>
               );
@@ -493,16 +594,20 @@ export default function TypingHubPage() {
                         {ml.badge}
                       </span>
                       <span className="px-1.5 py-0.5 bg-gray-700 text-emerald-200 rounded text-xs font-mono font-bold">
-                        末影龙 BOSS 连算
+                        BOSS 连战
                       </span>
                     </div>
                   </div>
 
                   <Link
-                    href={`/typing/play?category=math&lesson=${ml.id}&mode=${mode}&speed=${speed}&biome=${biome}`}
+                    href={`/typing/play?category=math&lesson=${ml.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
                     className="block w-full py-2.5 px-3 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
-                    开始口算守卫 🧮
+                    {gameType === 'miner'
+                      ? '口算破石挖宝 ⛏️'
+                      : gameType === 'runner'
+                      ? '速算狂飙冲刺 🚂'
+                      : '开始口算守卫 🧮'}
                   </Link>
                 </div>
               );
