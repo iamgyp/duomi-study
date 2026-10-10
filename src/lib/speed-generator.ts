@@ -27,7 +27,7 @@ export function generateSpeedQuestion(config: SpeedQuizConfig): SpeedQuestion {
     q = { id: '', num1: 1, num2: 1, operator: '+', answer: 2, questionText: '1 + 1 = ?' };
   }
 
-  q.id = `speed-${Math.random().toString(36).substr(2, 9)}`;
+  q.id = `speed-${Math.random().toString(36).slice(2, 11)}`;
   return q;
 }
 

@@ -57,7 +57,7 @@ function shuffleOptions(correct: string, allWords: string[]): string[] {
 }
 
 export function generateEnglishSpeedQuestion(config: EnglishSpeedQuizConfig): EnglishSpeedQuestion {
-  const pool = WORDS_BY_DIFFICULTY[config.difficulty];
+  const pool = WORDS_BY_DIFFICULTY[config.difficulty] || WORDS_BY_DIFFICULTY[1];
   const item = pool[Math.floor(Math.random() * pool.length)];
 
   const allWords = pool.map(w => w.word);
@@ -65,7 +65,7 @@ export function generateEnglishSpeedQuestion(config: EnglishSpeedQuizConfig): En
   const correctIndex = options.indexOf(item.word);
 
   return {
-    id: `en-speed-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `en-speed-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     word: item.word,
     chinese: item.chinese,
     questionText: `"${item.chinese}" 用英语怎么说？`,

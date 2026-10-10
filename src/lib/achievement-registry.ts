@@ -276,7 +276,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'ender-dragon-slayer',
     name: '末影屠龙者',
-    description: '在打字游戏中成功击败第5波末影龙 BOSS',
+    description: '在打字游戏中成功击败第10波末影龙 BOSS',
     icon: '🐲',
     category: 'perfect',
     check: () => {

@@ -64,8 +64,8 @@ export function exportAsCsv() {
   );
   const recordCsv = [recordHeaders.join(','), ...recordRows].join('\n');
 
-  // Combined CSV
-  const combined = `=== 测验记录 ===\n${quizCsv}\n\n=== 学习记录 ===\n${recordCsv}`;
+  // Combined CSV (with UTF-8 BOM for Excel compatibility)
+  const combined = `\uFEFF=== 测验记录 ===\n${quizCsv}\n\n=== 学习记录 ===\n${recordCsv}`;
   downloadFile(combined, `duomi-study-${new Date().toISOString().slice(0, 10)}.csv`);
 }
 

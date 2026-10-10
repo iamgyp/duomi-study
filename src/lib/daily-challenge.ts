@@ -53,7 +53,7 @@ export function generateDailyChallenge(): DailyChallenge {
     let num1: number, num2: number, answer: number;
 
     if (op === '+') {
-      num1 = Math.floor(rng() * 20) + 1;
+      num1 = Math.floor(rng() * 19) + 1;
       num2 = Math.floor(rng() * (20 - num1)) + 1;
       answer = num1 + num2;
     } else if (op === '-') {

@@ -257,7 +257,7 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
       const b = randInt(1, 3);
       const c = randInt(1, 2);
       return {
-        display: `${a} + ${b} - ${c} =`,
+        display: `BOSS: ${a} + ${b} - ${c} =`,
         answer: String(a + b - c),
         hideAnswerPreview: true,
       };
@@ -267,7 +267,7 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
       const b = randInt(2, 6);
       const c = randInt(1, 5);
       return {
-        display: `${a} + ${b} - ${c} =`,
+        display: `BOSS: ${a} + ${b} - ${c} =`,
         answer: String(a + b - c),
         hideAnswerPreview: true,
       };
@@ -321,9 +321,11 @@ export function makeMathBossTarget(lessonId: string): TypingTarget {
     }
     case 'math-all-mix':
     default: {
-      const a = randInt(3, 8);
+      const a = randInt(4, 9);
       const b = randInt(3, 8);
-      const c = randInt(5, 15);
+      // 确保 c < a * b，答案恒为正整数，避免无法在虚拟键盘上输入负数
+      const maxC = Math.min(15, a * b - 1);
+      const c = randInt(2, Math.max(2, maxC));
       const ans = a * b - c;
       return {
         display: `BOSS: ${a} × ${b} - ${c} =`,

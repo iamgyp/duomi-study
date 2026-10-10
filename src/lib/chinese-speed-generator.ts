@@ -68,7 +68,7 @@ function shuffleOptions(correct: string, allPinyin: string[]): string[] {
 }
 
 export function generateChineseSpeedQuestion(config: ChineseSpeedQuizConfig): ChineseSpeedQuestion {
-  const pool = CHARACTERS_BY_DIFFICULTY[config.difficulty];
+  const pool = CHARACTERS_BY_DIFFICULTY[config.difficulty] || CHARACTERS_BY_DIFFICULTY[1];
   const item = pool[Math.floor(Math.random() * pool.length)];
 
   // Collect all pinyin from same difficulty for distractors
@@ -77,7 +77,7 @@ export function generateChineseSpeedQuestion(config: ChineseSpeedQuizConfig): Ch
   const correctIndex = options.indexOf(item.pinyin);
 
   return {
-    id: `cn-speed-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `cn-speed-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     character: item.char,
     pinyin: item.pinyin,
     questionText: `"${item.char}" 的拼音是什么？`,

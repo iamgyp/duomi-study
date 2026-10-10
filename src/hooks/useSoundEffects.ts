@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 type SoundType =
   | 'correct'
@@ -14,6 +14,8 @@ const AudioContextClass =
     ? window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext
     : null;
 
+let sharedAudioCtx: AudioContext | null = null;
+
 function createAudioContext(): AudioContext | null {
   if (!AudioContextClass) return null;
   try {
@@ -21,6 +23,13 @@ function createAudioContext(): AudioContext | null {
   } catch {
     return null;
   }
+}
+
+function getSharedAudioContext(): AudioContext | null {
+  if (!sharedAudioCtx) {
+    sharedAudioCtx = createAudioContext();
+  }
+  return sharedAudioCtx;
 }
 
 function playTone(
@@ -75,18 +84,9 @@ function playNoise(ctx: AudioContext, duration: number, gainValue = 0.05, delay 
 }
 
 export function useSoundEffects() {
-  const audioCtxRef = useRef<AudioContext | null>(null);
-
-  const getCtx = useCallback(() => {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = createAudioContext();
-    }
-    return audioCtxRef.current;
-  }, []);
-
   // Ensure context is running (resumed)
   const ensureRunning = useCallback(async () => {
-    const ctx = getCtx();
+    const ctx = getSharedAudioContext();
     if (!ctx) return false;
     if (ctx.state === 'suspended') {
       try {
@@ -96,14 +96,14 @@ export function useSoundEffects() {
       }
     }
     return true;
-  }, [getCtx]);
+  }, []);
 
   // On mount, listen for the first user interaction to initialize audio
   useEffect(() => {
     const initAudio = () => {
-      const ctx = getCtx();
+      const ctx = getSharedAudioContext();
       if (ctx && ctx.state === 'suspended') {
-        ctx.resume();
+        void ctx.resume();
       }
     };
     // Try to initialize on any user interaction
@@ -115,33 +115,26 @@ export function useSoundEffects() {
       document.removeEventListener('keydown', initAudio);
       document.removeEventListener('touchstart', initAudio);
     };
-  }, [getCtx]);
+  }, []);
 
-  const play = useCallback(
-    (type: SoundType) => {
-      const ctx = getCtx();
-      if (!ctx) return;
+  const play = useCallback((type: SoundType) => {
+    const ctx = getSharedAudioContext();
+    if (!ctx) return;
 
-      // Try to resume if suspended (sync attempt for user gesture context)
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
+    // If suspended, attempt to resume and play
+    if (ctx.state === 'suspended') {
+      void ctx.resume().then(() => {
+        if (ctx.state === 'running') {
+          doPlay(ctx, type);
+        }
+      });
+      return;
+    }
 
-      // Only play if context is running or running
-      if (ctx.state !== 'running') {
-        // If still suspended, try again and play after resume
-        ctx.resume().then(() => {
-          if (ctx.state === 'running') {
-            doPlay(ctx, type);
-          }
-        });
-        return;
-      }
-
+    if (ctx.state === 'running') {
       doPlay(ctx, type);
-    },
-    [getCtx],
-  );
+    }
+  }, []);
 
   return { play, ensureRunning };
 }

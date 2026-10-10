@@ -20,13 +20,13 @@ export type WrongAnswerGroup = {
 };
 
 export const SUBJECT_LABELS: Record<QuizSubject, string> = {
-  math: '?? ???',
-  algebra: '?? ???',
-  'chinese-poem': '?? ??????',
-  'chinese-speed': '????????',
-  english: '?? ??????',
-  'english-speed': '?? ??????',
-  'speed-challenge': '????????',
+  math: '基础数学',
+  algebra: '代数应用',
+  'chinese-poem': '语文古诗',
+  'chinese-speed': '汉字速认',
+  english: '英语单词',
+  'english-speed': '英语速认',
+  'speed-challenge': '速算挑战',
 };
 
 export const SUBJECT_ROUTES: Record<QuizSubject, string> = {

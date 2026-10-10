@@ -79,7 +79,7 @@ export function StudyChart({ days = 7 }: StudyChartProps) {
 
       // Label (date)
       ctx.fillStyle = '#6b7280';
-      ctx.font = '10px var(--font-pixel), monospace';
+      ctx.font = '10px "VT323", monospace';
       ctx.textAlign = 'center';
       const dateLabel = item.date.slice(5); // MM-DD
       ctx.fillText(dateLabel, x + barWidth / 2, height - padding.bottom + 15);
@@ -87,14 +87,14 @@ export function StudyChart({ days = 7 }: StudyChartProps) {
       // Value on top of bar
       if (item.duration > 0) {
         ctx.fillStyle = '#4CAF50';
-        ctx.font = 'bold 10px var(--font-pixel), monospace';
+        ctx.font = 'bold 10px "VT323", monospace';
         ctx.fillText(`${item.duration}min`, x + barWidth / 2, y - 5);
       }
     });
 
     // Y-axis labels
     ctx.fillStyle = '#9ca3af';
-    ctx.font = '10px var(--font-pixel), monospace';
+    ctx.font = '10px "VT323", monospace';
     ctx.textAlign = 'right';
     for (let i = 0; i <= 4; i++) {
       const value = Math.round((maxDuration / 4) * (4 - i));
