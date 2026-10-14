@@ -401,5 +401,19 @@
     "notesTitle": "Note Block Realm",
     "cardsTitle": "Ender Treasures",
     "explorerTitle": "Explorer's Log"
+  },
+  "AppMode": {
+    "installApp": "Install App",
+    "appMode": "App Window Mode",
+    "standaloneActive": "App Window Active",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "modalTitle": "Enable Application Mode",
+    "modalSubtitle": "Enjoy a distraction-free, full-screen standalone application experience",
+    "chromeGuide": "In Chrome or Edge, click the Install icon on the right side of the address bar.",
+    "iosGuide": "In iPad/iPhone Safari, tap the Share button ⬆️ and select 'Add to Home Screen'.",
+    "standaloneTip": "Launch directly from desktop or home screen without browser bars or distractions!",
+    "close": "Got it",
+    "installNow": "Install Now"
   }
 }

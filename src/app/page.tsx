@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { DuomiSteve } from '@/components/DuomiSteve';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { AppModeControl } from '@/components/AppModeControl';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Home() {
@@ -24,8 +25,9 @@ export default function Home() {
       <div className="absolute top-5 sm:top-10 left-5 sm:left-10 w-24 sm:w-32 h-8 sm:h-12 bg-white opacity-80" style={{ boxShadow: '8px 8px 0 rgba(0,0,0,0.1)' }}></div>
       <div className="absolute top-10 sm:top-20 right-5 sm:right-20 w-32 sm:w-48 h-10 sm:h-16 bg-white opacity-80" style={{ boxShadow: '8px 8px 0 rgba(0,0,0,0.1)' }}></div>
 
-      {/* Language Switcher + Theme Switcher - Top Right */}
+      {/* Language Switcher + Theme Switcher + App Mode - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <AppModeControl variant="header" />
         <ThemeSwitcher />
         <LanguageSwitcher />
       </div>
@@ -45,6 +47,11 @@ export default function Home() {
              </p>
           </div>
         </div>
+      </div>
+
+      {/* ── 应用程序模式体验推荐横幅 ── */}
+      <div className="w-full max-w-7xl z-10 mb-6">
+        <AppModeControl variant="banner" />
       </div>
 
       {/* Main Menu Grid */}

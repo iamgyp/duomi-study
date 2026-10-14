@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Printer, Volume2, Download, Hammer, Layers, Compass, Zap } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { AppModeControl } from '@/components/AppModeControl';
 import { useMounted } from '@/hooks/useMounted';
 
 import { CAD_MISSIONS, CAD_COMMANDS, CadMission } from '@/lib/cad/cad-data';
@@ -147,6 +148,7 @@ export default function CadHubPage() {
             <Printer className="w-3.5 h-3.5" />
             <span>{isPdfGenerating ? '生成中...' : '打印4页手册 (PDF)'}</span>
           </button>
+          <AppModeControl variant="header" />
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>

@@ -16,6 +16,7 @@ import { MATH_LESSONS } from '@/lib/typing/math-data';
 import type { BiomeType } from '@/lib/typing/sprites';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { AppModeControl } from '@/components/AppModeControl';
 import { useMounted } from '@/hooks/useMounted';
 
 type ActiveTab = 'keys' | 'phonics' | 'pinyin' | 'math';
@@ -67,6 +68,7 @@ export default function TypingHubPage() {
             <span className="text-gray-500">|</span>
             <span className="text-yellow-300 font-black">{currentWeapon.icon} {currentWeapon.name}</span>
           </div>
+          <AppModeControl variant="header" />
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>

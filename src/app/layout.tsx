@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, VT323 } from "next/font/google";
 import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +21,34 @@ const pixelFont = VT323({
   variable: "--font-pixel",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#4CAF50",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: "多米习题站 Duomi Study",
-  description: "Minecraft 风格的趣味练习生成器",
+  description: "Minecraft 风格的趣味口算、英语识词、语文古诗与键盘指法闯关学习系统",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "多米学习",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -35,6 +61,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pixelFont.variable} antialiased`}
       >
+        <ServiceWorkerRegister />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -65,9 +92,7 @@ export default function RootLayout({
           }}
         />
         <ErrorBoundary>
-          <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#795548" />
-        {children}
+          {children}
         </ErrorBoundary>
       </body>
     </html>

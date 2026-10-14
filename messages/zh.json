@@ -401,5 +401,19 @@
     "notesTitle": "音符盒秘境",
     "cardsTitle": "末影宝藏",
     "explorerTitle": "探险家日志"
+  },
+  "AppMode": {
+    "installApp": "安装应用",
+    "appMode": "浏览器应用程序模式",
+    "standaloneActive": "已是独立窗口",
+    "fullscreen": "全屏模式",
+    "exitFullscreen": "退出全屏",
+    "modalTitle": "开启应用程序模式",
+    "modalSubtitle": "享受无浏览器地址栏、全屏沉浸式的独立桌面/移动端体验",
+    "chromeGuide": "在 Chrome / Edge 浏览器中，点击地址栏右侧的【安装】图标即可一键安装。",
+    "iosGuide": "在 iPad / iPhone Safari 中，点击底部分享按钮 ⬆️，选择【添加到主屏幕】即可。",
+    "standaloneTip": "安装后即可从桌面或主屏幕直接启动，无广告无干扰！",
+    "close": "我知道了",
+    "installNow": "立即安装"
   }
 }

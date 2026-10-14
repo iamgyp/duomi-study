@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Sparkles, Music, Layers, BookOpen } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { AppModeControl } from '@/components/AppModeControl';
 import { useMounted } from '@/hooks/useMounted';
 
 import { NoteBlockGame } from '@/components/memory/NoteBlockGame';
@@ -53,6 +54,7 @@ function MemoryTempleContent() {
         </div>
 
         <div className="flex items-center gap-2">
+          <AppModeControl variant="header" />
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>

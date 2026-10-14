@@ -45,6 +45,7 @@ import {
 import type { BiomeType } from '@/lib/typing/sprites';
 import { VirtualKeyboard } from '@/components/typing/VirtualKeyboard';
 import { TypingResultModal } from '@/components/typing/TypingResultModal';
+import { AppModeControl } from '@/components/AppModeControl';
 
 interface IPlayGameInstance {
   start(): void;
@@ -460,6 +461,9 @@ function TypingPlayContent() {
           >
             🔁 重来 (R)
           </button>
+
+          {/* 应用程序与全屏模式 */}
+          <AppModeControl variant="header" />
         </div>
       </div>
 
