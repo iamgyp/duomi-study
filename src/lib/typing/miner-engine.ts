@@ -553,22 +553,42 @@ export class MinerGame {
 
     // Characters typed breakdown if answer is different from display
     if (answerStr !== displayStr || isCurrent) {
-      const typedPart = answerStr.slice(0, progress);
-      const remainingPart = answerStr.slice(progress);
+      if (block.target.hideAnswerPreview) {
+        // In math mode (hideAnswerPreview): only display typed progress, do not leak upcoming answer digits
+        if (progress > 0) {
+          const typedPart = answerStr.slice(0, progress);
+          const remainingMask = '_'.repeat(answerStr.length - progress);
 
-      ctx.font = `bold 20px ${this.config.pixelFont}`;
-      const totalWidth = ctx.measureText(answerStr).width;
-      let startX = x + w / 2 - totalWidth / 2;
+          ctx.font = `bold 20px ${this.config.pixelFont}`;
+          const totalWidth = ctx.measureText(typedPart + remainingMask).width;
+          let startX = x + w / 2 - totalWidth / 2;
 
-      ctx.textAlign = 'left';
-      // Green typed
-      ctx.fillStyle = '#4ADE80';
-      ctx.fillText(typedPart, startX, y + h - 16);
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#4ADE80';
+          ctx.fillText(typedPart, startX, y + h - 16);
 
-      startX += ctx.measureText(typedPart).width;
-      // Yellow remaining
-      ctx.fillStyle = isCurrent ? '#FDE047' : '#9CA3AF';
-      ctx.fillText(remainingPart, startX, y + h - 16);
+          startX += ctx.measureText(typedPart).width;
+          ctx.fillStyle = '#9CA3AF';
+          ctx.fillText(remainingMask, startX, y + h - 16);
+        }
+      } else {
+        const typedPart = answerStr.slice(0, progress);
+        const remainingPart = answerStr.slice(progress);
+
+        ctx.font = `bold 20px ${this.config.pixelFont}`;
+        const totalWidth = ctx.measureText(answerStr).width;
+        let startX = x + w / 2 - totalWidth / 2;
+
+        ctx.textAlign = 'left';
+        // Green typed
+        ctx.fillStyle = '#4ADE80';
+        ctx.fillText(typedPart, startX, y + h - 16);
+
+        startX += ctx.measureText(typedPart).width;
+        // Yellow remaining
+        ctx.fillStyle = isCurrent ? '#FDE047' : '#9CA3AF';
+        ctx.fillText(remainingPart, startX, y + h - 16);
+      }
     }
 
     // Active gold outline aura if currently mining this block

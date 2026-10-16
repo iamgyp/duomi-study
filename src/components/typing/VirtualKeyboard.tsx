@@ -22,6 +22,8 @@ export interface VirtualKeyboardProps {
   showLegend?: boolean;
   /** Whether to hide current target key in the top banner (e.g. math mode, let player calculate without spoiling answer key) */
   hideTargetKey?: boolean;
+  /** Whether to hide the active key highlight on the keyboard keys themselves (pure mental math mode) */
+  hideKeyHighlight?: boolean;
   className?: string;
 }
 
@@ -44,6 +46,7 @@ export function VirtualKeyboard({
   onKeyClick,
   showLegend = true,
   hideTargetKey = false,
+  hideKeyHighlight = false,
   className = '',
 }: VirtualKeyboardProps) {
   const normalizedActive = activeKey ? activeKey.toLowerCase() : null;
@@ -63,7 +66,7 @@ export function VirtualKeyboard({
           {hideTargetKey ? (
             <div className="flex items-center gap-2 min-w-0">
               <span className="inline-flex items-center justify-center px-3 h-10 sm:h-11 bg-rose-950/80 text-rose-300 text-xs sm:text-sm font-bold rounded border border-rose-500/80 whitespace-nowrap">
-                🧮 观察怪物算式 · 心算后按键盘数字
+                🧮 观察怪物算式 · 心算后按键盘数字 (答案不预显)
               </span>
             </div>
           ) : normalizedActive ? (
@@ -122,7 +125,7 @@ export function VirtualKeyboard({
             >
               {row.map((kDef) => {
                 const keyChar = kDef.key.toLowerCase();
-                const isActive = normalizedActive === keyChar;
+                const isActive = !hideKeyHighlight && normalizedActive === keyChar;
                 const isPressed = pressedKey?.toLowerCase() === keyChar;
                 const isWrong = lastWrongKey?.toLowerCase() === keyChar;
                 const fingerColor = FINGER_COLORS[kDef.finger];

@@ -86,6 +86,17 @@ function TypingPlayContent() {
   const [bgmOn, setBgmOn] = useState(() => isBgmEnabled());
   const [gameNonce, setGameNonce] = useState(0);
 
+  // 口算心算键盘答案提示开关 (默认关闭：全凭心算，不显答案)
+  const [mathHintOn, setMathHintOn] = useState<boolean>(() => {
+    const fromUrl = searchParams.get('mathHint');
+    if (fromUrl !== null) return fromUrl === 'on';
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('duomi_typing_math_hint');
+      if (saved !== null) return saved === 'on';
+    }
+    return false;
+  });
+
   // 速度计算 (引入严苛极端级别，大幅提升节奏与手速考验)
   const baseSpeed =
     mode === 'practice'
@@ -126,7 +137,7 @@ function TypingPlayContent() {
     lessonTitle = `${mathDef.icon} 口算心算 · ${mathDef.title}`;
     const mathIdx = MATH_LESSONS.findIndex((l) => l.id === mathDef.id);
     if (mathIdx >= 0 && mathIdx < MATH_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
+      nextUrl = `/typing/play?category=math&lesson=${MATH_LESSONS[mathIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&mathHint=${mathHintOn ? 'on' : 'off'}`;
     }
   } else {
     const keyDef = getLesson(lessonId);
@@ -444,6 +455,28 @@ function TypingPlayContent() {
             {bgmOn ? '🎵 音乐开' : '🔇 音乐关'}
           </button>
 
+          {/* 口算键盘答案提示开关 */}
+          {category === 'math' && (
+            <button
+              type="button"
+              onClick={() => {
+                const next = !mathHintOn;
+                setMathHintOn(next);
+                if (typeof window !== 'undefined') {
+                  localStorage.setItem('duomi_typing_math_hint', next ? 'on' : 'off');
+                }
+              }}
+              className={`px-2.5 py-1 text-xs font-bold border border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 ${
+                mathHintOn
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'bg-emerald-700 text-emerald-100 ring-1 ring-emerald-400'
+              }`}
+              title="切换键盘上是否显示正确答案键位"
+            >
+              {mathHintOn ? '💡 答案提示：开' : '🧠 纯心算：关 (不显答案)'}
+            </button>
+          )}
+
           {/* 暂停按钮 */}
           <button
             type="button"
@@ -501,7 +534,8 @@ function TypingPlayContent() {
           lastWrongKey={lastWrongKey}
           onKeyClick={handleVirtualKeyClick}
           showLegend={true}
-          hideTargetKey={category === 'math'}
+          hideTargetKey={category === 'math' && !mathHintOn}
+          hideKeyHighlight={category === 'math' && !mathHintOn}
         />
       </div>
 

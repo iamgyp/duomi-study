@@ -563,7 +563,7 @@ export class RunnerGame {
 
     const text = target.display;
     const hasHint = Boolean(target.hint);
-    const hasProgress = isCurrent && target.answer.length > 1;
+    const hasProgress = isCurrent && target.answer.length > 1 && (!target.hideAnswerPreview || progress > 0);
 
     // Pick font size based on text length
     const fontSize = text.length <= 3 ? 34 : text.length <= 6 ? 30 : 26;
@@ -643,10 +643,12 @@ export class RunnerGame {
       const progY = y + th / 2 - 14;
       const ans = target.answer;
       const typed = ans.slice(0, progress);
-      const remaining = ans.slice(progress);
+      const remaining = target.hideAnswerPreview
+        ? '_'.repeat(ans.length - progress)
+        : ans.slice(progress);
 
       ctx.font = 'bold 18px "Arial Black", "Microsoft YaHei", monospace';
-      const totalW = ctx.measureText(ans).width;
+      const totalW = ctx.measureText(typed + remaining).width;
       let startX = x - totalW / 2;
 
       ctx.textAlign = 'left';
@@ -655,7 +657,7 @@ export class RunnerGame {
       ctx.fillText(typed, startX, progY);
       startX += ctx.measureText(typed).width;
 
-      ctx.fillStyle = '#FDE047';
+      ctx.fillStyle = target.hideAnswerPreview ? '#94A3B8' : '#FDE047';
       ctx.fillText(remaining, startX, progY);
     }
 

@@ -30,9 +30,24 @@ export default function TypingHubPage() {
   const [speed, setSpeed] = useState<'slow' | 'normal' | 'fast' | 'extreme'>('slow');
   const [biome, setBiome] = useState<BiomeType>('plains');
   const [pinyinHint, setPinyinHint] = useState<boolean>(true);
+  const [mathHint, setMathHint] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('duomi_typing_math_hint');
+      if (saved !== null) return saved === 'on';
+    }
+    return false;
+  });
   const [progress] = useState<TypingProgress>(() => getTypingProgress());
   const currentWeapon = getWeaponByXp(progress.xp);
   const weakEntries = Object.entries(progress.missedKeysTotal ?? {}).sort((a, b) => b[1] - a[1]);
+
+  const toggleMathHint = () => {
+    const next = !mathHint;
+    setMathHint(next);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('duomi_typing_math_hint', next ? 'on' : 'off');
+    }
+  };
 
   if (!mounted) {
     return (
@@ -559,6 +574,28 @@ export default function TypingHubPage() {
       {/* ── 内容列表 4: 口算心算 (加减乘除心算) ──── */}
       {activeTab === 'math' && (
         <div className="max-w-6xl mx-auto">
+          {/* ── 键盘答案提示特别开关 (仅在口算模式下显示) ──────────── */}
+          <div className="mb-6 bg-[#374151]/90 border-2 border-rose-500/80 p-3.5 rounded-xl flex items-center justify-between gap-3 flex-wrap">
+            <div className="text-xs sm:text-sm font-sans text-gray-200">
+              🧮 <strong>键盘答案提示设置</strong>：选择在键盘上是否高亮显示正确答案键。
+              <span className="block text-xs text-gray-400 mt-0.5">
+                • <strong>不显答案 (推荐)</strong>：键盘不亮起正确答案键，顶部不剧透答案，全凭心算得出结果后自主击键；
+                <br />• <strong>开启提示</strong>：键盘高亮显示数字答案键与手指指法（适合低年级或初学打字辅助）。
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={toggleMathHint}
+              className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all flex items-center gap-1.5 shadow ${
+                mathHint
+                  ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                  : 'bg-emerald-600 hover:bg-emerald-500 text-white ring-2 ring-emerald-400/50'
+              }`}
+            >
+              {mathHint ? '💡 键盘答案提示：开启 (显示键位)' : '🧠 纯心算模式：键盘不显答案'}
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {MATH_LESSONS.map((ml) => {
               const stat = progress.lessons[ml.id];
@@ -603,7 +640,7 @@ export default function TypingHubPage() {
                   </div>
 
                   <Link
-                    href={`/typing/play?category=math&lesson=${ml.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
+                    href={`/typing/play?category=math&lesson=${ml.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&mathHint=${mathHint ? 'on' : 'off'}`}
                     className="block w-full py-2.5 px-3 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
                     {gameType === 'miner'
