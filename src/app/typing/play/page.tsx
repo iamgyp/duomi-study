@@ -97,6 +97,17 @@ function TypingPlayContent() {
     return false;
   });
 
+  // 常规键盘键位提示开关 (基础指法 / 自然拼读 / 拼音识字：是否高亮键位提示；默认开启或由 localStorage 保持)
+  const [keyboardHintOn, setKeyboardHintOn] = useState<boolean>(() => {
+    const fromUrl = searchParams.get('keyboardHint');
+    if (fromUrl !== null) return fromUrl === 'on';
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('duomi_typing_keyboard_hint');
+      if (saved !== null) return saved === 'on';
+    }
+    return true;
+  });
+
   // 速度计算 (引入严苛极端级别，大幅提升节奏与手速考验)
   const baseSpeed =
     mode === 'practice'
@@ -123,14 +134,14 @@ function TypingPlayContent() {
     const pDef = getPhonicsLevel(phonicsLevel);
     lessonTitle = `${pDef.icon} 自然拼读 ${pDef.title}`;
     if (phonicsLevel < 5) {
-      nextUrl = `/typing/play?category=phonics&level=${phonicsLevel + 1}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
+      nextUrl = `/typing/play?category=phonics&level=${phonicsLevel + 1}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&keyboardHint=${keyboardHintOn ? 'on' : 'off'}`;
     }
   } else if (category === 'pinyin') {
     const pyDef = getPinyinLesson(lessonId);
     lessonTitle = `${pyDef.icon} 拼音识字 · ${pyDef.title}`;
     const pyIdx = PINYIN_LESSONS.findIndex((l) => l.id === pyDef.id);
     if (pyIdx >= 0 && pyIdx < PINYIN_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=pinyin&lesson=${PINYIN_LESSONS[pyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${showToneHint ? 'on' : 'off'}&gameType=${gameType}`;
+      nextUrl = `/typing/play?category=pinyin&lesson=${PINYIN_LESSONS[pyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${showToneHint ? 'on' : 'off'}&gameType=${gameType}&keyboardHint=${keyboardHintOn ? 'on' : 'off'}`;
     }
   } else if (category === 'math') {
     const mathDef = getMathLesson(lessonId);
@@ -144,7 +155,7 @@ function TypingPlayContent() {
     const keyIdx = KEY_LESSONS.findIndex((l) => l.id === keyDef.id);
     lessonTitle = `第 ${keyIdx + 1} 课：${keyDef.keys.map((k) => k.toUpperCase()).join(' ')}`;
     if (keyIdx >= 0 && keyIdx < KEY_LESSONS.length - 1) {
-      nextUrl = `/typing/play?category=keys&lesson=${KEY_LESSONS[keyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`;
+      nextUrl = `/typing/play?category=keys&lesson=${KEY_LESSONS[keyIdx + 1].id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&keyboardHint=${keyboardHintOn ? 'on' : 'off'}`;
     }
   }
 
@@ -477,6 +488,28 @@ function TypingPlayContent() {
             </button>
           )}
 
+          {/* 指法/拼读/识字 键盘键位提示/盲打模式开关 */}
+          {category !== 'math' && (
+            <button
+              type="button"
+              onClick={() => {
+                const next = !keyboardHintOn;
+                setKeyboardHintOn(next);
+                if (typeof window !== 'undefined') {
+                  localStorage.setItem('duomi_typing_keyboard_hint', next ? 'on' : 'off');
+                }
+              }}
+              className={`px-2.5 py-1 text-xs font-bold border border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 ${
+                keyboardHintOn
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'bg-emerald-700 text-emerald-100 ring-1 ring-emerald-400'
+              }`}
+              title="切换键盘上是否高亮提示目标键位（可切换为盲打模式）"
+            >
+              {keyboardHintOn ? '💡 键位提示：开' : '⌨️ 盲打模式：开 (无键位提示)'}
+            </button>
+          )}
+
           {/* 暂停按钮 */}
           <button
             type="button"
@@ -534,8 +567,13 @@ function TypingPlayContent() {
           lastWrongKey={lastWrongKey}
           onKeyClick={handleVirtualKeyClick}
           showLegend={true}
-          hideTargetKey={category === 'math' && !mathHintOn}
-          hideKeyHighlight={category === 'math' && !mathHintOn}
+          hideTargetKey={category === 'math' ? !mathHintOn : !keyboardHintOn}
+          hideKeyHighlight={category === 'math' ? !mathHintOn : !keyboardHintOn}
+          hiddenTargetText={
+            category === 'math'
+              ? '🧮 观察怪物算式 · 心算后按键盘数字 (答案不预显)'
+              : '⌨️ 盲打挑战中 · 键盘不提示键位，请自主击键'
+          }
         />
       </div>
 

@@ -30,6 +30,13 @@ export default function TypingHubPage() {
   const [speed, setSpeed] = useState<'slow' | 'normal' | 'fast' | 'extreme'>('slow');
   const [biome, setBiome] = useState<BiomeType>('plains');
   const [pinyinHint, setPinyinHint] = useState<boolean>(true);
+  const [keyboardHint, setKeyboardHint] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('duomi_typing_keyboard_hint');
+      if (saved !== null) return saved === 'on';
+    }
+    return true;
+  });
   const [mathHint, setMathHint] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('duomi_typing_math_hint');
@@ -40,6 +47,14 @@ export default function TypingHubPage() {
   const [progress] = useState<TypingProgress>(() => getTypingProgress());
   const currentWeapon = getWeaponByXp(progress.xp);
   const weakEntries = Object.entries(progress.missedKeysTotal ?? {}).sort((a, b) => b[1] - a[1]);
+
+  const toggleKeyboardHint = () => {
+    const next = !keyboardHint;
+    setKeyboardHint(next);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('duomi_typing_keyboard_hint', next ? 'on' : 'off');
+    }
+  };
 
   const toggleMathHint = () => {
     const next = !mathHint;
@@ -355,29 +370,31 @@ export default function TypingHubPage() {
 
       </div>
 
-      {/* ── 拼音提示特别开关 (仅在拼音模式下显示) ──────────── */}
-      {activeTab === 'pinyin' && (
-        <div className="max-w-6xl mx-auto mb-6 bg-[#374151]/90 border-2 border-emerald-500/80 p-3 rounded-xl flex items-center justify-between gap-3">
-          <div className="text-xs sm:text-sm font-sans text-gray-200">
-            💡 <strong>拼音提示设置</strong>：开启后汉字上方显示带声调拼音（适合初学者）；关闭后只看汉字打拼音（进阶练习）。
-          </div>
-          <button
-            type="button"
-            onClick={() => setPinyinHint(!pinyinHint)}
-            className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all ${
-              pinyinHint
-                ? 'bg-emerald-600 text-white shadow'
-                : 'bg-gray-700 text-gray-300'
-            }`}
-          >
-            {pinyinHint ? '✅ 拼音提示：开启' : '❌ 拼音提示：关闭'}
-          </button>
-        </div>
-      )}
-
       {/* ── 内容列表 1: 键位训练 (7课) ─────────────────────── */}
       {activeTab === 'keys' && (
         <div className="max-w-6xl mx-auto">
+          {/* ── 键盘键位提示特别开关 ──────────── */}
+          <div className="mb-6 bg-[#374151]/90 border-2 border-blue-500/80 p-3.5 rounded-xl flex items-center justify-between gap-3 flex-wrap">
+            <div className="text-xs sm:text-sm font-sans text-gray-200">
+              ⌨️ <strong>键盘指法提示设置</strong>：选择在键盘上是否高亮显示当前目标键位与手指指法。
+              <span className="block text-xs text-gray-400 mt-0.5">
+                • <strong>盲打模式 (推荐进阶)</strong>：键盘不高亮提示按键位置，考验手指肌肉记忆自主盲打；
+                <br />• <strong>开启提示 (初学指法)</strong>：键盘高亮显示下一个按键与对应手指（适合零基础认键）。
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={toggleKeyboardHint}
+              className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all flex items-center gap-1.5 shadow ${
+                keyboardHint
+                  ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                  : 'bg-emerald-600 hover:bg-emerald-500 text-white ring-2 ring-emerald-400/50'
+              }`}
+            >
+              {keyboardHint ? '💡 键位提示：开启 (显示键位与指法)' : '⌨️ 盲打模式：开启 (键盘不提示按键)'}
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {KEY_LESSONS.map((lesson, idx) => {
               const unlocked = mode === 'practice' || isLessonUnlocked(progress, idx);
@@ -432,7 +449,7 @@ export default function TypingHubPage() {
                     </div>
                   </div>
                   <Link
-                    href={`/typing/play?category=keys&lesson=${lesson.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
+                    href={`/typing/play?category=keys&lesson=${lesson.id}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&keyboardHint=${keyboardHint ? 'on' : 'off'}`}
                     className="block w-full py-2.5 px-3 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
                     {mode === 'practice'
@@ -453,6 +470,28 @@ export default function TypingHubPage() {
       {/* ── 内容列表 2: 自然拼读 (Oxford Phonics L1-5) ──────── */}
       {activeTab === 'phonics' && (
         <div className="max-w-6xl mx-auto">
+          {/* ── 键盘键位提示特别开关 ──────────── */}
+          <div className="mb-6 bg-[#374151]/90 border-2 border-amber-500/80 p-3.5 rounded-xl flex items-center justify-between gap-3 flex-wrap">
+            <div className="text-xs sm:text-sm font-sans text-gray-200">
+              🔤 <strong>键盘指法提示设置</strong>：选择在键盘上是否高亮显示目标字母键位。
+              <span className="block text-xs text-gray-400 mt-0.5">
+                • <strong>盲打模式 (推荐进阶)</strong>：键盘不提示按键位置，看着拼读单词自主按键盲打；
+                <br />• <strong>开启提示 (初学拼读)</strong>：键盘高亮显示下一个按键与对应手指（辅助初学拼读）。
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={toggleKeyboardHint}
+              className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all flex items-center gap-1.5 shadow ${
+                keyboardHint
+                  ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                  : 'bg-emerald-600 hover:bg-emerald-500 text-white ring-2 ring-emerald-400/50'
+              }`}
+            >
+              {keyboardHint ? '💡 键位提示：开启 (显示键位与指法)' : '⌨️ 盲打模式：开启 (键盘不提示按键)'}
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {PHONICS_LEVELS.map((pl) => {
               const stat = progress.lessons[pl.id];
@@ -496,7 +535,7 @@ export default function TypingHubPage() {
                   </div>
 
                   <Link
-                    href={`/typing/play?category=phonics&level=${pl.level}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}`}
+                    href={`/typing/play?category=phonics&level=${pl.level}&mode=${mode}&speed=${speed}&biome=${biome}&gameType=${gameType}&keyboardHint=${keyboardHint ? 'on' : 'off'}`}
                     className="block w-full py-2.5 px-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
                     {gameType === 'miner'
@@ -515,6 +554,47 @@ export default function TypingHubPage() {
       {/* ── 内容列表 3: 拼音汉字 (声母韵母 / 一二年级) ──────── */}
       {activeTab === 'pinyin' && (
         <div className="max-w-6xl mx-auto">
+          {/* ── 拼音提示与键盘指法提示设置 ──────────── */}
+          <div className="mb-6 space-y-3">
+            <div className="bg-[#374151]/90 border-2 border-emerald-500/80 p-3 rounded-xl flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-xs sm:text-sm font-sans text-gray-200">
+                💡 <strong>拼音提示设置</strong>：开启后汉字上方显示带声调拼音（适合初学者）；关闭后只看汉字打拼音（进阶练习）。
+              </div>
+              <button
+                type="button"
+                onClick={() => setPinyinHint(!pinyinHint)}
+                className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all ${
+                  pinyinHint
+                    ? 'bg-emerald-600 text-white shadow'
+                    : 'bg-gray-700 text-gray-300'
+                }`}
+              >
+                {pinyinHint ? '✅ 拼音提示：开启' : '❌ 拼音提示：关闭'}
+              </button>
+            </div>
+
+            <div className="bg-[#374151]/90 border-2 border-teal-500/80 p-3.5 rounded-xl flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-xs sm:text-sm font-sans text-gray-200">
+                ⌨️ <strong>键盘指法提示设置</strong>：选择在键盘上是否高亮显示当前需要按下的拼音字母键。
+                <span className="block text-xs text-gray-400 mt-0.5">
+                  • <strong>盲打模式 (推荐进阶)</strong>：键盘不提示按键位置，看着汉字拼音自主盲打；
+                  <br />• <strong>开启提示 (初学识字)</strong>：键盘高亮显示当前需要按下的拼音字母键与指法。
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleKeyboardHint}
+                className={`px-3 py-1.5 rounded-lg border border-black font-bold text-xs font-mono transition-all flex items-center gap-1.5 shadow ${
+                  keyboardHint
+                    ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                    : 'bg-emerald-600 hover:bg-emerald-500 text-white ring-2 ring-emerald-400/50'
+                }`}
+              >
+                {keyboardHint ? '💡 键位提示：开启 (显示键位与指法)' : '⌨️ 盲打模式：开启 (键盘不提示按键)'}
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {PINYIN_LESSONS.map((pyl) => {
               const stat = progress.lessons[pyl.id];
@@ -555,7 +635,7 @@ export default function TypingHubPage() {
                   </div>
 
                   <Link
-                    href={`/typing/play?category=pinyin&lesson=${pyl.id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${pinyinHint ? 'on' : 'off'}&gameType=${gameType}`}
+                    href={`/typing/play?category=pinyin&lesson=${pyl.id}&mode=${mode}&speed=${speed}&biome=${biome}&hint=${pinyinHint ? 'on' : 'off'}&gameType=${gameType}&keyboardHint=${keyboardHint ? 'on' : 'off'}`}
                     className="block w-full py-2.5 px-3 bg-[#10B981] hover:bg-[#059669] text-white font-bold text-center text-sm border-2 border-black rounded shadow-[2px_2px_0_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
                   >
                     {gameType === 'miner'

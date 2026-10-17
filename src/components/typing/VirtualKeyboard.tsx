@@ -22,8 +22,10 @@ export interface VirtualKeyboardProps {
   showLegend?: boolean;
   /** Whether to hide current target key in the top banner (e.g. math mode, let player calculate without spoiling answer key) */
   hideTargetKey?: boolean;
-  /** Whether to hide the active key highlight on the keyboard keys themselves (pure mental math mode) */
+  /** Whether to hide the active key highlight on the keyboard keys themselves (pure mental math mode or blind typing) */
   hideKeyHighlight?: boolean;
+  /** Custom hint text when target key is hidden */
+  hiddenTargetText?: string;
   className?: string;
 }
 
@@ -47,6 +49,7 @@ export function VirtualKeyboard({
   showLegend = true,
   hideTargetKey = false,
   hideKeyHighlight = false,
+  hiddenTargetText = '',
   className = '',
 }: VirtualKeyboardProps) {
   const normalizedActive = activeKey ? activeKey.toLowerCase() : null;
@@ -65,8 +68,8 @@ export function VirtualKeyboard({
 
           {hideTargetKey ? (
             <div className="flex items-center gap-2 min-w-0">
-              <span className="inline-flex items-center justify-center px-3 h-10 sm:h-11 bg-rose-950/80 text-rose-300 text-xs sm:text-sm font-bold rounded border border-rose-500/80 whitespace-nowrap">
-                🧮 观察怪物算式 · 心算后按键盘数字 (答案不预显)
+              <span className="inline-flex items-center justify-center px-3 h-10 sm:h-11 bg-slate-900/90 text-yellow-300 text-xs sm:text-sm font-bold rounded border border-yellow-500/70 whitespace-nowrap">
+                {hiddenTargetText || '⌨️ 盲打挑战中 · 键盘不提示键位，请自主击键'}
               </span>
             </div>
           ) : normalizedActive ? (
