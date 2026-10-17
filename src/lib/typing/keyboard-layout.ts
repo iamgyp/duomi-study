@@ -86,3 +86,114 @@ export function getKeyDef(key: string): KeyDef | undefined {
 export function getFingerForKey(key: string): Finger | undefined {
   return getKeyDef(key)?.finger;
 }
+
+export const FULLWIDTH_TO_ASCII: Record<string, string> = {
+  '；': ';',
+  '：': ':',
+  '，': ',',
+  '。': '.',
+  '、': '/',
+  '？': '?',
+  '！': '!',
+  '“': '"',
+  '”': '"',
+  '‘': "'",
+  '’': "'",
+  '【': '[',
+  '】': ']',
+  '（': '(',
+  '）': ')',
+  '——': '-',
+  '—': '-',
+  '－': '-',
+  '＋': '+',
+  '＝': '=',
+  '～': '~',
+  '·': '`',
+  '《': '<',
+  '》': '>',
+};
+
+export function normalizeKeyChar(k: string): string {
+  if (!k) return '';
+  const mapped = FULLWIDTH_TO_ASCII[k] ?? k;
+  return mapped.toLowerCase();
+}
+
+/**
+ * Normalizes KeyboardEvent across different platforms and input methods.
+ * Especially handles iPadOS external Bluetooth keyboards where pressing ';'
+ * might emit e.code='Semicolon', full-width Chinese '；', or e.keyCode=186/229.
+ */
+export function normalizeKeyboardEvent(e: KeyboardEvent): string | null {
+  // 1. Semicolon & punctuation: priority check on physical key code & keyCode for iPad external keyboards / Smart Punctuation
+  if (e.code === 'Semicolon' || e.keyCode === 186 || e.keyCode === 59) {
+    return e.shiftKey ? ':' : ';';
+  }
+  if (e.code === 'Comma' || e.keyCode === 188) {
+    return e.shiftKey ? '<' : ',';
+  }
+  if (e.code === 'Period' || e.keyCode === 190) {
+    return e.shiftKey ? '>' : '.';
+  }
+  if (e.code === 'Slash' || e.keyCode === 191) {
+    return e.shiftKey ? '?' : '/';
+  }
+  if (e.code === 'Quote' || e.keyCode === 222) {
+    return e.shiftKey ? '"' : "'";
+  }
+  if (e.code === 'Minus' || e.keyCode === 189 || e.keyCode === 173) {
+    return e.shiftKey ? '_' : '-';
+  }
+  if (e.code === 'Equal' || e.keyCode === 187 || e.keyCode === 61) {
+    return e.shiftKey ? '+' : '=';
+  }
+  if (e.code === 'BracketLeft' || e.keyCode === 219) {
+    return e.shiftKey ? '{' : '[';
+  }
+  if (e.code === 'BracketRight' || e.keyCode === 221) {
+    return e.shiftKey ? '}' : ']';
+  }
+  if (e.code === 'Backquote' || e.keyCode === 192) {
+    return e.shiftKey ? '~' : '`';
+  }
+  if (e.code === 'Space' || e.key === ' ') {
+    return ' ';
+  }
+
+  // 2. Direct key string inspection (handles full-width punctuation like '；')
+  if (e.key) {
+    if (FULLWIDTH_TO_ASCII[e.key]) {
+      return FULLWIDTH_TO_ASCII[e.key];
+    }
+    if (e.key.length === 1) {
+      return e.key.toLowerCase();
+    }
+  }
+
+  // 3. Fallback to physical KeyA-KeyZ if e.key is 'Process' or 'Unidentified' on iPad/IME
+  if (e.code && e.code.startsWith('Key')) {
+    const letter = e.code.slice(3).toLowerCase();
+    if (letter.length === 1) {
+      return letter;
+    }
+  }
+
+  // 4. Fallback to Digit0-Digit9
+  if (e.code && e.code.startsWith('Digit')) {
+    const digit = e.code.slice(5);
+    if (digit.length === 1) {
+      return digit;
+    }
+  }
+
+  // 5. Numpad digits
+  if (e.code && e.code.startsWith('Numpad')) {
+    const num = e.code.slice(6);
+    if (num.length === 1 && num >= '0' && num <= '9') {
+      return num;
+    }
+  }
+
+  return null;
+}

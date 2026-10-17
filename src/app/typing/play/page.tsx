@@ -44,6 +44,7 @@ import {
 } from '@/lib/typing/bgm';
 import type { BiomeType } from '@/lib/typing/sprites';
 import { VirtualKeyboard } from '@/components/typing/VirtualKeyboard';
+import { normalizeKeyboardEvent, normalizeKeyChar } from '@/lib/typing/keyboard-layout';
 import { TypingResultModal } from '@/components/typing/TypingResultModal';
 import { AppModeControl } from '@/components/AppModeControl';
 
@@ -345,20 +346,29 @@ function TypingPlayContent() {
 
       if (gameResult || isPaused) return;
 
-      if (bgmOn) {
-        startBGM(gameType);
-      }
+      // 不拦截 Command / Control / Alt 组合快捷键（如 Cmd+R, Cmd+W, Alt+Tab）
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-      if (e.key === ' ' || e.key === 'Tab') {
-        e.preventDefault();
-      }
+      const rawKey = normalizeKeyboardEvent(e);
 
-      if (e.key.length === 1) {
-        const rawKey = e.key.toLowerCase();
+      if (rawKey) {
+        // 阻止特定按键默认行为（空格滚动页面、Tab 切换焦点、分号触发 Safari 智能标点等）
+        if (e.key === ' ' || e.key === 'Tab' || rawKey === ';' || e.code === 'Semicolon' || e.key === '；') {
+          e.preventDefault();
+        }
+
+        if (bgmOn) {
+          startBGM(gameType);
+        }
+
         setPressedKey(rawKey);
         setTimeout(() => setPressedKey(null), 120);
 
         gameRef.current?.handleKey(rawKey);
+        // 输入成功响应时清除输入法报错提示
+        setImeWarning(false);
+      } else if (e.isComposing || e.keyCode === 229) {
+        setImeWarning(true);
       }
     };
 
@@ -372,7 +382,7 @@ function TypingPlayContent() {
     if (bgmOn) {
       startBGM(gameType);
     }
-    const rawKey = key.toLowerCase();
+    const rawKey = normalizeKeyChar(key);
     setPressedKey(rawKey);
     setTimeout(() => setPressedKey(null), 120);
     gameRef.current?.handleKey(rawKey);
@@ -538,7 +548,7 @@ function TypingPlayContent() {
         <div className="w-full max-w-5xl mb-2 px-4 py-2 bg-amber-500/90 border-2 border-amber-300 text-black text-xs sm:text-sm font-bold rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span>⚠️</span>
-            <span>检测到当前处于中文输入法状态！请按键盘 Shift 键切换为【英文】，否则打字可能无法生效。</span>
+            <span>检测到当前处于中文输入法状态！如击键无反应，请按键盘 Shift、Caps Lock 或 🌐 键切换为【英文】输入法。</span>
           </div>
           <button
             type="button"

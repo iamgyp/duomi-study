@@ -9,6 +9,7 @@
 import { getSprites, renderBackground, MOB_COLORS, SCENE, MobKind, SpriteSet, type BiomeType } from './sprites';
 import { playTypingSfx, TypingSfx } from './sounds';
 import type { TypingTarget } from './lessons';
+import { normalizeKeyChar } from './keyboard-layout';
 
 const { W, H, WALL_X, WALL_TOP, LANES } = SCENE;
 const MOB_SCALE = 4;
@@ -250,7 +251,7 @@ export class TypingGame {
 
   handleKey(raw: string) {
     if (this.paused || this.phase === 'countdown' || this.phase === 'ending' || this.phase === 'ended') return;
-    const key = raw.toLowerCase();
+    const key = normalizeKeyChar(raw);
 
     let mob = this.lockedId !== null ? this.mobs.find((m) => m.id === this.lockedId && !m.dying) : undefined;
     if (!mob) {

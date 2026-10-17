@@ -7,6 +7,7 @@ import {
   getKeyDef,
   getFingerForKey,
   type Finger,
+  normalizeKeyChar,
 } from '@/lib/typing/keyboard-layout';
 
 export interface VirtualKeyboardProps {
@@ -52,7 +53,9 @@ export function VirtualKeyboard({
   hiddenTargetText = '',
   className = '',
 }: VirtualKeyboardProps) {
-  const normalizedActive = activeKey ? activeKey.toLowerCase() : null;
+  const normalizedActive = activeKey ? normalizeKeyChar(activeKey) : null;
+  const normalizedPressed = pressedKey ? normalizeKeyChar(pressedKey) : null;
+  const normalizedWrong = lastWrongKey ? normalizeKeyChar(lastWrongKey) : null;
   const activeDef = normalizedActive ? getKeyDef(normalizedActive) : undefined;
   const activeFinger = normalizedActive ? getFingerForKey(normalizedActive) : undefined;
   const fingerInfo = activeFinger ? FINGER_LABELS[activeFinger] : undefined;
@@ -129,8 +132,8 @@ export function VirtualKeyboard({
               {row.map((kDef) => {
                 const keyChar = kDef.key.toLowerCase();
                 const isActive = !hideKeyHighlight && normalizedActive === keyChar;
-                const isPressed = pressedKey?.toLowerCase() === keyChar;
-                const isWrong = lastWrongKey?.toLowerCase() === keyChar;
+                const isPressed = normalizedPressed === keyChar;
+                const isWrong = normalizedWrong === keyChar;
                 const fingerColor = FINGER_COLORS[kDef.finger];
 
                 // 宽度计算

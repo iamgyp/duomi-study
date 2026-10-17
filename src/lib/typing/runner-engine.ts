@@ -10,6 +10,7 @@
 import { playTypingSfx } from './sounds';
 import type { GameConfig, GameResult, GameCallbacks } from './game-engine';
 import type { TypingTarget } from './lessons';
+import { normalizeKeyChar } from './keyboard-layout';
 
 const W = 960;
 const H = 540;
@@ -156,8 +157,9 @@ export class RunnerGame {
     }
   }
 
-  public handleKey(key: string) {
+  public handleKey(rawKey: string) {
     if (!this.running || this.paused) return;
+    const key = normalizeKeyChar(rawKey);
     const cur = this.nodes[this.currentNodeIdx];
     if (!cur || cur.cleared) return;
 
