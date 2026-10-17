@@ -17,7 +17,7 @@ export default function MathPage() {
   const [config, setConfig] = useState<MathConfig>({
     operation: 'add',
     max: 20,
-    count: 20,
+    count: 50,
     mode: 'normal',
   });
 
@@ -26,13 +26,14 @@ export default function MathPage() {
   const [previewPage, setPreviewPage] = useState(1);
   const [practiceMode, setPracticeMode] = useState(false);
   const [withAnswers, setWithAnswers] = useState(false);
-  const questionsPerPage = 20;
+  const questionsPerPage = 50;
   const totalPages = Math.max(1, Math.ceil(questions.length / questionsPerPage));
   const currentQuestions = questions.slice((previewPage - 1) * questionsPerPage, previewPage * questionsPerPage);
 
   const handleGenerate = () => {
     const newQuestions = generateMathQuestions(config);
     setQuestions(newQuestions);
+    setPreviewPage(1);
   };
 
   const handleDownload = async () => {
@@ -324,9 +325,9 @@ export default function MathPage() {
           <div className="flex-1 bg-[#dcdcdc] p-4 sm:p-8 border-4 border-[#555] shadow-inner overflow-auto flex justify-center">
             <div className="bg-white p-6 sm:p-12 shadow-2xl w-full max-w-[210mm] relative transform origin-top scale-75 sm:scale-90 lg:scale-100 transition-transform">
               {/* Decorative Header on Preview */}
-              <div className="flex justify-between items-center border-b-2 border-black pb-4 mb-8">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#F0A57C] border-2 border-black flex items-center justify-center text-xs overflow-hidden">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-black pb-3 mb-6 gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#F0A57C] border-2 border-black flex items-center justify-center text-xs overflow-hidden flex-shrink-0">
                     {/* Mini Steve CSS representation */}
                     <div className="grid grid-cols-4 grid-rows-4 w-full h-full">
                       <div className="col-span-4 row-span-1 bg-[#4A3020]"></div>
@@ -337,13 +338,19 @@ export default function MathPage() {
                     </div>
                   </div>
                   <div>
-                    <h1 className="text-lg sm:text-2xl font-bold font-[var(--font-pixel)] leading-none">DUOMI STUDY</h1>
-                    <p className="text-xs text-gray-500 font-mono mt-1 uppercase tracking-widest hidden sm:block">{config.mode.replace('-', ' ')} LEVEL {config.max}</p>
+                    <h1 className="text-lg sm:text-xl font-bold font-[var(--font-pixel)] leading-none">DUOMI STUDY</h1>
+                    <p className="text-[10px] sm:text-xs text-gray-500 font-mono mt-1 uppercase tracking-wider">{config.mode.replace('-', ' ')} · LEVEL {config.max}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs text-gray-400 mb-1">{t('Common.score')}: ____ / {questions.length}</div>
-                  <div className="h-3 sm:h-4 w-20 sm:w-32 border border-gray-300 bg-gray-50"></div>
+                <div className="text-right text-[11px] sm:text-xs text-gray-600 font-mono space-y-1 w-full sm:w-auto">
+                  <div className="flex sm:justify-end gap-3 justify-between">
+                    <span>Name: ___________</span>
+                    <span>Date: ___________</span>
+                  </div>
+                  <div className="flex sm:justify-end gap-3 justify-between">
+                    <span>Time: ___________</span>
+                    <span>Score: ______ / {currentQuestions.length}</span>
+                  </div>
                 </div>
               </div>
 
@@ -353,48 +360,55 @@ export default function MathPage() {
                   <p className="font-[var(--font-pixel)] text-lg sm:text-xl text-gray-400">{t('Math.waitingForInput')}</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-6 sm:gap-y-8 text-lg sm:text-xl font-mono">
-                  {currentQuestions.map((q, i) => (
-                    <div key={q.id} className="flex items-start justify-between border-b border-gray-200 pb-2 min-h-[3rem]">
-                      <span className="text-gray-400 text-xs sm:text-sm w-6 font-[var(--font-pixel)] mt-2">{i + 1}.</span>
-                      
-                      <div className="flex-1 flex items-start justify-start gap-3 sm:gap-4 relative">
-                        <div className="flex items-center gap-2 font-bold text-gray-800 text-xl sm:text-2xl">
-                          <div className="relative w-8 sm:w-10 text-center">
-                            {q.num1}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-2 sm:gap-x-3 gap-y-2.5 sm:gap-y-3 font-mono">
+                  {currentQuestions.map((q, i) => {
+                    const globalIdx = (previewPage - 1) * questionsPerPage + i + 1;
+                    return (
+                      <div
+                        key={q.id}
+                        className="border border-gray-200 bg-gray-50/70 rounded px-1.5 py-1.5 sm:px-2 sm:py-2 flex items-center justify-between text-xs sm:text-sm hover:bg-gray-100/80 transition-colors"
+                      >
+                        <span className="text-gray-400 font-bold text-[10px] sm:text-xs w-5 font-[var(--font-pixel)]">{globalIdx}.</span>
+                        <div className="flex-1 flex items-center justify-end gap-1 font-bold text-gray-800">
+                          <div className="relative text-center min-w-[18px]">
+                            <span>{q.num1}</span>
                             {q.decomposition && q.operator === '-' && (
-                              <div className="absolute top-6 sm:top-8 left-0 w-full h-6 sm:h-8 border-t border-l border-r border-gray-400 rounded-t-none opacity-50 flex justify-between text-[8px] sm:text-[10px] px-1">
-                                <span>{q.decomposition.part1}</span>
-                                <span>{q.decomposition.part2}</span>
-                              </div>
-                            )}
-                          </div>
-                          
-                          <span>{q.operator}</span>
-                          
-                          <div className="relative w-8 sm:w-10 text-center">
-                            {q.num2}
-                            {q.decomposition && q.operator === '+' && (
-                              <div className="absolute top-6 sm:top-8 left-0 w-full h-6 sm:h-8 border-t border-l border-r border-gray-400 rounded-t-none opacity-50 flex justify-between text-[8px] sm:text-[10px] px-1">
+                              <div className="absolute top-4 left-1/2 -translate-x-1/2 w-8 h-4 border-t border-l border-r border-gray-400 rounded-t-none opacity-70 flex justify-between text-[7px] leading-none px-0.5 pt-0.5">
                                 <span>{q.decomposition.part1}</span>
                                 <span>{q.decomposition.part2}</span>
                               </div>
                             )}
                           </div>
 
-                          <span>=</span>
-                          <span className="w-12 sm:w-16 h-6 sm:h-8 border-b-2 border-black bg-gray-50"></span>
+                          <span className="text-gray-600 font-semibold">{q.operator}</span>
+
+                          <div className="relative text-center min-w-[18px]">
+                            <span>{q.num2}</span>
+                            {q.decomposition && q.operator === '+' && (
+                              <div className="absolute top-4 left-1/2 -translate-x-1/2 w-8 h-4 border-t border-l border-r border-gray-400 rounded-t-none opacity-70 flex justify-between text-[7px] leading-none px-0.5 pt-0.5">
+                                <span>{q.decomposition.part1}</span>
+                                <span>{q.decomposition.part2}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <span className="text-gray-600">=</span>
+                          <span className="min-w-[28px] h-5 border-b-2 border-black bg-white flex items-center justify-center text-xs">
+                            {withAnswers ? (
+                              <span className="text-red-600 font-bold text-[11px] sm:text-xs">{q.answer}</span>
+                            ) : null}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
               {/* Decorative Footer on Preview */}
-              <div className="absolute bottom-4 sm:bottom-8 left-8 sm:left-12 right-8 sm:right-12 border-t-2 border-gray-300 pt-2 flex justify-between text-xs text-gray-400 font-mono">
+              <div className="mt-8 border-t-2 border-gray-300 pt-3 flex justify-between text-xs text-gray-400 font-mono">
                 <span className="hidden sm:inline">{t('Common.generatedBy')}</span>
-                <span>{t('Common.page')} {previewPage}</span>
+                <span>{t('Common.page')} {previewPage} / {totalPages}</span>
               </div>
             </div>
           </div>

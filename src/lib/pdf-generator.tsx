@@ -17,9 +17,11 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
+    paddingTop: 22,
+    paddingBottom: 22,
+    paddingHorizontal: 24,
     fontFamily: 'Helvetica',
-    fontSize: 12,
+    fontSize: 10,
     color: '#333',
     backgroundColor: '#fff',
   },
@@ -27,67 +29,73 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
-    paddingBottom: 10,
-    height: 80,
+    marginBottom: 8,
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#222',
+    paddingBottom: 6,
+    height: 44,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginLeft: 10,
+    fontSize: 16,
+    fontFamily: 'Helvetica-Bold',
+    marginLeft: 8,
     color: '#000',
-    // fontFamily: 'PixelFont', // Ideally
+    letterSpacing: 0.5,
   },
   subtitle: {
-    fontSize: 10,
+    fontSize: 8,
     color: '#666',
-    marginLeft: 10,
-    marginTop: 4,
+    marginLeft: 8,
+    marginTop: 2,
   },
   metaContainer: {
-    alignItems: 'flex-end',
     justifyContent: 'center',
     borderLeftWidth: 1,
-    borderLeftColor: '#ccc',
-    paddingLeft: 15,
+    borderLeftColor: '#ddd',
+    paddingLeft: 10,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 3,
   },
   metaText: {
-    fontSize: 10,
-    marginBottom: 6,
+    fontSize: 8,
     color: '#444',
+    marginLeft: 10,
   },
   
-  // Grid Layout
+  // 50 Questions Grid Layout (5 columns x 10 rows)
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: 4,
   },
   questionBlock: {
-    width: '48%', 
-    height: 60,   
-    marginBottom: 8,
+    width: '19.2%', 
+    height: 56,   
+    marginBottom: 7,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#fafafa', // Slight background to mimic paper/block
-    borderRadius: 4,
-    padding: 6,
-    borderWidth: 1,
-    borderColor: '#eee',
+    backgroundColor: '#fafafa',
+    borderRadius: 3,
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingHorizontal: 4,
+    borderWidth: 0.5,
+    borderColor: '#e5e7eb',
   },
   index: {
-    width: 25,
-    paddingTop: 4,
+    width: 15,
+    paddingTop: 1,
     color: '#888',
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
   },
   expressionRow: {
     flexDirection: 'row',
@@ -95,101 +103,143 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   
-  // Numbers
+  // Numbers & Operators
   numContainer: {
-    width: 35,
+    width: 20,
     alignItems: 'center',
     position: 'relative',
-    height: 48,
+    height: 44,
   },
   numText: {
-    fontSize: 18,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
+    color: '#111',
   },
   operator: {
-    fontSize: 18,
-    width: 20,
+    fontSize: 11,
+    width: 9,
     textAlign: 'center',
     paddingTop: 0,
-    color: '#555',
+    color: '#444',
   },
   equals: {
-    fontSize: 18,
-    width: 20,
+    fontSize: 11,
+    width: 8,
     textAlign: 'center',
     paddingTop: 0,
-    color: '#555',
+    color: '#444',
   },
   answerLine: {
     flexGrow: 1,
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
-    height: 18, 
-    marginLeft: 5,
+    borderBottomColor: '#222',
+    height: 14, 
+    marginLeft: 3,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   answerText: {
     color: '#d00', 
-    fontSize: 18,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 2,
+    marginBottom: 1,
   },
 
   // Decomposition Visuals
-  decompSvg: {
+  decompContainer: {
     position: 'absolute',
-    top: 20, 
-    left: -2, 
-    width: 40, 
-    height: 25,
+    top: 13,
+    left: -2,
+    width: 24,
+    alignItems: 'center',
+  },
+  decompSvg: {
+    width: 24,
+    height: 12,
+  },
+  decompNumbers: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 24,
+    marginTop: 1,
   },
   decompNumLeft: {
-    position: 'absolute',
-    top: 36,
-    left: -2,
-    width: 15,
+    fontSize: 6.5,
+    color: '#555',
     textAlign: 'center',
-    fontSize: 8,
-    color: '#666',
+    width: 11,
   },
   decompNumRight: {
-    position: 'absolute',
-    top: 36,
-    right: -2,
-    width: 15,
+    fontSize: 6.5,
+    color: '#555',
     textAlign: 'center',
-    fontSize: 8,
-    color: '#666',
+    width: 11,
   },
   
   // Footer
   footer: {
     position: 'absolute',
-    bottom: 30,
-    left: 40,
-    right: 40,
-    borderTopWidth: 2,
-    borderTopColor: '#000',
-    paddingTop: 10,
+    bottom: 16,
+    left: 24,
+    right: 24,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingTop: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 9,
+    fontSize: 8,
     color: '#888',
   },
   pageNumber: {
-    fontSize: 9,
-    color: '#000',
-    fontWeight: 'bold',
-  }
+    fontSize: 8,
+    color: '#222',
+    fontFamily: 'Helvetica-Bold',
+  },
+
+  // Answer Key Page Styles
+  answerGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  answerBlock: {
+    width: '19.2%',
+    height: 24,
+    marginBottom: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8fafc',
+    borderRadius: 2,
+    paddingHorizontal: 4,
+    borderWidth: 0.5,
+    borderColor: '#e2e8f0',
+  },
+  answerIndex: {
+    fontSize: 7.5,
+    color: '#64748b',
+    width: 16,
+    fontFamily: 'Helvetica-Bold',
+  },
+  answerEquation: {
+    fontSize: 8.5,
+    color: '#334155',
+    marginRight: 2,
+  },
+  answerValue: {
+    fontSize: 9.5,
+    fontFamily: 'Helvetica-Bold',
+    color: '#dc2626',
+    marginLeft: 'auto',
+  },
 });
 
 // Steve Avatar SVG Component for PDF
-const SteveAvatar = () => (
-  <Svg width="50" height="50" viewBox="0 0 8 8">
+const SteveAvatar = ({ size = 34 }: { size?: number }) => (
+  <Svg width={size} height={size} viewBox="0 0 8 8">
      {/* Face Background */}
      <Path d="M0 0h8v8H0z" fill="#F0A57C" />
      {/* Hair */}
@@ -205,121 +255,164 @@ const SteveAvatar = () => (
 );
 
 // Grass Block SVG for Footer
-const GrassBlock = () => (
-  <Svg width="20" height="20" viewBox="0 0 16 16">
+const GrassBlock = ({ size = 14 }: { size?: number }) => (
+  <Svg width={size} height={size} viewBox="0 0 16 16">
     <Path d="M0 0h16v16H0z" fill="#795548" /> {/* Dirt */}
     <Path d="M0 0h16v4H0z" fill="#4CAF50" />   {/* Grass Top */}
     <Path d="M0 4h2v2H0zM3 4h2v3H3zM6 4h2v1H6zM9 4h2v2H9zM12 4h2v3H12zM15 4h1v1H15z" fill="#4CAF50" /> {/* Grass dripping */}
   </Svg>
 );
 
-export const MathPdfDocument = ({ questions, title = 'Math Worksheet', withAnswers = false }: { questions: MathQuestion[], title?: string, withAnswers?: boolean }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      
-      {/* Header with Avatar */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-           <SteveAvatar />
-           <View>
-              <Text style={styles.title}>DUOMI STUDY</Text>
-              <Text style={styles.subtitle}>{title}</Text>
-           </View>
-        </View>
-        
-        <View style={styles.metaContainer}>
-           <Text style={styles.metaText}>Name: ______________________</Text>
-           <Text style={styles.metaText}>Date: ______________________</Text>
-           <Text style={styles.metaText}>Score: _________ / {questions.length}</Text>
-        </View>
-      </View>
+const QUESTIONS_PER_PAGE = 50;
 
-      {/* Questions Grid */}
-      <View style={styles.grid}>
-        {questions.map((q, i) => (
-          <View key={q.id} style={styles.questionBlock} wrap={false}>
-            <Text style={styles.index}>{i + 1}.</Text>
-            
-            <View style={styles.expressionRow}>
-              {/* Number 1 */}
-              <View style={styles.numContainer}>
-                <Text style={styles.numText}>{q.num1}</Text>
-                {/* Take-Ten: Split Num1 */}
-                {q.decomposition && q.operator === '-' && (
-                  <View style={{ position: 'absolute', top: 0, left: 0, width: 35, height: 60 }}>
-                    <Svg style={styles.decompSvg}>
-                      <Line x1="18" y1="0" x2="6" y2="20" stroke="#999" strokeWidth={1} />
-                      <Line x1="18" y1="0" x2="30" y2="20" stroke="#999" strokeWidth={1} />
-                    </Svg>
-                    <Text style={styles.decompNumLeft}>{q.decomposition.part1}</Text>
-                    <Text style={styles.decompNumRight}>{q.decomposition.part2}</Text>
-                  </View>
-                )}
+function chunkQuestions<T>(array: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size));
+  }
+  return chunks.length > 0 ? chunks : [[]];
+}
+
+export const MathPdfDocument = ({ questions, title = 'Math Worksheet', withAnswers = false }: { questions: MathQuestion[], title?: string, withAnswers?: boolean }) => {
+  const questionPages = chunkQuestions(questions, QUESTIONS_PER_PAGE);
+  const totalQuestionPages = questionPages.length;
+
+  return (
+    <Document>
+      {questionPages.map((pageQuestions, pageIdx) => {
+        const startNumber = pageIdx * QUESTIONS_PER_PAGE;
+        return (
+          <Page key={pageIdx} size="A4" style={styles.page}>
+            {/* Header with Avatar */}
+            <View style={styles.header}>
+              <View style={styles.headerLeft}>
+                <SteveAvatar size={34} />
+                <View>
+                  <Text style={styles.title}>DUOMI STUDY</Text>
+                  <Text style={styles.subtitle}>{title}</Text>
+                </View>
               </View>
 
-              <Text style={styles.operator}>{q.operator}</Text>
-
-              {/* Number 2 */}
-              <View style={styles.numContainer}>
-                <Text style={styles.numText}>{q.num2}</Text>
-                {/* Make-Ten: Split Num2 */}
-                {q.decomposition && q.operator === '+' && (
-                  <View style={{ position: 'absolute', top: 0, left: 0, width: 35, height: 60 }}>
-                    <Svg style={styles.decompSvg}>
-                      <Line x1="18" y1="0" x2="6" y2="20" stroke="#999" strokeWidth={1} />
-                      <Line x1="18" y1="0" x2="30" y2="20" stroke="#999" strokeWidth={1} />
-                    </Svg>
-                    <Text style={styles.decompNumLeft}>{q.decomposition.part1}</Text>
-                    <Text style={styles.decompNumRight}>{q.decomposition.part2}</Text>
-                  </View>
-                )}
-              </View>
-
-              <Text style={styles.equals}>=</Text>
-
-              {/* Answer Area */}
-              <View style={styles.answerLine}>
-                {withAnswers ? (
-                  <Text style={styles.answerText}>{q.answer}</Text>
-                ) : null}
+              <View style={styles.metaContainer}>
+                <View style={styles.metaRow}>
+                  <Text style={styles.metaText}>Name: ________________</Text>
+                  <Text style={styles.metaText}>Date: ________________</Text>
+                </View>
+                <View style={styles.metaRow}>
+                  <Text style={styles.metaText}>Time: ________________</Text>
+                  <Text style={styles.metaText}>Score: ________ / {pageQuestions.length}</Text>
+                </View>
               </View>
             </View>
-          </View>
-        ))}
-      </View>
 
-      {/* Footer */}
-      <View style={styles.footer}>
-         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <GrassBlock />
-            <Text style={[styles.footerText, { marginLeft: 5 }]}>Duomi Study - Level Up Your Brain!</Text>
-         </View>
-         <Text style={styles.pageNumber}>Page 1</Text>
-      </View>
-    </Page>
+            {/* Questions Grid */}
+            <View style={styles.grid}>
+              {pageQuestions.map((q, i) => (
+                <View key={q.id} style={styles.questionBlock} wrap={false}>
+                  <Text style={styles.index}>{startNumber + i + 1}.</Text>
 
-    {/* Answer Key Page */}
-    {withAnswers && (
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-             <SteveAvatar />
-             <Text style={styles.title}>ANSWER KEY</Text>
-          </View>
-          <Text style={{ fontSize: 10, color: '#999' }}>For {title}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {questions.map((q, i) => (
-            <View key={q.id} style={{ width: '20%', marginBottom: 15 }}>
-              <Text style={{ fontSize: 10, color: '#666', marginBottom: 2 }}>{i+1}.</Text>
-              <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{q.answer}</Text>
+                  <View style={styles.expressionRow}>
+                    {/* Number 1 */}
+                    <View style={styles.numContainer}>
+                      <Text style={styles.numText}>{q.num1}</Text>
+                      {/* Take-Ten: Split Num1 */}
+                      {q.decomposition && q.operator === '-' && (
+                        <View style={styles.decompContainer}>
+                          <Svg style={styles.decompSvg} viewBox="0 0 24 12">
+                            <Line x1="12" y1="0" x2="4" y2="11" stroke="#888" strokeWidth={1} />
+                            <Line x1="12" y1="0" x2="20" y2="11" stroke="#888" strokeWidth={1} />
+                          </Svg>
+                          <View style={styles.decompNumbers}>
+                            <Text style={styles.decompNumLeft}>{q.decomposition.part1}</Text>
+                            <Text style={styles.decompNumRight}>{q.decomposition.part2}</Text>
+                          </View>
+                        </View>
+                      )}
+                    </View>
+
+                    <Text style={styles.operator}>{q.operator}</Text>
+
+                    {/* Number 2 */}
+                    <View style={styles.numContainer}>
+                      <Text style={styles.numText}>{q.num2}</Text>
+                      {/* Make-Ten: Split Num2 */}
+                      {q.decomposition && q.operator === '+' && (
+                        <View style={styles.decompContainer}>
+                          <Svg style={styles.decompSvg} viewBox="0 0 24 12">
+                            <Line x1="12" y1="0" x2="4" y2="11" stroke="#888" strokeWidth={1} />
+                            <Line x1="12" y1="0" x2="20" y2="11" stroke="#888" strokeWidth={1} />
+                          </Svg>
+                          <View style={styles.decompNumbers}>
+                            <Text style={styles.decompNumLeft}>{q.decomposition.part1}</Text>
+                            <Text style={styles.decompNumRight}>{q.decomposition.part2}</Text>
+                          </View>
+                        </View>
+                      )}
+                    </View>
+
+                    <Text style={styles.equals}>=</Text>
+
+                    {/* Answer Area */}
+                    <View style={styles.answerLine}>
+                      {withAnswers ? (
+                        <Text style={styles.answerText}>{q.answer}</Text>
+                      ) : null}
+                    </View>
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-      </Page>
-    )}
-  </Document>
-);
+
+            {/* Footer */}
+            <View style={styles.footer}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <GrassBlock size={14} />
+                <Text style={[styles.footerText, { marginLeft: 5 }]}>Duomi Study - Level Up Your Brain!</Text>
+              </View>
+              <Text style={styles.pageNumber}>Page {pageIdx + 1} / {totalQuestionPages}</Text>
+            </View>
+          </Page>
+        );
+      })}
+
+      {/* Answer Key Page */}
+      {withAnswers && (
+        <Page size="A4" style={styles.page}>
+          <View style={styles.header}>
+            <View style={styles.headerLeft}>
+              <SteveAvatar size={34} />
+              <View>
+                <Text style={styles.title}>ANSWER KEY</Text>
+                <Text style={styles.subtitle}>Reference Answers · {title}</Text>
+              </View>
+            </View>
+            <View style={styles.metaContainer}>
+              <Text style={styles.metaText}>Total Questions: {questions.length}</Text>
+            </View>
+          </View>
+
+          <View style={styles.answerGrid}>
+            {questions.map((q, i) => (
+              <View key={q.id} style={styles.answerBlock} wrap={false}>
+                <Text style={styles.answerIndex}>{i + 1}.</Text>
+                <Text style={styles.answerEquation}>{q.num1} {q.operator} {q.num2} =</Text>
+                <Text style={styles.answerValue}>{q.answer}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.footer}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <GrassBlock size={14} />
+              <Text style={[styles.footerText, { marginLeft: 5 }]}>Duomi Study - Level Up Your Brain!</Text>
+            </View>
+            <Text style={styles.pageNumber}>Answer Key</Text>
+          </View>
+        </Page>
+      )}
+    </Document>
+  );
+};
 
 // Algebra PDF Styles
 const algebraStyles = StyleSheet.create({
